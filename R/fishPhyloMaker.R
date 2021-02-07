@@ -2,10 +2,12 @@
 #'
 #' @param data A character vector containing the names of species or a dataframe generated from \code{tab_function}
 #'
-#' @return
+#' @return A newick object describing the phylogenetic relationships among the species provided in \code{data}
+#' 
 #' @export
 #'
 #' @examples
+#' 
 phyloMatch<- function(data){
   
   #organizing taxonomic levels
@@ -336,6 +338,6 @@ phyloMatch<- function(data){
     tree_res<- suppressWarnings(ape::drop.tip(phy = phylo_order, 
                                               tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data)
     )
-    tree_res #phylogeny with only species on data
+    return(tree_res) #phylogeny with only species on data
   }
 }
