@@ -7,81 +7,30 @@
 #'
 #' @examples
 phyloMatch<- function(data){
-  library(geiger)
-  
-  treedata_modif<- function (phy, data, sort = FALSE, warnings = TRUE) 
-  {
-    dm = length(dim(data))
-    if (is.vector(data)) {
-      data <- as.matrix(data)
-    }
-    if (is.factor(data)) {
-      data <- as.matrix(data)
-    }
-    if (is.array(data) & length(dim(data)) == 1) {
-      data <- as.matrix(data)
-    }
-    if (is.null(rownames(data))) {
-      stop("names for 'data' must be supplied")
-    }
-    else {
-      data.names <- rownames(data)
-    }
-    nc <- name.check(phy, data)
-    if (is.na(nc[[1]][1]) | nc[[1]][1] != "OK") {
-      if (length(nc[[1]] != 0)) {
-        phy = drop.tip(phy, as.character(nc[[1]]))
-        if (warnings) {
-          warning(paste("The following tips were not found in 'data' and were dropped from 'phy':\n\t", 
-                        paste(nc[[1]], collapse = "\n\t"), sep = ""))
-        }
-      }
-      if (length(nc[[2]] != 0)) {
-        m <- match(data.names, nc[[2]])
-        data = as.matrix(data[is.na(m), ])
-        data.names <- data.names[is.na(m)]
-        if (warnings) {
-          warning(paste("The following tips were not found in 'phy' and were dropped from 'data':\n\t", 
-                        paste(nc[[2]], collapse = "\n\t"), sep = ""))
-        }
-      }
-    }
-    order <- match(data.names, phy$tip.label)
-    rownames(data) <- phy$tip.label[order]
-    if (sort) {
-      index <- match(phy$tip.label, rownames(data))
-      data <- as.matrix(data[index, ])
-    }
-    if (dm == 2) {
-      data <- as.matrix(data)
-    }
-    phy$node.label = NULL
-    return(list(phy = phy, data = data, nc= nc))
-  }
   
   #organizing taxonomic levels
-  rank_order<- as.character(unique(data$o)) #ordens
-  rank_family<- as.character(unique(data$f)) #familias
-  spp<- as.character(data$s) #especies
-  list_ordem<- vector(mode = "list", length= length(rank_order))
-  list_family<- vector(mode = "list", length= length(rank_family))
+  rank_order <- as.character(unique(data$o)) #ordens
+  rank_family <- as.character(unique(data$f)) #familias
+  spp <- as.character(data$s) #especies
+  list_ordem <- vector(mode = "list", length= length(rank_order))
+  list_family <- vector(mode = "list", length= length(rank_family))
   
   #filtering all species names within orders presented in the original phylogeny
   for(i in 1:length(rank_order)){
-    list_ordem[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")$tip.label)),
+    list_ordem[[i]] <- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")$tip.label)),
                                error = function(e) paste(print(rank_order[i]))
     )
   }
   
   #filtering for family
   for(i in 1:length(rank_family)){
-    list_family[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_family[i], type = "chronogram_mrca")$tip.label)),
+    list_family[[i]] <- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_family[i], type = "chronogram_mrca")$tip.label)),
                                 error = function(e) paste(print(rank_family[i]))
     )
   }
   
   ##downloading phylogeny from all orders in data
-  filter_rank<- function(ordem){
+  filter_rank <- function(ordem){
     if(length(which(sub("_.*", "", unlist(ordem)) == "not.found")) >= 1){
       
       phy_ord<- fishtree::fishtree_phylogeny(unlist(ordem)[-which(sub("_.*", "", unlist(ordem)) == "not.found")])
@@ -92,25 +41,25 @@ phyloMatch<- function(data){
     phy_ord
   }
   
-  phylo_order<- filter_rank(ordem = list_ordem)  #phylogeny with all order
-  phylo_order<- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
-  phylo_family<- suppressWarnings(filter_rank(ordem = list_family)) #phylogeny for all family
+  phylo_order <- filter_rank(ordem = list_ordem)  #phylogeny with all order
+  phylo_order <- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
+  phylo_family <- suppressWarnings(filter_rank(ordem = list_family)) #phylogeny for all family
   
   
   #naming node according to order
   for( i in 1:length(list_ordem)){
-    temp<- list_ordem[[i]]
-    phylo_temp<- ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp))
-    node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(rank_order[i])
+    temp <- list_ordem[[i]]
+    phylo_temp <- ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp))
+    node_ordem <- phylo_temp$node.label[1]
+    phylo_order$node.label[which(phylo_order$node.label == node_ordem)] <- paste(rank_order[i])
   }
   
   #naming node family in phylo order
   for( i in 1:length(list_family)){
-    temp<- list_family[[i]]
-    phylo_temp<- suppressWarnings(ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp)))
-    node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(rank_family[i])
+    temp <- list_family[[i]]
+    phylo_temp <- suppressWarnings(ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp)))
+    node_ordem <- phylo_temp$node.label[1]
+    phylo_order$node.label[which(phylo_order$node.label == node_ordem)] <- paste(rank_family[i])
   }
   
   #selecting species that must be added to genus in the tree (sister species)
