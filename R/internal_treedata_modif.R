@@ -16,10 +16,10 @@ treedata_modif<- function (phy, data, sort = FALSE, warnings = TRUE)
   else {
     data.names <- rownames(data)
   }
-  nc <- name.check(phy, data)
+  nc <- geiger::name.check(phy, data)
   if (is.na(nc[[1]][1]) | nc[[1]][1] != "OK") {
     if (length(nc[[1]] != 0)) {
-      phy = drop.tip(phy, as.character(nc[[1]]))
+      phy = ape::drop.tip(phy, as.character(nc[[1]]))
       if (warnings) {
         warning(paste("The following tips were not found in 'data' and were dropped from 'phy':\n\t", 
                       paste(nc[[1]], collapse = "\n\t"), sep = ""))
