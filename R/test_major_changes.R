@@ -1,16 +1,15 @@
-install.packages("rfishbase")
 data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
 source(here::here("R", "tab_function.R"))
 taxon_data <- tab_function(data_comm)
-data <- edit(taxon_data)
 
-data_process <- data[c(1, 2, 6, 29, 58), ]
+
+data_process <- taxon_data[c(1, 2, 6, 29, 58), ]
 data_process <- rbind(data_process, c("Curculionichthys_inesperado", "Loricariidae", "Siluriformes") )
 data_process <- rbind(data_process, c("Dinkiwinki_dipsii", "Teletubiidae", "Cichliformes"))
 data_process <- rbind(data_process, c("Peixe_loricariaentregeneros", "Loricariidae", "Siluriformes"))
 data_process <- rbind(data_process, c("Peixo_basefamilia", "Loricariidae", "Siluriformes"))
-
+data <- data_process
 phyloMatch<- function(data){
   #organizing taxonomic levels
   rank_order<- as.character(unique(data$o)) #ordens
@@ -134,6 +133,7 @@ phyloMatch<- function(data){
   )
   ]
   ) 
+  
   #species to be added in step 2 - species with family representatives
   
   spp_to_add_round2<- setdiff(data_exRound2$s, data_exRound3$s)
