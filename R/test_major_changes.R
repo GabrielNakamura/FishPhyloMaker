@@ -1,5 +1,7 @@
+install.packages("rfishbase")
 data_all <- load(here::here("data", "neotropical_comm.rda"))
-data_comm <- comm[, -c(1, 2)]
+data_comm <- neotropical_comm[, -c(1, 2)]
+source(here::here("R", "tab_function.R"))
 taxon_data <- tab_function(data_comm)
 data <- edit(taxon_data)
 
