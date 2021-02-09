@@ -2,8 +2,8 @@ data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
 source(here::here("R", "tab_function.R"))
 taxon_data <- tab_function(data_comm)
-
-
+Loricariidae
+Siluriformes
 data_process <- taxon_data[c(1, 2, 6, 29, 58), ]
 data_process <- rbind(data_process, c("Curculionichthys_inesperado", "Loricariidae", "Siluriformes") )
 data_process <- rbind(data_process, c("Dinkiwinki_dipsii", "Teletubiidae", "Cichliformes"))
@@ -99,14 +99,14 @@ phyloMatch<- function(data){
   
   #second step - adding species that are not genus in the tree, but are in any family
   data_exRound2<- data[match(insert_spp2, as.character(data$s)),] #data to be submited to round 2 of family search
-  rank_family2<- as.character(data[match(insert_spp2, as.character(data$s)),2])
+  rank_family2 <- unique(as.character(data[match(insert_spp2, as.character(data$s)),2]))
   list_spp_step2<- vector(mode = "list", length= length(rank_family2))
   
   for(i in 1:length(rank_family2)){
     list_spp_step2[[i]]<- tryCatch(paste(ape::extract.clade(phy = phylo_order, node = as.character(rank_family2[i]))$tip.label),
                                    error = function(e) paste("noFamily", as.character(data[which(rank_family2[i] == data$f), 1]), sep= "_"))
   }
-  
+  names(list_spp_step2) <- rank_family2
   
   data_exRound3<- data_exRound2[which(unlist(lapply(lapply(list_spp_step2, 
                                                            function(x) which(sub("_.*", "", x) == "noFamily")
@@ -115,29 +115,28 @@ phyloMatch<- function(data){
   )
   ) > 0),] #data to be submited to third round in order search - no species with the same family of these species 
   #in the phylogeny
-  
-  data_exRoundFamily<- data[unique(unlist(lapply(as.character(data_exRound2$f), 
-                                                 function(x) which(x == as.character(data$f)
-                                                 )
-  )
-  )
-  )
-  , ]
-  
+
   
   #species of the same family that species that must be added that are already on the tree
-  spp_family<- 1:nrow(data_exRoundFamily)
-  names(spp_family)<- data_exRoundFamily$s
-  spp_family_inTree<- as.character(data_exRoundFamily$s[-match(as.character(suppressWarnings(treedata_modif(phy = phylo_order, spp_family)$nc$data_not_tree)),
-                                                               as.character(data_exRoundFamily$s)
-  )
-  ]
-  ) 
+  spp_family<- 1:nrow(data_exRound2)
+  names(spp_family)<- data_exRound2$s
   
+  
+  spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
+                                   function(x) which(sub("_.*", "", x) != "noFamily")
+  ), 
+  function(y) which(length(y) != 0)
+  )
+  ) > 0))
+  
+  spp_family_inTree <- list_spp_step2[which(names(list_spp_step2) == spp_with_family)]
+  
+   
   #species to be added in step 2 - species with family representatives
   
   spp_to_add_round2<- setdiff(data_exRound2$s, data_exRound3$s)
-  user_option_spp<-  unique(sub("_.*", "", as.character(spp_family_inTree))) # genus in tree
+  
+   # genus in tree
   
   ####initializing the insertion of species that present representatives species in family level
   if(user_option_spp == 1){
@@ -152,7 +151,9 @@ phyloMatch<- function(data){
     phylo_test$tip.label[position_problem1]<- spp_to_add_round2 #solving family add when there is only one species of the same family that species to add
   } else{
     while(length(spp_to_add_round2) >= 1){
-      local_to_add_spp<- readline(prompt = print_cat(print_cat = user_option_spp, spp = spp_to_add_round2[1])) #user interactive option to choose species
+      spp_Byfamily_inTree <- list_spp_step2[c(which(names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]))]
+      user_option_spp <-  unique(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))
+      local_to_add_spp <- readline(prompt = print_cat(print_cat = user_option_spp, spp = spp_to_add_round2[1])) #user interactive option to choose species
       
       # if user decide to insert species as politomy between two different genus 
       if(length(local_to_add_spp) == 2){
