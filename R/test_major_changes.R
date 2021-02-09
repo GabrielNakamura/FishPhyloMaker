@@ -1,6 +1,13 @@
-data <- taxon_data
-
+data_all <- load(here::here("data", "neotropical_comm.rda"))
+data_comm <- comm[, -c(1, 2)]
+taxon_data <- tab_function(data_comm)
 data <- edit(taxon_data)
+
+data_process <- data[c(1, 2, 6, 29, 58), ]
+data_process <- rbind(data_process, c("Curculionichthys_inesperado", "Loricariidae", "Siluriformes") )
+data_process <- rbind(data_process, c("Dinkiwinki_dipsii", "Teletubiidae", "Cichliformes"))
+data_process <- rbind(data_process, c("Peixe_loricariaentregeneros", "Loricariidae", "Siluriformes"))
+data_process <- rbind(data_process, c("Peixo_basefamilia", "Loricariidae", "Siluriformes"))
 
 phyloMatch<- function(data){
   #organizing taxonomic levels
