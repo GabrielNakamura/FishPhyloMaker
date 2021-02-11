@@ -1,3 +1,7 @@
+library(fishtree)
+#install.packages("rfishbase")
+library(rfishbase)
+
 data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
 source(here::here("R", "tab_function.R"))
@@ -13,6 +17,8 @@ data_process <- rbind(data_process, c("Dinkiwinki_dipsii", "Teletubiidae", "Cich
 data_process <- rbind(data_process, c("Peixe_loricariaentregeneros", "Loricariidae", "Siluriformes"))
 data_process <- rbind(data_process, c("Peixo_basefamilia", "Loricariidae", "Siluriformes"))
 data <- data_process
+
+
 phyloMatch<- function(data){
   
   #organizing taxonomic levels
@@ -63,21 +69,16 @@ phyloMatch<- function(data){
   phylo_order<- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
   phylo_family<- suppressWarnings(filter_rank(ordem = list_family)) #phylogeny for all family
   
-  
-  #naming node according to order
-  for( i in 1:length(list_ordem)){
-    temp<- list_ordem[[i]]
-    phylo_temp<- ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp))
-    node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(rank_order[i])
+  # naming node according to families
+  for (i in 1:length(list_family)) {
+    phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(families_order_and_data[i])
   }
   
   # naming node according to families
-  for( i in 1:length(list_family)){
-    temp<- list_family[[i]]
-    phylo_temp<- suppressWarnings(ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp)))
-    node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(families_order_and_data[i])
+  for (i in 1:length(list_ordem)) {
+    phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_ordem[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- paste(rank_order[i])
   }
   
   #selecting species that must be added to genus in the tree (sister species)
