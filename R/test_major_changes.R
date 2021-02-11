@@ -1,6 +1,9 @@
 data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
 source(here::here("R", "tab_function.R"))
+source(here::here("R", "internal_user_opt_printCat.R"))
+source(here::here("R", "internal_user_opt_printCat2.R"))
+source(here::here("R", "internal_treedata_modif.R"))
 taxon_data <- tab_function(data_comm)
 Loricariidae
 Siluriformes
@@ -11,12 +14,24 @@ data_process <- rbind(data_process, c("Peixe_loricariaentregeneros", "Loricariid
 data_process <- rbind(data_process, c("Peixo_basefamilia", "Loricariidae", "Siluriformes"))
 data <- data_process
 phyloMatch<- function(data){
+  
   #organizing taxonomic levels
   rank_order <- as.character(unique(data$o)) #ordens
   rank_family <- as.character(unique(data$f)) #familias
   spp <- as.character(data$s) #especies
   list_ordem <- vector(mode = "list", length= length(rank_order))
   list_family <- vector(mode = "list", length= length(rank_family))
+  
+  # list of families within genus presented in data
+  cichliformes_ord <- which(rank_order == "Cichliformes")
+  if(length(cichliformes_ord) == 1){
+    rank_order[cichliformes_ord] <- "Perciformes"
+  }
+  all_families <- unique(unlist(lapply(rank_order, function(x){
+    fishbase[which(x == fishbase$Order), 10]
+  })))
+  families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != all_families)])
+  families_order_and_data <- c(rank_family, families_in_orders)
   
   #filtering all species names within orders
   for(i in 1:length(rank_order)){
@@ -26,9 +41,9 @@ phyloMatch<- function(data){
   }
   
   #filtering for family
-  for(i in 1:length(rank_family)){
-    list_family[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_family[i], type = "chronogram_mrca")$tip.label)),
-                                error = function(e) paste(print(rank_family[i]))
+  for(i in 1:length(families_order_and_data)){
+    list_family[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = families_order_and_data[i], type = "chronogram_mrca")$tip.label)),
+                                error = function(e) paste(print(families_order_and_data[i]))
     )
   }
   
@@ -62,7 +77,7 @@ phyloMatch<- function(data){
     temp<- list_family[[i]]
     phylo_temp<- suppressWarnings(ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp)))
     node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(rank_family[i])
+    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(families_order_and_data[i])
   }
   
   #selecting species that must be added to genus in the tree (sister species)
@@ -108,19 +123,19 @@ phyloMatch<- function(data){
   }
   names(list_spp_step2) <- rank_family2
   
-  data_exRound3<- data_exRound2[which(unlist(lapply(lapply(list_spp_step2, 
-                                                           function(x) which(sub("_.*", "", x) == "noFamily")
+  data_exRound3 <- data_exRound2[which(names(which(unlist(lapply(lapply(list_spp_step2, 
+                                                                 function(x) which(sub("_.*", "", x) == "noFamily")
   ), 
   function(y) length(y)
   )
-  ) > 0),] #data to be submited to third round in order search - no species with the same family of these species 
+  ) > 0)) == data_exRound2$f),] #data to be submited to third round in order search - no species with the same family of these species 
   #in the phylogeny
+  
 
   
   #species of the same family that species that must be added that are already on the tree
   spp_family<- 1:nrow(data_exRound2)
   names(spp_family)<- data_exRound2$s
-  
   
   spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
                                    function(x) which(sub("_.*", "", x) != "noFamily")
@@ -134,10 +149,14 @@ phyloMatch<- function(data){
    
   #species to be added in step 2 - species with family representatives
   
-  spp_to_add_round2<- setdiff(data_exRound2$s, data_exRound3$s)
+  spp_to_add_round2 <- setdiff(data_exRound2$s, data_exRound3$s)
   
   
   ####initializing the insertion of species that present representatives species in family level
+  family_name <- names(list_spp_step2)[names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]]
+  spp_Byfamily_inTree <- as.character(unlist(list_spp_step2[c(which(names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]))])) 
+  user_option_spp <-  unique(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))
+  
   if(user_option_spp == 1){
     phylo_order<- phytools::add.species.to.genus(tree = phylo_order, 
                                                  species = paste(sub("_.*", "", as.character(spp_family_inTree)[1])
@@ -192,13 +211,14 @@ phyloMatch<- function(data){
       }
       
       # running again the check procedure
-      data_exRound2<- data[match(insert_spp2, as.character(data$s)),]
       
-      # genus checking procedure
+      
       spp_data<- 1:nrow(data_exRound2)
       names(spp_data)<- data_exRound2$s
       insert_spp<- treedata_modif(phy = phylo_order, data = spp_data, warnings = F)$nc$data_not_tree # remaining species to be inserted
       phylo_order<- phytools::force.ultrametric(tree = phylo_order)
+      
+      # genus checking procedure
       genres_in_tree<- sub("_.*", "", 
                            phylo_order$tip.label)[match(sub("_.*", "", 
                                                             insert_spp), 
@@ -219,10 +239,11 @@ phyloMatch<- function(data){
           #adding species to genus that already exist in the tree
           phylo_order<- phytools::add.species.to.genus(tree = phylo_order, species = species_to_genre[i]) 
         }
+        insert_spp<- treedata_modif(phy = phylo_order, data = spp_data, warnings = F)$nc$data_not_tree # remaining species to be inserted
+        phylo_order<- phytools::force.ultrametric(tree = phylo_order)
       }
       
       rank_family2 <- unique(as.character(data[match(insert_spp, as.character(data$s)),2]))
-      # insert_spp2<- treedata_modif(phy = phylo_order, data = spp_data, warnings = F)$nc$data_not_tree #species that must be added after step 1
       list_spp_step2 <- vector(mode = "list", length= length(rank_family2))
       for(i in 1:length(rank_family2)){
         list_spp_step2[[i]]<- tryCatch(paste(ape::extract.clade(phy = phylo_order, node = rank_family2[i])$tip.label), 
@@ -242,14 +263,58 @@ phyloMatch<- function(data){
       )
       family_still_add <- names(list_spp_step2)[ifelse(names_family == 1, TRUE, FALSE)] # family that will be added in the next round
       data_exRound3 <- data[match(family_still_add, data$f), ]
-      spp_to_add_round2<- setdiff(insert_spp2, data_exRound3$s)
+      spp_to_add_round2<- setdiff(insert_spp, data_exRound3$s)
     }
   }
   
   ######step 3 - add species to orders######
-  phylo_order$node.label[match(data_exRound3$o, phylo_order$node.label)]
-  ape::extract.clade(phy = phylo_order, 
-                node = unique(as.character(data_exRound3$o[2])))$node.label
+  #naming node according to order
+  for( i in 1:length(list_ordem)){
+    temp<- list_ordem[[i]]
+    phylo_temp<- ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp))
+    node_ordem<- phylo_temp$node.label[1]
+    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(rank_order[i])
+  }
+  
+  for(i in 1:length(rank_order)){
+    i = 4
+    list_ordem[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")$tip.label)),
+                               error = function(e) paste(print(rank_order[i]))
+    )
+  }
+  test_perciformes <- fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")
+  test_perciformes
+  test_perciformes <- ape::makeNodeLabel(phy = test_perciformes)
+  names_perciformes <- test_perciformes$tip.label
+  
+  
+  node_ordem<- phylo_temp$node.label[1]
+  for( i in 1:length(list_family)){
+    temp<- list_family[[i]]
+    phylo_temp<- suppressWarnings(ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp)))
+    node_ordem<- phylo_temp$node.label[1]
+    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(families_order_and_data[i])
+  }
+  
+  #naming node family in phylo order
+  
+  check_cichli <- which(data_exRound3$o == "Cichliformes")
+  
+  if(length(check_cichli) >= 1){
+    data_exRound3[which(data_exRound3$o == "Cichliformes"), "o"] <- "Perciformes"
+  }
+  
+  for(i in 1:length(data_exRound3$o)){
+    i = 1
+    list_families_in_order <- ape::extract.clade(phy = phylo_order, 
+                       node = unique(as.character(data_exRound3$o[i])))$node.label
+    list_families_in_order[which(!is.na(match(families_order_and_data, list_families_in_order)) == TRUE)]
+    length(list_families_in_order)
+  }
+  length(list_families_in_order)
+  length(families_in_orders)
+  match(families_order_and_data, list_families_in_order)
+  
   
   species_order_inTree <- match(data$s, 
                               ape::extract.clade(phy = phylo_order, 

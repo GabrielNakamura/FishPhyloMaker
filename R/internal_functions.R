@@ -20,3 +20,8 @@ genres_in_tree<- sub("_.*", "",
                                                       )
                                                       ]
 species_to_genre<- insert_spp[which(is.na(insert_spp[match(sub("_.*", "", insert_spp), genres_in_tree)]) == FALSE)] #genus that must be added
+
+for(i in 1:length(species_to_genre)){
+  #adding species to genus that already exist in the tree
+  phylo_order<- phytools::add.species.to.genus(tree = phylo_order, species = species_to_genre[i]) 
+}

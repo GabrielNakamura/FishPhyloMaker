@@ -6,6 +6,7 @@
 #' @export
 #'
 #' @examples
+#' 
 tab_function<- function(data){
   if(is.data.frame(data) == TRUE){
     names_data <- colnames(data)
@@ -22,8 +23,8 @@ tab_function<- function(data){
     }
     names_data <- data
   }
-  library(rfishbase)
-  data("fishbase")
+  
+  utils::data("fishbase")
   list_genus<- fishbase[match(sub("_.*", "", names_data), fishbase$Genus), c("Genus", "Family", "Order")]
   list_local<- data.frame(s= names_data, f= list_genus$Family, o= list_genus$Order)
   not_found<- list_local[which(rowSums(is.na(list_local)) > 0), ]
