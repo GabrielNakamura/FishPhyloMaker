@@ -23,7 +23,7 @@ tab_function<- function(data){
     }
     names_data <- data
   }
-  
+  library(rfishbase)
   utils::data("fishbase")
   list_genus<- fishbase[match(sub("_.*", "", names_data), fishbase$Genus), c("Genus", "Family", "Order")]
   list_local<- data.frame(s= names_data, f= list_genus$Family, o= list_genus$Order)
