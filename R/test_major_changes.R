@@ -191,6 +191,9 @@ phyloMatch<- function(data){
       
       # if user decided to insert species as politomy of a specific genus or in the family node
       if(length(spp_user_opt) == 1){
+        if(length(match(spp_user_opt, c(user_option_spp, family_name))) != 1){
+          stop(paste("\n Check the spelling of Genus or Family in:", spp_user_opt, sep = " "))
+        }
         if(any(spp_user_opt == family_name)){  # if user decided to insert the species as politomy in family node
           node_family <- which(phylo_order$node.label == family_name)
           phylo_order <- phytools::bind.tip(tree = phylo_order, tip.label = spp_to_add_round2[1], where = node_family, position = 0)
