@@ -85,7 +85,7 @@ phyloMatch<- function(data){
   phylo_order <- phytools::force.ultrametric(tree = phylo_order)
   
   #species that must be added in the first step of the procedure
-  genres_in_tree <- sub("_.*", "", 
+  genus_in_tree <- sub("_.*", "", 
                         phylo_order$tip.label)[match(sub("_.*", "", 
                                                          insert_spp), 
                                                      sub("_.*", "", 
@@ -98,13 +98,13 @@ phyloMatch<- function(data){
                                                                                              ]
                                                          )
                                                          ]
-  species_to_genre <- insert_spp[which(is.na(insert_spp[match(sub("_.*", "", insert_spp), genres_in_tree)]) == FALSE)] #genus that must be added
+  species_to_genus <- insert_spp[which(is.na(insert_spp[match(sub("_.*", "", insert_spp), genus_in_tree)]) == FALSE)] #genus that must be added
   
   
   #######solving problem 1, first step - add genus
-  for(i in 1:length(species_to_genre)){
+  for(i in 1:length(species_to_genus)){
     #adding species to genus that already exist in the tree
-    phylo_order<- phytools::add.species.to.genus(tree = phylo_order, species = species_to_genre[i]) 
+    phylo_order<- phytools::add.species.to.genus(tree = phylo_order, species = species_to_genus[i]) 
   }
   
   ###preparing data to the remaining insertions
@@ -225,7 +225,7 @@ phyloMatch<- function(data){
       phylo_order<- phytools::force.ultrametric(tree = phylo_order)
       
       # genus checking procedure
-      genres_in_tree<- sub("_.*", "", 
+      genus_in_tree<- sub("_.*", "", 
                            phylo_order$tip.label)[match(sub("_.*", "", 
                                                             insert_spp), 
                                                         sub("_.*", "", 
@@ -239,11 +239,11 @@ phyloMatch<- function(data){
                                                             )
                                                             ]
       # adding species to genus
-      if(length(genres_in_tree) >= 1){
-        species_to_genre<- insert_spp[which(is.na(insert_spp[match(sub("_.*", "", insert_spp), genres_in_tree)]) == FALSE)] #genus that must be added
-        for(i in 1:length(species_to_genre)){
+      if(length(genus_in_tree) >= 1){
+        species_to_genus<- insert_spp[which(is.na(insert_spp[match(sub("_.*", "", insert_spp), genus_in_tree)]) == FALSE)] #genus that must be added
+        for(i in 1:length(species_to_genus)){
           #adding species to genus that already exist in the tree
-          phylo_order<- phytools::add.species.to.genus(tree = phylo_order, species = species_to_genre[i]) 
+          phylo_order<- phytools::add.species.to.genus(tree = phylo_order, species = species_to_genus[i]) 
         }
         insert_spp<- treedata_modif(phy = phylo_order, data = spp_data, warnings = F)$nc$data_not_tree # remaining species to be inserted
         phylo_order<- phytools::force.ultrametric(tree = phylo_order)
