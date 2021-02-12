@@ -1,7 +1,3 @@
-library(fishtree)
-#install.packages("rfishbase")
-library(rfishbase)
-
 data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
 source(here::here("R", "tab_function.R"))
@@ -52,6 +48,7 @@ phyloMatch<- function(data){
                                 error = function(e) paste(print(families_order_and_data[i]))
     )
   }
+  names(list_family) <- families_order_and_data
   
   ##downloading phylogeny from all orders in data
   filter_rank<- function(ordem){
@@ -75,7 +72,7 @@ phyloMatch<- function(data){
     phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(families_order_and_data[i])
   }
   
-  # naming node according to families
+  # naming node according to order
   for (i in 1:length(list_ordem)) {
     phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_ordem[[i]]))
     phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- paste(rank_order[i])
@@ -172,10 +169,6 @@ phyloMatch<- function(data){
       spp_Byfamily_inTree <- as.character(unlist(list_spp_step2[c(which(names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]))])) 
       user_option_spp <-  unique(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))
       local_to_add_spp <- readline(prompt = print_cat(print_cat = user_option_spp, spp = spp_to_add_round2[1], family_name)) #user interactive option to choose species
-      
-      if(local_to_add_spp != family_name){
-        stop("/n Please, Check family name spell")
-      }
       
       spp_user_opt <- unlist(strsplit(local_to_add_spp, split = " "))
       
@@ -280,103 +273,59 @@ phyloMatch<- function(data){
     }
   }
   
-  ######step 3 - add species to orders######
-  #naming node according to order
-  for( i in 1:length(list_ordem)){
-    temp<- list_ordem[[i]]
-    phylo_temp<- ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp))
-    node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(rank_order[i])
+  ###### step 3 - add species to orders ######
+  has_cichli <- which(data_exRound3$o == "Cichliformes")
+  if(length(has_cichli) >= 1){
+    data_exRound3[has_cichli, "o"] <- "Perciformes"
   }
   
-  for(i in 1:length(rank_order)){
-    i = 4
-    list_ordem[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")$tip.label)),
-                               error = function(e) paste(print(rank_order[i]))
-    )
-  }
-  test_perciformes <- fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")
-  test_perciformes
-  test_perciformes <- ape::makeNodeLabel(phy = test_perciformes)
-  names_perciformes <- test_perciformes$tip.label
+  rank_order_Round3 <- rank_order[match(data_exRound3$o, rank_order)]
+  families_round3 <- lapply(lapply(rank_order_Round3, function(x){
+    fishbase[which(x == fishbase$Order), 10]
+  }), function(y) unique(y))
+  names(families_round3) <- rank_order_Round3
   
-  
-  node_ordem<- phylo_temp$node.label[1]
-  for( i in 1:length(list_family)){
-    temp<- list_family[[i]]
-    phylo_temp<- suppressWarnings(ape::drop.tip(phy = phylo_order,  setdiff(phylo_order$tip.label, temp)))
-    node_ordem<- phylo_temp$node.label[1]
-    phylo_order$node.label[which(phylo_order$node.label == node_ordem)]<- paste(families_order_and_data[i])
-  }
-  
-  #naming node family in phylo order
-  
-  check_cichli <- which(data_exRound3$o == "Cichliformes")
-  
-  if(length(check_cichli) >= 1){
-    data_exRound3[which(data_exRound3$o == "Cichliformes"), "o"] <- "Perciformes"
-  }
-  
-  for(i in 1:length(data_exRound3$o)){
-    i = 1
-    list_families_in_order <- ape::extract.clade(phy = phylo_order, 
-                                                 node = unique(as.character(data_exRound3$o[i])))$node.label
-    list_families_in_order[which(!is.na(match(families_order_and_data, list_families_in_order)) == TRUE)]
-    length(list_families_in_order)
-  }
-  length(list_families_in_order)
-  length(families_in_orders)
-  match(families_order_and_data, list_families_in_order)
-  
-  
-  species_order_inTree <- match(data$s, 
-                                ape::extract.clade(phy = phylo_order, 
-                                                   node = unique(as.character(data_exRound3$o)))$tip.label
-  )[which(!is.na(match(data$s, 
-                       ape::extract.clade(phy = phylo_order, 
-                                          node = unique(as.character(data_exRound3$o)))$tip.label)
-  ) == T)] #species that are already on the tree
-  spp_orderTree<- phylo_order$tip.label[species_order_inTree] #species names from orders of species that must be added
-  spp_to_add_round3<- as.character(data_exRound3$s) #species that must be added
-  if(dim(data_exRound3)[1] >= 1){
-    if(sum(species_order_inTree) <= 1){ # is there any species of this order already inserted in the phylogenetic tree?
-      if(dim(data_exRound3)[1] <= 2){
-        for(i in 1:dim(data_exRound3)[1]){
-          #i= 1
-          phylo_order<- bind.tip(tree = phylo_order, tip.label = as.character(data_exRound3$s)[i], 
-                                 where = which(phylo_order$node.label == as.character(data_exRound3$o[i])) + 1)
-        } 
+  # initiating insertion in families
+  for(i in 1:length(families_round3)){
+    user_option_family <-  families_round3[[i]]
+    
+    local_to_add_spp_family <- readline(prompt = print_cat(print_cat = unlist(user_option_family), 
+                                                           spp = data_exRound3$s[i], 
+                                                           data_exRound3$o[i])
+                                        ) #user interactive option to choose species
+    family_user_opt <- unlist(strsplit(local_to_add_spp_family, split = " "))
+    
+    if(length(family_user_opt) == 1){
+      if(family_user_opt == data_exRound3$o[i]){ # insert species in order node
+        node_order_pos <- which(phylo_order$node.label == data_exRound3$o[i])
+        phytools::bind.tip(tree = phylo_order, 
+                           tip.label = data_exRound3$s[i],
+                           where = node_order_pos,
+                           position = 0)
       } else{
-        #if there is only one order that species must be added
-        user_option_spp2<- print_cat2(spp_to_add_round3)
-        if(ape::is.phylo(user_option)){
-          phylo_order<- ape::bind.tree(x = phylo_order, y = user_option_spp2, 
-                                       where = which(phylo_order$node.label == as.character(data_exRound3$o[1])) + 1) #adding the multiple species according to newick file
+        family_nspp <- length(list_family[[match(family_user_opt, names(list_family))]])
+        if(family_nspp > 1){
+          position_family <- which(phylo_order$node.label == family_user_opt)
+          size_branch_family <- phylo_order$edge.length[sapply(position_family, function(x, y) which(y == x), y = phylo_order$edge[, 2])]
+          phylo_order <- phytools::bind.tip(phylo_order, data_exRound3$s[i], where = position_family, position = size_branch_family/2)
         }
-        if(user_option_spp2 == "politomy"){
-          for(k in 1:length(spp_to_add_round3)){
-            phylo_order<- bind.tip(tree = phylo_order, tip.label = as.character(data_exRound3$s)[k], 
-                                   where = which(phylo_order$node.label == as.character(data_exRound3$o[k])) + 1)
-          }
+        if(family_nspp == 1){
+          phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                        species = paste(sub("_.*", as.character(list_family[[which(names(list_family) == family_user_opt)]][1])),
+                                                                        "toadd",
+                                                                        sep = "_")
+                                                        )
+          position_problem_family <- which(phylo_order$tip.label == paste(sub("_.*",
+                                                                              "", 
+                                                                              as.character(list_family[[which(names(list_family) == family_user_opt)]][1]),
+                                                                              "toadd",
+                                                                              sep = "_")
+                                                                          )
+                                           )
+          phylo_order$tip.label[position_problem_family] <- data_exRound3$s[i]
         }
-      }
-    } else{
-      for(l in 1:length(spp_to_add_round3)){
-        #l= 1
-        local_to_add_spp<- readline(prompt = print_cat(print_cat = species_order_inTree, spp = spp_to_add_round3[l])) #user interactive option to choose species
-        phylo_order<- phytools::add.species.to.genus(tree = phylo_order, 
-                                                     species = paste(sub("_.*", "", as.character(local_to_add_spp))
-                                                                     , "toadd", sep= "_"
-                                                     )
-        )
-        position_problem3<- which(phylo_order$tip.label == paste(sub("_.*", "", as.character(local_to_add_spp)),
-                                                                 "toadd", sep= "_")
-        )
-        phylo_order$tip.label[position_problem3]<- spp_to_add_round3[l] #solving problem 2 and 3 to insert species in family and/or genre
       }
     }
-  } else{
-    tree_res<- ape::drop.tip(phy = phylo_order, tip = treedata_modif(phy = phylo_order, data = data$s)$nc$data_not_tree)
   }
   
   #final data proccessing - cutting the phylogenetic tree to obtain only species in data
