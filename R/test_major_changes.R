@@ -21,7 +21,6 @@ phyloMatch<- function(data){
   rank_order <- as.character(unique(data$o)) #ordens
   rank_family <- as.character(unique(data$f)) #familias
   spp <- as.character(data$s) #especies
-  list_ordem <- vector(mode = "list", length= length(rank_order))
   list_family <- vector(mode = "list", length= length(rank_family))
   
   # list of families within genus presented in data
@@ -35,13 +34,6 @@ phyloMatch<- function(data){
   families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != all_families)])
   families_order_and_data <- c(rank_family, families_in_orders)
   
-  #filtering all species names within orders
-  for(i in 1:length(rank_order)){
-    list_ordem[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = rank_order[i], type = "chronogram_mrca")$tip.label)),
-                               error = function(e) paste(print(rank_order[i]))
-    )
-  }
-  
   #filtering for family
   for(i in 1:length(families_order_and_data)){
     list_family[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = families_order_and_data[i], type = "chronogram_mrca")$tip.label)),
@@ -49,8 +41,28 @@ phyloMatch<- function(data){
     )
   }
   names(list_family) <- families_order_and_data
+  monotipic_family <- names(unlist(lapply(list_family, function(x) which(length(x) == 1))))
+  list_monotipic <- vector(mode = "list", length = length(monotipic_family))
+  for(i in 1:length(monotipic_family)){
+    list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = monotipic_family[i])[[1]]$taxonomy[[9]],
+                                   error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
+  }
+  orders_to_add <- unique(unlist(list_monotipic[- which(sub("_.*", "", unlist(list_monotipic)) == "not.found")]))
+  differences_orders_toadd <- setdiff(rank_order, orders_to_add)
+  if(length(differences_orders_toadd) >= 1){
+    all_orders_include <- c(differences_orders_toadd, orders_to_add)
+  }
+  all_orders_include <- c(rank_order, unique(orders_to_add))
+  list_ordem <- vector(mode = "list", length= length(all_orders_include))
+  #filtering all species names within orders
+  for(i in 1:length(all_orders_include)){
+    list_ordem[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = all_orders_include[i], type = "chronogram_mrca")$tip.label)),
+                               error = function(e) paste(print(all_orders_include[i]))
+    )
+  }
+  names(list_ordem) <- all_orders_include
   
-  ##downloading phylogeny from all orders in data
+  ## function to downloading phylogeny from all orders in data
   filter_rank<- function(ordem){
     if(length(which(sub("_.*", "", unlist(ordem)) == "not.found")) >= 1){
       
@@ -62,20 +74,34 @@ phyloMatch<- function(data){
     phy_ord
   }
   
-  phylo_order<- filter_rank(ordem = list_ordem)  #phylogeny with all order
-  phylo_order<- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
-  phylo_family<- suppressWarnings(filter_rank(ordem = list_family)) #phylogeny for all family
+  phylo_order <- filter_rank(ordem = list_ordem)  #phylogeny with all order
+  phylo_order <- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
+  phylo_family <- suppressWarnings(filter_rank(ordem = list_family)) #phylogeny for all family
   
-  # naming node according to families
-  for (i in 1:length(list_family)) {
-    phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family[[i]]))
-    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(families_order_and_data[i])
-  }
   
   # naming node according to order
   for (i in 1:length(list_ordem)) {
+    # i = 21
     phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_ordem[[i]]))
-    phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- paste(rank_order[i])
+    phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_ordem)[i]
+  }
+  
+  # naming node according to families
+  for (i in 1:length(list_family)) {
+    #i= 225
+    phylo_order <- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(families_order_and_data[i])
+  }
+  families_in_tree <- families_order_and_data[which(!is.na(match(families_order_and_data, phylo_order$node.label)) == T)]
+  families_monotipic_notfound <- setdiff(families_order_and_data, families_in_tree)
+  for(i in 1:length(families_monotipic_notfound)){
+    # i = 1
+    spp_tmp <- fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species
+    if(length(spp_tmp) > 1){
+      spp_family <- sample(spp_temp, size = 1)
+    }
+    list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species,
+                                   error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
   }
   
   #selecting species that must be added to genus in the tree (sister species)
@@ -153,7 +179,7 @@ phyloMatch<- function(data){
   spp_Byfamily_inTree <- as.character(unlist(list_spp_step2[c(which(names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]))])) 
   user_option_spp <-  unique(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))
   
-  if(user_option_spp == 1){
+  if(any(user_option_spp == 1)){
     phylo_order<- phytools::add.species.to.genus(tree = phylo_order, 
                                                  species = paste(sub("_.*", "", as.character(spp_family_inTree)[1])
                                                                  , "toadd", sep= "_"
@@ -277,7 +303,7 @@ phyloMatch<- function(data){
   }
   
   ###### step 3 - add species to orders ######
-  has_cichli <- which(data_exRound3$o == "Cichliformes")
+  has_cichli <- which(data_exRound3$o == "Cichliformes") # There are any Cichliformes in the remaining species
   if(length(has_cichli) >= 1){
     data_exRound3[has_cichli, "o"] <- "Perciformes"
   }
@@ -290,6 +316,7 @@ phyloMatch<- function(data){
   
   # initiating insertion in families
   for(i in 1:length(families_round3)){
+    i = 1
     user_option_family <-  families_round3[[i]]
     
     local_to_add_spp_family <- readline(prompt = print_cat(print_cat = unlist(user_option_family), 
