@@ -37,8 +37,8 @@ phyloMatch<- function(data){
   }
   all_families <- unique(unlist(lapply(rank_order, function(x){
     fishbase[which(x == fishbase$Order), 10]
-  })))
-  families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != all_families)])
+  }))) # all families in data
+  families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != all_families)]) # all families which the orders are in data
   families_order_and_data <- c(rank_family, families_in_orders)
   
   #filtering for family
@@ -50,16 +50,18 @@ phyloMatch<- function(data){
   names(list_family) <- families_order_and_data
   monotipic_family <- names(unlist(lapply(list_family, function(x) which(length(x) == 1))))
   list_monotipic <- vector(mode = "list", length = length(monotipic_family))
+  
   for(i in 1:length(monotipic_family)){
     list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = monotipic_family[i])[[1]]$taxonomy[[9]],
                                    error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
-  }
+  } # list of orders which the families belong
+  
   orders_to_add <- unique(unlist(list_monotipic[- which(sub("_.*", "", unlist(list_monotipic)) == "not.found")]))
   differences_orders_toadd <- setdiff(rank_order, orders_to_add)
   if(length(differences_orders_toadd) >= 1){
     all_orders_include <- c(differences_orders_toadd, orders_to_add)
   }
-  all_orders_include <- c(rank_order, unique(orders_to_add))
+  all_orders_include <- unique(c(rank_order, unique(orders_to_add)))
   
   list_order <- vector(mode = "list", length= length(all_orders_include))
   #filtering all species names within orders
@@ -79,31 +81,36 @@ phyloMatch<- function(data){
   
   # naming node according to order
   for (i in 1:length(list_order)) {
-    # i = 21
+    # i = 5
     phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[i]]))
     phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[i]
   }
   
-  match(list_order, phylo_order$node.label)
-  
-  # naming node according to families
-  for (i in 1:length(list_family)) {
+  list_non_monotipic <- list_family[setdiff(names(list_family), monotipic_family)]
+  # naming node according to families that are not monotipic
+  for (i in 1:length(list_non_monotipic)) {
     #i= 225
-    phylo_order <- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family[[i]]))
-    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(families_order_and_data[i])
+    phylo_order <- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_non_monotipic[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(names(list_non_monotipic)[i])
   }
+  
   families_in_tree <- families_order_and_data[which(!is.na(match(families_order_and_data, phylo_order$node.label)) == T)]
-  families_monotipic_notfound <- setdiff(families_order_and_data, families_in_tree)
+  families_monotipic_notfound <- setdiff(monotipic_family, families_in_tree)
   
   for(i in 1:length(families_monotipic_notfound)){
-    # i = 1
-    spp_tmp <- fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species
-    if(length(spp_tmp) > 1){
-      spp_family <- sample(spp_temp, size = 1)
-    }
-    list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species,
-                                   error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
+    # i = 73
+    
+    spp_tmp <-  tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species,
+                                                         error = function(e) paste("not.found", "_", families_monotipic_notfound[i], sep = ""))
+    spp_tmp <- gsub("\\ ", "_", spp_tmp)
+    
+    list_family[families_monotipic_notfound[i]] <- list(spp_tmp)
+    
+    # list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species,
+    #                                error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
   }
+  
+  phylo_family <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
   
   #selecting species that must be added to genus in the tree (sister species)
   spp_data <- 1:length(spp)
