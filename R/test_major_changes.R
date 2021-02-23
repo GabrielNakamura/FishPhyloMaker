@@ -1,12 +1,19 @@
+library(fishtree)
+library(rfishbase)
+
 data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
+
 source(here::here("R", "tab_function.R"))
 source(here::here("R", "internal_user_opt_printCat.R"))
 source(here::here("R", "internal_user_opt_printCat2.R"))
 source(here::here("R", "internal_treedata_modif.R"))
+source(here::here("R", "internal_filter_rank.R"))
+
 taxon_data <- tab_function(data_comm)
 Loricariidae
 Siluriformes
+
 data_process <- taxon_data[c(1, 2, 6, 29, 58), ]
 data_process <- rbind(data_process, c("Curculionichthys_inesperado", "Loricariidae", "Siluriformes") )
 data_process <- rbind(data_process, c("Dinkiwinki_dipsii", "Teletubiidae", "Cichliformes"))
@@ -18,9 +25,9 @@ data <- data_process
 phyloMatch<- function(data){
   
   #organizing taxonomic levels
-  rank_order <- as.character(unique(data$o)) #ordens
-  rank_family <- as.character(unique(data$f)) #familias
-  spp <- as.character(data$s) #especies
+  rank_order <- as.character(unique(data$o)) #vector with orders
+  rank_family <- as.character(unique(data$f)) #vector with families
+  spp <- as.character(data$s) #vector with species
   list_family <- vector(mode = "list", length= length(rank_family))
   
   # list of families within genus presented in data
@@ -53,38 +60,31 @@ phyloMatch<- function(data){
     all_orders_include <- c(differences_orders_toadd, orders_to_add)
   }
   all_orders_include <- c(rank_order, unique(orders_to_add))
-  list_ordem <- vector(mode = "list", length= length(all_orders_include))
+  
+  list_order <- vector(mode = "list", length= length(all_orders_include))
   #filtering all species names within orders
   for(i in 1:length(all_orders_include)){
-    list_ordem[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = all_orders_include[i], type = "chronogram_mrca")$tip.label)),
+    list_order[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = all_orders_include[i], type = "chronogram_mrca")$tip.label)),
                                error = function(e) paste(print(all_orders_include[i]))
     )
   }
-  names(list_ordem) <- all_orders_include
+  names(list_order) <- all_orders_include
   
-  ## function to downloading phylogeny from all orders in data
-  filter_rank<- function(ordem){
-    if(length(which(sub("_.*", "", unlist(ordem)) == "not.found")) >= 1){
-      
-      phy_ord<- fishtree::fishtree_phylogeny(unlist(ordem)[-which(sub("_.*", "", unlist(ordem)) == "not.found")])
-      
-    } else{
-      phy_ord<- fishtree::fishtree_phylogeny(unlist(ordem))
-    }
-    phy_ord
-  }
+  # baixando a filogenia com todas as ordens
   
-  phylo_order <- filter_rank(ordem = list_ordem)  #phylogeny with all order
+  phylo_order <- filter_rank(order = list_order)  #phylogeny with all order
   phylo_order <- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
-  phylo_family <- suppressWarnings(filter_rank(ordem = list_family)) #phylogeny for all family
+  phylo_family <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
   
   
   # naming node according to order
-  for (i in 1:length(list_ordem)) {
+  for (i in 1:length(list_order)) {
     # i = 21
-    phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_ordem[[i]]))
-    phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_ordem)[i]
+    phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[i]
   }
+  
+  match(list_order, phylo_order$node.label)
   
   # naming node according to families
   for (i in 1:length(list_family)) {
@@ -94,6 +94,7 @@ phyloMatch<- function(data){
   }
   families_in_tree <- families_order_and_data[which(!is.na(match(families_order_and_data, phylo_order$node.label)) == T)]
   families_monotipic_notfound <- setdiff(families_order_and_data, families_in_tree)
+  
   for(i in 1:length(families_monotipic_notfound)){
     # i = 1
     spp_tmp <- fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species
@@ -366,3 +367,4 @@ phyloMatch<- function(data){
   )
   tree_res #phylogeny with only species on data
 }
+
