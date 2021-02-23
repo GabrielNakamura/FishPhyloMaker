@@ -1,5 +1,6 @@
 library(fishtree)
 library(rfishbase)
+library(phytools)
 
 data_all <- load(here::here("data", "neotropical_comm.rda"))
 data_comm <- neotropical_comm[, -c(1, 2)]
@@ -137,24 +138,21 @@ phyloMatch<- function(data){
   list_family_tobeaddnames <- list_family[- match(families_not_found_fishtree, names(list_family))]
   
   # repeating the naming procedure to add families to node labels
-  for (i in 1:length(list_family)) {
-    # i= 12
-    na_check <- sum(!is.na(match(list_family[[i]], phylo_order$tip.label)))
+  for (i in 1:length(list_family_tobeaddnames)) {
+    # i = 31
+    na_check <- sum(!is.na(match(list_family_tobeaddnames[[i]], phylo_order$tip.label)))
     if(na_check == 1){
-      spp_singleton <- unlist(list(list_family[[i]][!is.na(match(list_family[[i]], phylo_order$tip.label))]))
+      spp_singleton <- unlist(list(list_family_tobeaddnames[[i]][!is.na(match(list_family_tobeaddnames[[i]], phylo_order$tip.label))]))
       spp_singleton_add <- paste(sub("_.*", "", spp_singleton), "_", "singleton", sep = "")
       phylo_order <- phytools::add.species.to.genus(tree = phylo_order, species = spp_singleton_add)
-      list_family[i] <- list(c(spp_singleton, spp_singleton_add))
+      list_family_tobeaddnames[i] <- list(c(spp_singleton, spp_singleton_add))
     }
-    if(length(list_family[i]) == 1){
-      spp_singleton <- unlist(list_family[[i]][!is.na(match(list_family[[i]], phylo_order$tip.label))])
-      spp_singleton_add <- paste(sub("_.*", "", spp_singleton), "_", "singleton", sep = "")
-      phylo_order <- phytools::add.species.to.genus(tree = phylo_order, species = spp_singleton_add)
-      list_family[i] <- list(c(spp_singleton, spp_singleton_add))
-    }
-    phylo_order <- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family[[i]]))
-    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(names(list_family)[i])
+    phylo_order <- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family_tobeaddnames[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(names(list_family_tobeaddnames)[i])
+    
   }
+  
+  families_with_no_spp_tree <- names(list_family_tobeaddnames[which(is.na(match(names(list_family_tobeaddnames), phylo_order$node.label)) == TRUE)])
   
   #selecting species that must be added to genus in the tree (sister species)
   spp_data <- 1:length(spp)
@@ -218,7 +216,7 @@ phyloMatch<- function(data){
   )
   ) > 0))
   
-  spp_family_inTree <- list_spp_step2[which(names(list_spp_step2) == spp_with_family)]
+  spp_family_inTree <- suppressWarnings(list_spp_step2[which(names(list_spp_step2) == spp_with_family)])
   
   
   #species to be added in step 2 - species with family representatives
