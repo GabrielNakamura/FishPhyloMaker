@@ -76,7 +76,7 @@ phyloMatch<- function(data){
   
   phylo_order <- filter_rank(order = list_order)  #phylogeny with all order
   phylo_order <- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
-  phylo_family <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
+  # phylo_family <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
   
   
   # naming node according to order
@@ -87,6 +87,7 @@ phyloMatch<- function(data){
   }
   
   list_non_monotipic <- list_family[setdiff(names(list_family), monotipic_family)]
+  
   # naming node according to families that are not monotipic
   for (i in 1:length(list_non_monotipic)) {
     #i= 225
@@ -106,11 +107,54 @@ phyloMatch<- function(data){
     
     list_family[families_monotipic_notfound[i]] <- list(spp_tmp)
     
-    # list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species,
-    #                                error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
   }
   
-  phylo_family <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
+  phylo_order <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
+  phylo_order <- ape::makeNodeLabel(phy = phylo_order)
+  
+  # repeating the naming procedure to add orders to node labels
+  for (i in 1:length(list_order)) {
+    # i = 5
+    phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[i]
+  }
+  
+  # ultrametrize the tree
+  phylo_order <- phytools::force.ultrametric(phylo_order)
+  
+  # filtering only for families that was found in the fishtree of life with some available phylogeny
+  families_not_found_fishtree <- names(unlist(lapply(
+    lapply(list_family, 
+           function(x){
+             sub("_.*", "", x)
+             }
+           ), 
+    function(y) which(length(y) == 1) & which(y == "not.found")
+    )
+    )
+    )
+  
+  list_family_tobeaddnames <- list_family[- match(families_not_found_fishtree, names(list_family))]
+  
+  # repeating the naming procedure to add families to node labels
+  for (i in 1:length(list_family)) {
+    # i= 12
+    na_check <- sum(!is.na(match(list_family[[i]], phylo_order$tip.label)))
+    if(na_check == 1){
+      spp_singleton <- unlist(list(list_family[[i]][!is.na(match(list_family[[i]], phylo_order$tip.label))]))
+      spp_singleton_add <- paste(sub("_.*", "", spp_singleton), "_", "singleton", sep = "")
+      phylo_order <- phytools::add.species.to.genus(tree = phylo_order, species = spp_singleton_add)
+      list_family[i] <- list(c(spp_singleton, spp_singleton_add))
+    }
+    if(length(list_family[i]) == 1){
+      spp_singleton <- unlist(list_family[[i]][!is.na(match(list_family[[i]], phylo_order$tip.label))])
+      spp_singleton_add <- paste(sub("_.*", "", spp_singleton), "_", "singleton", sep = "")
+      phylo_order <- phytools::add.species.to.genus(tree = phylo_order, species = spp_singleton_add)
+      list_family[i] <- list(c(spp_singleton, spp_singleton_add))
+    }
+    phylo_order <- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family[[i]]))
+    phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(names(list_family)[i])
+  }
   
   #selecting species that must be added to genus in the tree (sister species)
   spp_data <- 1:length(spp)
