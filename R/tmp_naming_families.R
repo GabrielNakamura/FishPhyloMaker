@@ -21,9 +21,19 @@ fishtree::fishtree_taxonomy(rank = "Zanclidae")$Zanclidae$taxonomy$order
 
 which(fishtree_phylogeny(rank = fishtree::fishtree_taxonomy(rank = "Zanclidae")$Zanclidae$taxonomy$order)$tip.label == "Zanclus_cornutus")
 
-fishtree::fishtree_taxonomy(rank = "Zanclidae")$Zanclidae$taxonomy$order)
 
-fishtree::fishtree_phylogeny(rank = "Synbranchidae")
+match(list_family$Synbranchidae, phylo_order$tip.label)
+ape::makeNodeLabel(phylo_order, "u", nodeList = list(Fam_name = list_family$Synbranchidae))
+
+unlist(list_family$Zanclidae[!is.na(match(list_family$Zanclidae, phylo_order$tip.label))])
+
+families_not_found_fishtree <- names(unlist(lapply(lapply(list_family, function(x) {
+  sub("_.*", "", x)
+}), function(y) which(length(y) == 1) & which(y == "not.found"))))
+
+list_family_tobeaddnames <- list_family[- match(families_not_found_fishtree, names(list_family))]
+
+fishtree::fishtree_phylogeny(rank = "Latidae")
 fishtree::fishtree_phylogeny(rank = "Zanclidae")
 fishtree::fishtree_phylogeny(rank = "Teletubidae")
 fishtree::fishtree_phylogeny(rank = "Scaridae")
