@@ -1,3 +1,12 @@
+#' Internal function to help in interactive process 
+#'
+#' @param print_cat Character
+#' @param spp Character
+#' @param family Character
+#'
+#' @return
+#'
+#' @examples
 print_cat_family <- function(print_cat, spp, family){
   cat("in which/between Family species", spp, "must be inserted")
   cat("\n")

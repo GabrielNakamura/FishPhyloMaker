@@ -1,5 +1,6 @@
 #' Generate a list of species 
-#'
+#' Auxiliar function to ensemble the data frame of species pool
+#' 
 #' @param data A character vector with species names or a community matrix with species names in columns
 #'
 #' @return

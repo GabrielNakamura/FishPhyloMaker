@@ -1,3 +1,13 @@
+#' Internal function to show the number of species from species pool that lacks in phylogeny
+#'
+#' @param phy Phylogenetic hypothesis in newick format
+#' @param data Data frame with species to be added in tree
+#' @param sort Sorting species in alphabetic order
+#' @param warnings Logical
+#'
+#' @return
+#'
+#' @examples
 treedata_modif<- function (phy, data, sort = FALSE, warnings = TRUE) 
 {
   dm = length(dim(data))

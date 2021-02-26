@@ -1,4 +1,11 @@
-## function to downloading phylogeny from all orders in data
+#' Function to download species from fishtreeoflife
+#'
+#' @param order Character with names of species
+#'
+#' @return
+#'
+#' @examples
+#' 
 filter_rank<- function(order){
   if(length(which(sub("_.*", "", unlist(order)) == "not.found")) >= 1){
     

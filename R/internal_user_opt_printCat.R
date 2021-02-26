@@ -1,3 +1,12 @@
+#' Internal function - auxiliar to interactive procedure
+#'
+#' @param print_cat Character
+#' @param spp Character
+#' @param family Character
+#'
+#' @return
+#'
+#' @examples
 print_cat <- function(print_cat, spp, family){
   cat("in which/between Genus species", spp, "must be inserted")
   cat("\n")
