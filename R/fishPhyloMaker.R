@@ -316,7 +316,7 @@ phyloMatch<- function(data){
       } else{
         for(l in 1:length(spp_to_add_round3)){
           #l= 1
-          local_to_add_spp<- readline(prompt = print_cat(print_cat = species_order_inTree, spp = spp_to_add_round3[l])) #user interactive option to choose species
+          local_to_add_spp<- readline(prompt = print_cat(print_cat = species_order_inTree, spp = spp_to_add_round3[l]), family = data_exRound3$f[l]) #user interactive option to choose species
           phylo_order<- phytools::add.species.to.genus(tree = phylo_order, 
                                                        species = paste(sub("_.*", "", as.character(local_to_add_spp))
                                                                        , "toadd", sep= "_"
