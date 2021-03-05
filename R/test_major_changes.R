@@ -363,9 +363,9 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     if(length(family_user_opt) == 1){
       if(family_user_opt == data_exRound3$o[i]){ # insert species in order node
         # renaming orders
-        for (i in 1:length(list_order)) {
-            phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[i]]))
-            phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[i]
+        for (l in 1:length(list_order)) {
+            phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[l]]))
+            phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[l]
             }
         node_order_pos <- which(phylo_order$node.label == data_exRound3$o[i])
         phytools::bind.tip(tree = phylo_order, 
