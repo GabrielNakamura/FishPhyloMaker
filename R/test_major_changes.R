@@ -1,4 +1,3 @@
-
 #' Editing fish phylogeny according to a local pool of species
 #'
 #' @param data A data frame with three columns containing the name of species (s), the Family (f) and the Order (o). This data frame can be generated 
@@ -10,7 +9,7 @@
 #' @examples
 #' 
 #' 
-FishPhyloMaker <- function(data){
+FishPhyloMaker <- function(data, return.insertions = FALSE){
   
   #organizing taxonomic levels
   rank_order <- as.character(unique(data$o)) #vector with orders
@@ -209,8 +208,7 @@ FishPhyloMaker <- function(data){
   #species to be added in step 2 - species with family representatives
   
   spp_to_add_round2 <- setdiff(data_exRound2$s, data_exRound3$s)
-  
-  
+
   ####initializing the insertion of species that present representatives species in family level
   family_name <- names(list_spp_step2)[names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]]
   spp_Byfamily_inTree <- as.character(unlist(list_spp_step2[c(which(names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]))])) 
@@ -356,7 +354,7 @@ FishPhyloMaker <- function(data){
     i = 1
     user_option_family <-  families_round3[[i]]
     
-    local_to_add_spp_family <- readline(prompt = print_cat(print_cat = unlist(user_option_family), 
+    local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
                                                            spp = data_exRound3$s[i], 
                                                            data_exRound3$o[i])
                                         ) #user interactive option to choose species
@@ -378,16 +376,16 @@ FishPhyloMaker <- function(data){
         }
         if(family_nspp == 1){
           phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                        species = paste(sub("_.*", as.character(list_family[[which(names(list_family) == family_user_opt)]][1])),
+                                                        species = paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == family_user_opt)]][1])),
                                                                         "toadd",
                                                                         sep = "_")
                                                         )
           position_problem_family <- which(phylo_order$tip.label == paste(sub("_.*",
                                                                               "", 
-                                                                              as.character(list_family[[which(names(list_family) == family_user_opt)]][1]),
-                                                                              "toadd",
-                                                                              sep = "_")
-                                                                          )
+                                                                              as.character(list_family[[which(names(list_family) == family_user_opt)]][1])
+                                                                              ), 
+                                                                          "toadd",
+                                                                          sep = "_")
                                            )
           phylo_order$tip.label[position_problem_family] <- data_exRound3$s[i]
         }
@@ -396,11 +394,29 @@ FishPhyloMaker <- function(data){
   }
   
   #final data proccessing - cutting the phylogenetic tree to obtain only species in data
-  data_final<- 1:length(as.character(data$s))
-  names(data_final)<- as.character(data$s)
-  tree_res<- suppressWarnings(ape::drop.tip(phy = phylo_order, 
-                                            tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data)
-  )
-  tree_res #phylogeny with only species on data
+  
+  if(return.insertions == TRUE){
+    family_level_insertions <- unique(setdiff(data_exRound2$s, data_exRound3$s))
+    insertions <- rep("NA", nrow(data))
+    data_insertions <- cbind(data, insertions)
+    data_insertions[which(species_to_genus == data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus)) # genus insertions
+    data_insertions[match(family_level_insertions, data$s), "insertions"] <- rep("Family_insertion", length(data$s[match(family_level_insertions, data$s)])) # family insertions
+    data_insertions[match(data_exRound3$s, data$s), "insertions"] <-  rep("Order_insertion", length(data_exRound3$s)) # order insertions
+    spp_on_tree <- data[ - match(c(species_to_genus, data$s[match(family_level_insertions, data$s)], data_exRound3$s), data$s), "s"] # species already on supertree
+    data_insertions[match(spp_on_tree, data$s), "insertions"] <- rep("Present_in_Tree", length(spp_on_tree))
+    list_res <- vector(mode = "list", length = 2)
+    list_res[[1]] <- tree_res
+    list_res[[2]] <- data_insertions
+    names(list_res) <- c("Phylogeny", "Insertions_data")
+    return(list_res)
+  } else{
+    data_final<- 1:length(as.character(data$s))
+    names(data_final)<- as.character(data$s)
+    tree_res<- suppressWarnings(ape::drop.tip(phy = phylo_order, 
+                                              tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data)
+    )
+    tree_res #phylogeny with only species on data
+  }
+  
 }
 

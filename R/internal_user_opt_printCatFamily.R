@@ -7,7 +7,7 @@
 #' @return
 #'
 #' @examples
-print_cat_family <- function(print_cat, spp, family){
+print_cat_family <- function(print_cat, spp, order){
   cat("in which/between Family species", spp, "must be inserted")
   cat("\n")
   for(i in 1:length(print_cat)){
@@ -15,6 +15,6 @@ print_cat_family <- function(print_cat, spp, family){
     cat("\n")
   }
   cat("\n")
-  cat(i + 1, "or, to insert in the node corresponding to the Order type:", family, sep= "\t")
+  cat(i + 1, "or, to insert in the node corresponding to the Order type:", order, sep= "\t")
   cat("\n")
 }
