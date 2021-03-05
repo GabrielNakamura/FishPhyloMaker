@@ -260,14 +260,14 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
           phylo_order <- phytools::bind.tip(tree = phylo_order, tip.label = spp_to_add_round2[1], where = node_family, position = 0)
         } else{ 
           genus_nspp <- match(spp_user_opt, names(which(table(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree)))) > 1)))
-          if(length(genus_nspp) == 1){
+          if(!is.na(genus_nspp) == TRUE){
             phylo_order <- ape::makeNodeLabel(phy = phylo_order, method = "u", nodeList = list(MRCA = spp_user_opt))
             position_MRCA <- which(c(phylo_order$tip.label, phylo_order$node.label) == "MRCA")
             size_branch <- phylo_order$edge.length[sapply(position_MRCA, function(x, y) which(y == x), y = phylo_order$edge[, 2])]
             phylo_order <- bind.tip(phylo_order, spp_to_add_round2[1], where = position_MRCA, position = size_branch/2)
           }
           
-          if(length(genus_nspp) < 1){ # add as a sister group 
+          if(is.na(genus_nspp) == TRUE){ # add as a sister group 
             phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
                                                           species = paste(sub("_.*", "", as.character(spp_user_opt))
                                                                           , "toadd", sep= "_"
