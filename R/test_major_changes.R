@@ -394,7 +394,10 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   }
   
   #final data proccessing - cutting the phylogenetic tree to obtain only species in data
-  
+  data_final<- 1:length(as.character(data$s))
+  names(data_final) <- as.character(data$s)
+  tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
+                                            tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
   if(return.insertions == TRUE){
     family_level_insertions <- unique(setdiff(data_exRound2$s, data_exRound3$s))
     insertions <- rep("NA", nrow(data))
@@ -410,12 +413,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     names(list_res) <- c("Phylogeny", "Insertions_data")
     return(list_res)
   } else{
-    data_final<- 1:length(as.character(data$s))
-    names(data_final)<- as.character(data$s)
-    tree_res<- suppressWarnings(ape::drop.tip(phy = phylo_order, 
-                                              tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data)
-    )
-    tree_res #phylogeny with only species on data
+    return(tree_res) #phylogeny with only species on data
   }
   
 }

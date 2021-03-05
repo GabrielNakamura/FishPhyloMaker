@@ -11,7 +11,7 @@ source(here::here("R", "internal_user_opt_printCat2.R"))
 source(here::here("R", "internal_user_opt_printCatFamily.R"))
 source(here::here("R", "internal_treedata_modif.R"))
 source(here::here("R", "internal_filter_rank.R"))
-
+source(here::here("R", "test_major_changes.R"))
 taxon_data <- tab_function(data_comm)
 Loricariidae
 Siluriformes
