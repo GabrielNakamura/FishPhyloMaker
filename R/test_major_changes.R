@@ -351,7 +351,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   
   # initiating insertion in families
   for(i in 1:length(families_round3)){
-    i = 1
+    # i = 1
     user_option_family <-  families_round3[[i]]
     
     local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
@@ -362,12 +362,20 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     
     if(length(family_user_opt) == 1){
       if(family_user_opt == data_exRound3$o[i]){ # insert species in order node
+        # renaming orders
+        for (i in 1:length(list_order)) {
+            phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[i]]))
+            phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[i]
+            }
         node_order_pos <- which(phylo_order$node.label == data_exRound3$o[i])
         phytools::bind.tip(tree = phylo_order, 
                            tip.label = data_exRound3$s[i],
                            where = node_order_pos,
                            position = 0)
       } else{
+        if(length(family_user_opt) == 2){
+          family_nspp <- length(list_family[match(family_user_opt, names(list_family))])
+        }
         family_nspp <- length(list_family[[match(family_user_opt, names(list_family))]])
         if(family_nspp > 1){
           position_family <- which(phylo_order$node.label == family_user_opt)
