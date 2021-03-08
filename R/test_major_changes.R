@@ -15,7 +15,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   rank_order <- as.character(unique(data$o)) #vector with orders
   rank_family <- as.character(unique(data$f)) #vector with families
   spp <- as.character(data$s) #vector with species
-  list_family <- vector(mode = "list", length= length(rank_family))
+ 
   
   # list of families within genus presented in data
   cichliformes_ord <- which(rank_order == "Cichliformes")
@@ -26,8 +26,9 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     fishbase[which(x == fishbase$Order), 10]
   }))) # all families in data
   families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != all_families)]) # all families which the orders are in data
-  families_order_and_data <- c(rank_family, families_in_orders)
-  
+  setdiff(families_in_orders, rank_family)
+  families_order_and_data <- unique(c(rank_family, families_in_orders))
+  list_family <- vector(mode = "list", length= length(families_order_and_data))
   #filtering for family
   for(i in 1:length(families_order_and_data)){
     list_family[[i]]<- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = families_order_and_data[i], type = "chronogram_mrca")$tip.label)),
@@ -39,6 +40,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   list_monotipic <- vector(mode = "list", length = length(monotipic_family))
   
   for(i in 1:length(monotipic_family)){
+    # i = 79
     list_monotipic[[i]]<- tryCatch(fishtree::fishtree_taxonomy(rank = monotipic_family[i])[[1]]$taxonomy[[9]],
                                    error = function(e) paste("not.found", "_", monotipic_family[i], sep = ""))
   } # list of orders which the families belong
@@ -63,9 +65,8 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   
   phylo_order <- filter_rank(order = list_order)  #phylogeny with all order
   phylo_order <- ape::makeNodeLabel(phy = phylo_order) #name nodes for all species
-  # phylo_family <- suppressWarnings(filter_rank(order = list_family)) #phylogeny for all family
-  
-  
+  order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 1))))
+  list_order <- list_order[- match(order_rm_list, names(list_order))]
   # naming node according to order
   for (i in 1:length(list_order)) {
     # i = 5
@@ -86,13 +87,13 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   families_monotipic_notfound <- setdiff(monotipic_family, families_in_tree)
   
   for(i in 1:length(families_monotipic_notfound)){
-    # i = 73
+    # i = 1
     
     spp_tmp <-  tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species,
                                                          error = function(e) paste("not.found", "_", families_monotipic_notfound[i], sep = ""))
     spp_tmp <- gsub("\\ ", "_", spp_tmp)
     
-    list_family[families_monotipic_notfound[i]] <- list(spp_tmp)
+    list_family[which(families_monotipic_notfound[i] == names(list_family))] <- list(spp_tmp)
     
   }
   
@@ -100,6 +101,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   phylo_order <- ape::makeNodeLabel(phy = phylo_order)
   
   # repeating the naming procedure to add orders to node labels
+
   for (i in 1:length(list_order)) {
     # i = 5
     phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[i]]))
@@ -121,11 +123,15 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     )
     )
   
-  list_family_tobeaddnames <- list_family[- match(families_not_found_fishtree, names(list_family))]
+  list_family_tobeaddnames  <- list_family[- match(families_not_found_fishtree, names(list_family))]
+  family_no_spp_in_tree <- names(unlist(lapply(lapply(list_family_tobeaddnames, function(x){
+    sum(!is.na(match(x, phylo_order$tip.label)))
+  }), function(y) which(y == 0))))
+  list_family_tobeaddnames <- list_family_tobeaddnames[- match(family_no_spp_in_tree, names(list_family_tobeaddnames))]
   
   # repeating the naming procedure to add families to node labels
   for (i in 1:length(list_family_tobeaddnames)) {
-    # i = 31
+    # i = 214
     na_check <- sum(!is.na(match(list_family_tobeaddnames[[i]], phylo_order$tip.label)))
     if(na_check == 1){
       spp_singleton <- unlist(list(list_family_tobeaddnames[[i]][!is.na(match(list_family_tobeaddnames[[i]], phylo_order$tip.label))]))
@@ -137,8 +143,6 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     phylo_order$node.label[which(phylo_order$node.label == "Fam_name")] <- paste(names(list_family_tobeaddnames)[i])
     
   }
-  
-  families_with_no_spp_tree <- names(list_family_tobeaddnames[which(is.na(match(names(list_family_tobeaddnames), phylo_order$node.label)) == TRUE)])
   
   #selecting species that must be added to genus in the tree (sister species)
   spp_data <- 1:length(spp)
@@ -283,10 +287,12 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
       
       # running again the check procedure
       
+      
       spp_data <- 1:nrow(data_exRound2)
       names(spp_data) <- data_exRound2$s
       insert_spp <- treedata_modif(phy = phylo_order, data = spp_data, warnings = F)$nc$data_not_tree # remaining species to be inserted
       phylo_order<- phytools::force.ultrametric(tree = phylo_order)
+      
       
       # genus checking procedure
       genus_in_tree<- sub("_.*", "", 
