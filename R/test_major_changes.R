@@ -368,7 +368,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
             phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[l]
             }
         node_order_pos <- which(phylo_order$node.label == data_exRound3$o[i])
-        phytools::bind.tip(tree = phylo_order, 
+        phylo_order <- phytools::bind.tip(tree = phylo_order, 
                            tip.label = data_exRound3$s[i],
                            where = node_order_pos,
                            position = 0)
