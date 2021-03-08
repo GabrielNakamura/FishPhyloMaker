@@ -320,115 +320,140 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
       }
       
       rank_family2 <- unique(as.character(data[match(insert_spp, as.character(data$s)),2]))
-      list_spp_step2 <- vector(mode = "list", length= length(rank_family2))
-      for(i in 1:length(rank_family2)){
-        list_spp_step2[[i]]<- tryCatch(paste(ape::extract.clade(phy = phylo_order, node = rank_family2[i])$tip.label), 
-                                       error = function(e) paste("noFamily", as.character(data[which(rank_family2[i] == data$f), 1]), 
-                                                                 sep= "_")
-        )
+      if(length(rank_family2) == 0){
+        data_final<- 1:length(as.character(data$s))
+        names(data_final) <- as.character(data$s)
+        tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
+                                                   tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
+        data_exRound3 <- NULL
+      } else{
+        list_spp_step2 <- vector(mode = "list", length= length(rank_family2))
         
+        for(i in 1:length(rank_family2)){
+          list_spp_step2[[i]]<- tryCatch(paste(ape::extract.clade(phy = phylo_order, node = rank_family2[i])$tip.label), 
+                                         error = function(e) paste("noFamily", as.character(data[which(rank_family2[i] == data$f), 1]), 
+                                                                   sep= "_")
+          )
+          
+        }
+        names(list_spp_step2) <- rank_family2
+        
+        names_family <- unlist(lapply(lapply(list_spp_step2, 
+                                             function(x) 
+                                               which(sub("_.*", "", x) == "noFamily")
+        ), 
+        function(y) length(y)
+        )
+        )
+        family_still_add <- names(list_spp_step2)[ifelse(names_family == 1, TRUE, FALSE)] # family that will be added in the next round
+        data_exRound3 <- data[match(family_still_add, data$f), ]
+        spp_to_add_round2 <- setdiff(insert_spp, data_exRound3$s)
       }
-      names(list_spp_step2) <- rank_family2
-      
-      names_family <- unlist(lapply(lapply(list_spp_step2, 
-                                           function(x) 
-                                             which(sub("_.*", "", x) == "noFamily")
-      ), 
-      function(y) length(y)
-      )
-      )
-      family_still_add <- names(list_spp_step2)[ifelse(names_family == 1, TRUE, FALSE)] # family that will be added in the next round
-      data_exRound3 <- data[match(family_still_add, data$f), ]
-      spp_to_add_round2 <- setdiff(insert_spp, data_exRound3$s)
     }
   }
-  
   ###### step 3 - add species to orders ######
-  has_cichli <- which(data_exRound3$o == "Cichliformes") # There are any Cichliformes in the remaining species
-  if(length(has_cichli) >= 1){
-    data_exRound3[has_cichli, "o"] <- "Perciformes"
-  }
-  
-  rank_order_Round3 <- rank_order[match(data_exRound3$o, rank_order)]
-  families_round3 <- lapply(lapply(rank_order_Round3, function(x){
-    fishbase[which(x == fishbase$Order), 10]
-  }), function(y) unique(y))
-  names(families_round3) <- rank_order_Round3
-  
-  # initiating insertion in families
-  for(i in 1:length(families_round3)){
-    # i = 1
-    user_option_family <-  families_round3[[i]]
+  if(is.null(data_exRound3)){
+    if(return.insertions == TRUE){
+      insertions <- rep("NA", nrow(data))
+      data_insertions <- cbind(data, insertions)
+      data_insertions[match(species_to_genus, data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus)) # genus insertions
+      data_insertions[match(data_exRound2$s, data$s), "insertions"] <- rep("Family_insertion", length(data_exRound2$s)) # family insertions
+      spp_on_tree <- data[ - match(c(species_to_genus, data$s[match(data_exRound2$s, data$s)]), data$s), "s"] # species already on supertree
+      data_insertions[match(spp_on_tree, data$s), "insertions"] <- rep("Present_in_Tree", length(spp_on_tree))
+      list_res <- vector(mode = "list", length = 2)
+      list_res[[1]] <- tree_res
+      list_res[[2]] <- data_insertions
+      names(list_res) <- c("Phylogeny", "Insertions_data")
+      return(list_res)
+    } else{
+      return(tree_res)
+    }
+  } else{
+    has_cichli <- which(data_exRound3$o == "Cichliformes") # There are any Cichliformes in the remaining species
+    if(length(has_cichli) >= 1){
+      data_exRound3[has_cichli, "o"] <- "Perciformes"
+    }
     
-    local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
-                                                           spp = data_exRound3$s[i], 
-                                                           data_exRound3$o[i])
-                                        ) #user interactive option to choose species
-    family_user_opt <- unlist(strsplit(local_to_add_spp_family, split = " "))
+    rank_order_Round3 <- rank_order[match(data_exRound3$o, rank_order)]
+    families_round3 <- lapply(lapply(rank_order_Round3, function(x){
+      fishbase[which(x == fishbase$Order), 10]
+    }), function(y) unique(y))
+    names(families_round3) <- rank_order_Round3
     
-    if(length(family_user_opt) == 1){
-      if(family_user_opt == data_exRound3$o[i]){ # insert species in order node
-        # renaming orders
-        for (l in 1:length(list_order)) {
+    # initiating insertion in families
+    for(i in 1:length(families_round3)){
+      # i = 1
+      user_option_family <-  families_round3[[i]]
+      
+      local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
+                                                                    spp = data_exRound3$s[i], 
+                                                                    data_exRound3$o[i])
+      ) #user interactive option to choose species
+      family_user_opt <- unlist(strsplit(local_to_add_spp_family, split = " "))
+      
+      if(length(family_user_opt) == 1){
+        if(family_user_opt == data_exRound3$o[i]){ # insert species in order node
+          # renaming orders
+          for (l in 1:length(list_order)) {
             phylo_order<- ape::makeNodeLabel(phylo_order, "u", nodeList = list(Ord_name = list_order[[l]]))
             phylo_order$node.label[which(phylo_order$node.label == "Ord_name")] <- names(list_order)[l]
-            }
-        node_order_pos <- which(phylo_order$node.label == data_exRound3$o[i])
-        phylo_order <- phytools::bind.tip(tree = phylo_order, 
-                           tip.label = data_exRound3$s[i],
-                           where = node_order_pos,
-                           position = 0)
-      } else{
-        if(length(family_user_opt) == 2){
-          family_nspp <- length(list_family[match(family_user_opt, names(list_family))])
-        }
-        family_nspp <- length(list_family[[match(family_user_opt, names(list_family))]])
-        if(family_nspp > 1){
-          position_family <- which(phylo_order$node.label == family_user_opt)
-          size_branch_family <- phylo_order$edge.length[sapply(position_family, function(x, y) which(y == x), y = phylo_order$edge[, 2])]
-          phylo_order <- phytools::bind.tip(phylo_order, data_exRound3$s[i], where = position_family, position = size_branch_family/2)
-        }
-        if(family_nspp == 1){
-          phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                        species = paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == family_user_opt)]][1])),
-                                                                        "toadd",
-                                                                        sep = "_")
-                                                        )
-          position_problem_family <- which(phylo_order$tip.label == paste(sub("_.*",
-                                                                              "", 
-                                                                              as.character(list_family[[which(names(list_family) == family_user_opt)]][1])
-                                                                              ), 
+          }
+          node_order_pos <- which(phylo_order$node.label == data_exRound3$o[i])
+          phylo_order <- phytools::bind.tip(tree = phylo_order, 
+                                            tip.label = data_exRound3$s[i],
+                                            where = node_order_pos,
+                                            position = 0)
+        } else{
+          if(length(family_user_opt) == 2){
+            family_nspp <- length(list_family[match(family_user_opt, names(list_family))])
+          }
+          family_nspp <- length(list_family[[match(family_user_opt, names(list_family))]])
+          if(family_nspp > 1){
+            position_family <- which(phylo_order$node.label == family_user_opt)
+            size_branch_family <- phylo_order$edge.length[sapply(position_family, function(x, y) which(y == x), y = phylo_order$edge[, 2])]
+            phylo_order <- phytools::bind.tip(phylo_order, data_exRound3$s[i], where = position_family, position = size_branch_family/2)
+          }
+          if(family_nspp == 1){
+            phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                          species = paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == family_user_opt)]][1])),
                                                                           "toadd",
                                                                           sep = "_")
-                                           )
-          phylo_order$tip.label[position_problem_family] <- data_exRound3$s[i]
+            )
+            position_problem_family <- which(phylo_order$tip.label == paste(sub("_.*",
+                                                                                "", 
+                                                                                as.character(list_family[[which(names(list_family) == family_user_opt)]][1])
+            ), 
+            "toadd",
+            sep = "_")
+            )
+            phylo_order$tip.label[position_problem_family] <- data_exRound3$s[i]
+          }
         }
       }
     }
+    
+    #final data proccessing - cutting the phylogenetic tree to obtain only species in data
+    data_final<- 1:length(as.character(data$s))
+    names(data_final) <- as.character(data$s)
+    tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
+                                               tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
+    if(return.insertions == TRUE){
+      family_level_insertions <- unique(setdiff(data_exRound2$s, data_exRound3$s))
+      insertions <- rep("NA", nrow(data))
+      data_insertions <- cbind(data, insertions)
+      data_insertions[which(species_to_genus == data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus)) # genus insertions
+      data_insertions[match(family_level_insertions, data$s), "insertions"] <- rep("Family_insertion", length(data$s[match(family_level_insertions, data$s)])) # family insertions
+      data_insertions[match(data_exRound3$s, data$s), "insertions"] <-  rep("Order_insertion", length(data_exRound3$s)) # order insertions
+      spp_on_tree <- data[ - match(c(species_to_genus, data$s[match(family_level_insertions, data$s)], data_exRound3$s), data$s), "s"] # species already on supertree
+      data_insertions[match(spp_on_tree, data$s), "insertions"] <- rep("Present_in_Tree", length(spp_on_tree))
+      list_res <- vector(mode = "list", length = 2)
+      list_res[[1]] <- tree_res
+      list_res[[2]] <- data_insertions
+      names(list_res) <- c("Phylogeny", "Insertions_data")
+      return(list_res)
+    } else{
+      return(tree_res) #phylogeny with only species on data
+    }
   }
-  
-  #final data proccessing - cutting the phylogenetic tree to obtain only species in data
-  data_final<- 1:length(as.character(data$s))
-  names(data_final) <- as.character(data$s)
-  tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
-                                            tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
-  if(return.insertions == TRUE){
-    family_level_insertions <- unique(setdiff(data_exRound2$s, data_exRound3$s))
-    insertions <- rep("NA", nrow(data))
-    data_insertions <- cbind(data, insertions)
-    data_insertions[which(species_to_genus == data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus)) # genus insertions
-    data_insertions[match(family_level_insertions, data$s), "insertions"] <- rep("Family_insertion", length(data$s[match(family_level_insertions, data$s)])) # family insertions
-    data_insertions[match(data_exRound3$s, data$s), "insertions"] <-  rep("Order_insertion", length(data_exRound3$s)) # order insertions
-    spp_on_tree <- data[ - match(c(species_to_genus, data$s[match(family_level_insertions, data$s)], data_exRound3$s), data$s), "s"] # species already on supertree
-    data_insertions[match(spp_on_tree, data$s), "insertions"] <- rep("Present_in_Tree", length(spp_on_tree))
-    list_res <- vector(mode = "list", length = 2)
-    list_res[[1]] <- tree_res
-    list_res[[2]] <- data_insertions
-    names(list_res) <- c("Phylogeny", "Insertions_data")
-    return(list_res)
-  } else{
-    return(tree_res) #phylogeny with only species on data
-  }
-  
 }
 
