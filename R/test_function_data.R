@@ -24,3 +24,6 @@ data_process <- rbind(data_process, c("Peixo_basefamilia", "Loricariidae", "Silu
 data <- data_process
 
 res_test <- FishPhyloMaker(data = data, return.insertions = TRUE)
+quartz()
+plot(res_test$Phylogeny, show.node.label = T)
+
