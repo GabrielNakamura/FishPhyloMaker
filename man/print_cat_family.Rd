@@ -4,7 +4,7 @@
 \alias{print_cat_family}
 \title{Internal function to help in interactive process}
 \usage{
-print_cat_family(print_cat, spp, family)
+print_cat_family(print_cat, spp, order)
 }
 \arguments{
 \item{print_cat}{Character}
