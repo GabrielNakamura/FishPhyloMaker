@@ -24,10 +24,10 @@
 FishPhyloMaker <- function(data, return.insertions = FALSE){
   
   ### checking procedures
-  if(dim(spp_user_opt)[2] != 3){
+  if(dim(data)[2] != 3){
     stop("/n data must be a dataframe with three columns (s, f, o)")
   }
-  if(is.na(match(colnames(data), c("s", "f", "o")))){
+  if(any(is.na(match(colnames(data), c("s", "f", "o"))))){
     stop("/n Columns of data object must be named with s, f, and o letters")
   }
   if(is.data.frame(data) == FALSE){
@@ -36,7 +36,8 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
   
   ### if all species are already on tree
   tree_complete <- fishtree::fishtree_phylogeny()
-  round_1_check <- match(data$s, tree_complete$tip.label)[!is.na(round_1_check)] 
+  round_1_check <- match(data$s, tree_complete$tip.label)
+  round_1_check <- round_1_check[!is.na(round_1_check)]
   if(length(round_1_check) == length(data$s)){
     data_final<- 1:length(as.character(data$s))
     names(data_final) <- as.character(data$s)
@@ -322,7 +323,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
             if(length(spp_user_opt) < 1){
               stop("/n At least one genus/family can be chosen to insert species")
             }
-            if(any(is.na(match(spp_user_opt, user_option_spp)))){
+            if(any(is.na(match(spp_user_opt, user_option_spp) && is.na(match(spp_user_opt, family_name))))){
               stop("/n Choose a validy genus/family to insert species")
             }
             
