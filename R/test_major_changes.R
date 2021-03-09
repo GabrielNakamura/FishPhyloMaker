@@ -227,7 +227,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
     position_problem1 <- which(phylo_order$tip.label == paste(sub("_.*", "", as.character(spp_family_inTree)[1]),
                                                               "toadd", sep= "_")
     )
-    phylo_test$tip.label[position_problem1]<- spp_to_add_round2 #solving family add when there is only one species of the same family that species to add
+    phylo_order$tip.label[position_problem1]<- spp_to_add_round2 #solving family add when there is only one species of the same family that species to add
   } else{
     while(length(spp_to_add_round2) >= 1){
       family_name <- names(list_spp_step2)[names(list_spp_step2) == data[which(spp_to_add_round2[1] == data$s), ][, 2]]
@@ -295,7 +295,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
       
       
       # genus checking procedure
-      genus_in_tree<- sub("_.*", "", 
+      genus_in_tree <- sub("_.*", "", 
                            phylo_order$tip.label)[match(sub("_.*", "", 
                                                             insert_spp), 
                                                         sub("_.*", "", 
@@ -326,6 +326,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
         tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
                                                    tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
         data_exRound3 <- NULL
+        break
       } else{
         list_spp_step2 <- vector(mode = "list", length= length(rank_family2))
         

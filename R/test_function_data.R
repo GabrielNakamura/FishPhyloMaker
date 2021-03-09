@@ -25,5 +25,9 @@ data <- data_process
 
 res_test <- FishPhyloMaker(data = data, return.insertions = TRUE)
 quartz()
-plot(res_test$Phylogeny, show.node.label = T)
+plot(res_test$Phylogeny, show.node.label = F)
+
+### test with all dataset
+data <- taxon_data
+system.time(res_test_allData <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE))
 
