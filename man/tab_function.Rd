@@ -2,7 +2,8 @@
 % Please edit documentation in R/tab_function.R
 \name{tab_function}
 \alias{tab_function}
-\title{Generate a list of species}
+\title{Generate a list of species
+Auxiliar function to ensemble the data frame of species pool}
 \usage{
 tab_function(data)
 }
@@ -14,4 +15,8 @@ tab_function(data)
 }
 \description{
 Generate a list of species
+Auxiliar function to ensemble the data frame of species pool
+}
+\examples{
+
 }
