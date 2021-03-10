@@ -5,7 +5,9 @@
 #' @param return.insertions Logical, if TRUE the output is a list of length two containing the phylogeny 
 #'     and a dataframe with a column indicating at which level each species was inserted
 #'     
-#' @return
+#' @return A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
+#'     will be a list of length two containg the newick phylogeny and a data frame equal that provided in data plus a column 
+#'     indicating at which level each species was inserted in the tree
 #' @export
 #'
 #' @examples
@@ -351,7 +353,7 @@ FishPhyloMaker <- function(data, return.insertions = FALSE){
                   phylo_order <- ape::makeNodeLabel(phy = phylo_order, method = "u", nodeList = list(MRCA = spp_user_opt))
                   position_MRCA <- which(c(phylo_order$tip.label, phylo_order$node.label) == "MRCA")
                   size_branch <- phylo_order$edge.length[sapply(position_MRCA, function(x, y) which(y == x), y = phylo_order$edge[, 2])]
-                  phylo_order <- bind.tip(phylo_order, spp_to_add_round2[1], where = position_MRCA, position = size_branch/2)
+                  phylo_order <- phytools::bind.tip(phylo_order, spp_to_add_round2[1], where = position_MRCA, position = size_branch/2)
                 }
                 
                 if(is.na(genus_nspp) == TRUE){ # add as a sister group 

@@ -2,9 +2,8 @@
 #'
 #' @param order Character with names of species
 #'
-#' @return
+#' @return phylogeny
 #'
-#' @examples
 #' 
 filter_rank<- function(order){
   if(length(which(sub("_.*", "", unlist(order)) == "not.found")) >= 1){
