@@ -3,10 +3,19 @@
 #' 
 #' @param data A character vector with species names or a community matrix with species names in columns
 #'
-#' @return
+#' @return Data frame with three columns containing the name of species (s), the Family (f) and Order (o) 
+#' 
 #' @export
 #'
-#' @examples
+#' @examples 
+#'  \dontrun{
+#'     data(neotropical_comm)
+#'     data_comm <- neotropical_comm[, -c(1, 2)]
+#'     taxon_data <- tab_function(data_comm) # formating data
+#'     Loricariidae # informing Family of Curculionichthys insperatus
+#'     Siluriformes # informing Order of Curculionichthys insperatus
+#' }
+#' 
 #' 
 tab_function<- function(data){
   if(is.data.frame(data) == TRUE){
@@ -24,8 +33,8 @@ tab_function<- function(data){
     }
     names_data <- data
   }
-  library(rfishbase)
-  utils::data("fishbase")
+  requireNamespace("rfishbase")
+  utils::data(fishbase, package = "rfishbase")
   list_genus<- fishbase[match(sub("_.*", "", names_data), fishbase$Genus), c("Genus", "Family", "Order")]
   list_local<- data.frame(s= names_data, f= list_genus$Family, o= list_genus$Order)
   not_found<- list_local[which(rowSums(is.na(list_local)) > 0), ]

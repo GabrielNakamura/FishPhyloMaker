@@ -11,12 +11,20 @@ tab_function(data)
 \item{data}{A character vector with species names or a community matrix with species names in columns}
 }
 \value{
-
+Data frame with three columns containing the name of species (s), the Family (f) and Order (o)
 }
 \description{
 Generate a list of species
 Auxiliar function to ensemble the data frame of species pool
 }
 \examples{
+ \dontrun{
+    data(neotropical_comm)
+    data_comm <- neotropical_comm[, -c(1, 2)]
+    taxon_data <- tab_function(data_comm) # formating data
+    Loricariidae # informing Family of Curculionichthys insperatus
+    Siluriformes # informing Order of Curculionichthys insperatus
+}
+
 
 }

@@ -5,9 +5,8 @@
 #' @param sort Sorting species in alphabetic order
 #' @param warnings Logical
 #'
-#' @return
+#' @return character vector
 #'
-#' @examples
 treedata_modif<- function (phy, data, sort = FALSE, warnings = TRUE) 
 {
   dm = length(dim(data))

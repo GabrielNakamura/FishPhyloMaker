@@ -11,10 +11,10 @@ print_cat_family(print_cat, spp, order)
 
 \item{spp}{Character}
 
-\item{family}{Character}
+\item{order}{Character}
 }
 \value{
-
+interactive action in consele
 }
 \description{
 Internal function to help in interactive process

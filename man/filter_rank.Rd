@@ -10,11 +10,8 @@ filter_rank(order)
 \item{order}{Character with names of species}
 }
 \value{
-
+phylogeny
 }
 \description{
 Function to download species from fishtreeoflife
-}
-\examples{
-
 }

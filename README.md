@@ -10,18 +10,18 @@
 
 The FishPhyloMaker package has as the core function `FishPhyloMaker`, that works by downloading the [most inclusive phylogeny of bony fishes](https://fishtreeoflife.org/) provided by [Rabosky (2018)](https://onlinelibrary.wiley.com/doi/10.1111/jbi.13839) and edit this phylogeny, in a sequential way by replacing and dropping the fish species of the original phylogeny to obtain a phylogenetic tree containing only the desired species specified in a data frame. The procedure starts by adding all species of fish that already present any Genus in the tree (Congeneric species). For species that do not present any representative of the same Genus, the function finds out for all species of the same family, if not present any species in the tree the search is performed for species of the same Order. By an interactively procedure, the user must specify which Genus from that family (or families in orders) in the tree the species to be inserted is most related. The function returns a newick file containing the phylogeny of species provide in data argument and a data frame (if argument `return.insertions = TRUE`) containing all species with an character indicating at which level the species was added in the tree. There are four possible categories in which species can be tagged regarding their order of insertion:
 
--   **Present\_in\_tree** the species was already present in the original tree;
--   **Congeneric\_insertion** species inserted as a sister species of the same genus presented in the tree;
--   **Family\_insertion** species inserted as being related to a given genus, between two genus or at the node that corresponds to the Family;
--   **Order\_insertion** species inserted as being related to a given family, between two families or at the node that corresponds to the Family;
+-   **Present_in_tree** the species was already present in the original tree;
+-   **Congeneric_insertion** species inserted as a sister species of the same genus presented in the tree;
+-   **Family_insertion** species inserted as being related to a given genus, between two genus or at the node that corresponds to the Family;
+-   **Order_insertion** species inserted as being related to a given family, between two families or at the node that corresponds to the Family;
 
 The user must provide to `FishPhyloMaker` function a data frame that present the following format:
 
-|    s   |    f    |    o   |
-|:------:|:-------:|:------:|
-| G\_sp1 | Family1 | Order1 |
-| G\_sp2 | Family2 | Order2 |
-| G\_sp3 | Family3 | Order3 |
+|    s  |    f    |    o   |
+|:-----:|:-------:|:------:|
+| G_sp1 | Family1 | Order1 |
+| G_sp2 | Family2 | Order2 |
+| G_sp3 | Family3 | Order3 |
 
 This table can be done mannually or by passing to `tab_function` a list of species or a community data matrix with species names in columns.
 
@@ -29,7 +29,7 @@ To install the package the user must type:
 
 ```{r downpkg, eval=F, echo = F}
 
-devtools::install.github("GabrielNakamura/FishPhyloMaker")
+devtools::install_github("GabrielNakamura/FishPhyloMaker")
 
 ```
 

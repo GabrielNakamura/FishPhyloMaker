@@ -1,20 +1,27 @@
 Package: FishPhyloMaker
 Title: An R Package to Generate Phylogeny for a Local List of Fish Species
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Gabriel",
            family = "Nakamura",
            role = c("aut", "cre"),
            email = "gabriel.nakamura.souza@gmail.com",
            comment = c(ORCID = "0000-0002-5144-5312"))
-Description: FishPhyloMaker provides an alternative to construct phylogeny for fish species from a list of species
+Description: FishPhyloMaker provides an alternative to facilitate the construction of a phylogeny for fish species from a list of species
    or a community matrix using as a backbone the phylogenetic tree proposed by Rabosky (2018).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
+Imports:
+    ape,
+    fishtree,
+    geiger,
+    phytools,
+    rfishbase,
+    utils
 Depends: 
     R (>= 2.10)
-Imports: 
-    FishPhyloMaker
+Suggests: 
+    rmarkdown

@@ -10,7 +10,7 @@ print_cat2(spp)
 \item{spp}{Character}
 }
 \value{
-
+interactive action in console
 }
 \description{
 Internal function

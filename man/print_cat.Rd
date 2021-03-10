@@ -14,7 +14,7 @@ print_cat(print_cat, spp, family)
 \item{family}{Character}
 }
 \value{
-
+interactive action in console
 }
 \description{
 Internal function - auxiliar to interactive procedure

@@ -16,7 +16,7 @@ treedata_modif(phy, data, sort = FALSE, warnings = TRUE)
 \item{warnings}{Logical}
 }
 \value{
-
+character vector
 }
 \description{
 Internal function to show the number of species from species pool that lacks in phylogeny
