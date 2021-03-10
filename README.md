@@ -29,7 +29,7 @@ To install the package the user must type:
 
 ```{r downpkg, eval=F, echo = F}
 
-devtools::install_github("GabrielNakamura/FishPhyloMaker")
+devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 
 ```
 
