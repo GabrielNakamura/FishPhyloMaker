@@ -1,4 +1,4 @@
-<img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="150px" align="right"/>
+<img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="200px" align="right"/>
 
 # FishPhyloMaker
 
