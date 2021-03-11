@@ -28,7 +28,7 @@ Editing fish phylogeny according to a local pool of species
     taxon_data <- tab_function(data_comm) # formating data
     Loricariidae # informing Family of Curculionichthys insperatus
     Siluriformes # informing Order of Curculionichthys insperatus
-    res_test <- FishPhyloMaker(data = data, return.insertions = TRUE)
+    res_test <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
     res_test$Phylogeny # newick object
     res_test$insertions # dataframe containing the level in which each species was inserted
 }
