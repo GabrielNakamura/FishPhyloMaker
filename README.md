@@ -1,8 +1,8 @@
-<img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="120px" align="right"/>
+<img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="150px" align="right"/>
 
 # FishPhyloMaker
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/FishPhyloMaker)](https://cran.r-project.org/package=FishPhyloMaker)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/FishPhyloMaker)](https://cran.r-project.org/package=FishPhyloMaker)
 
 [![codecov](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker/branch/master/graph/badge.svg)](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker)
 
@@ -19,8 +19,8 @@ The FishPhyloMaker package has as the core function `FishPhyloMaker`, that works
 
 The user must provide to `FishPhyloMaker` function a data frame that present the following format:
 
-|    s  |    f    |    o   |
-|:-----:|:-------:|:------:|
+|    s   |    f    |    o   |
+|:------:|:-------:|:------:|
 | G_sp1 | Family1 | Order1 |
 | G_sp2 | Family2 | Order2 |
 | G_sp3 | Family3 | Order3 |
@@ -63,14 +63,14 @@ Synbranchidae # family to insert Synbranchus marmoratus
 
 ```
 
-The output has two objects, a newick that contains the phylogeny for the local pool of species, and can be
-   directly plot
+The output has two objects, a newick that contains the phylogeny for the local pool of species, and can be directly plot
 
 ```{r plot_examp, eval=T, echo = T}
 
 plot(res_phylo$Phylogeny, cex = 0.7)
 
 ```
+
 And a data frame containing in which level the species of local pool was inserted
 
 ```{r table_examp, eval=T, echo = T}
