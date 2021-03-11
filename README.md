@@ -23,7 +23,7 @@ The user must provide to `FishPhyloMaker` function a data frame that present the
 | G_sp2 | Family2 | Order2 |
 | G_sp3 | Family3 | Order3 |
 
-This table can be done mannually or by passing to `tab_function` a list of species or a community data matrix with species names in columns.
+This table can be done mannually or by passing to `FishTaxaMaker` a list of species or a community data matrix with species names in columns.
 
 To install the package the user must type:
 
@@ -43,9 +43,9 @@ data_comm <- neotropical_comm[, -c(1, 2)] # removing latitude and longitude
 
 ```
 
-First the user must obtain the data necessary to enter in `FishPhyloMaker` function using `tab_function`
+First the user must obtain the data necessary to enter in `FishPhyloMaker` function using `FishTaxaMaker`
 
-```{r tab_examp, eval=T, echo = T}
+```{r FishTaxaFunc, eval=T, echo = T}
 
 taxon_data <- FishTaxaMaker(data_comm)
 
@@ -56,6 +56,8 @@ And finally run `FishPhyloMaker`
 ```{r maker_examp, eval=T, echo = T}
 
 res_phylo <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
+Hisonotus # genus to insert Curculionichthys
+Synbranchidae # family to insert Synbranchus marmoratus
 
 ```
 
