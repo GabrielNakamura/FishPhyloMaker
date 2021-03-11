@@ -1,3 +1,5 @@
+<img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="120px" align="right"/>
+
 # FishPhyloMaker
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/FishPhyloMaker)](https://cran.r-project.org/package=FishPhyloMaker)
@@ -76,3 +78,5 @@ And a data frame containing in which level the species of local pool was inserte
 res_phylo$Insertions_data
 
 ```
+
+For more details and updates in package functioning see [FishPhyloMaker web page](file:///Users/gabrielnakamura/OneDrive/Packages/FishPhyloMaker/docs/index.html)
