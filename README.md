@@ -47,7 +47,7 @@ First the user must obtain the data necessary to enter in `FishPhyloMaker` funct
 
 ```{r tab_examp, eval=T, echo = T}
 
-taxon_data <- tab_function(data_comm)
+taxon_data <- FishTaxaMaker(data_comm)
 
 ```
 
