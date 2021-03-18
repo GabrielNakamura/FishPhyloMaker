@@ -6,3 +6,12 @@
 #' @format A data frame with 20 rows and 61 variables:
 #
 "neotropical_comm"
+
+#' Occurrence of fish species in South America
+#'
+#' A dataset containing the occurrence of  fish species distributed all basins of
+#' South America continent
+#'
+#' @format A data frame with 37 rows and 679 variables:
+#
+"fish_SAmerica"
