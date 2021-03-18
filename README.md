@@ -19,8 +19,8 @@ The FishPhyloMaker package has as the core function `FishPhyloMaker`, that works
 
 The user must provide to `FishPhyloMaker` function a data frame that present the following format:
 
-|    s   |    f    |    o   |
-|:------:|:-------:|:------:|
+|    s  |    f    |    o   |
+|:-----:|:-------:|:------:|
 | G_sp1 | Family1 | Order1 |
 | G_sp2 | Family2 | Order2 |
 | G_sp3 | Family3 | Order3 |
@@ -29,54 +29,41 @@ This table can be done mannually or by passing to `FishTaxaMaker` a list of spec
 
 To install the package the user must type:
 
-```{r downpkg, eval=F, echo = F}
-
+```{.r}
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
-
 ```
 
 To run an example the user can load a dataset contained in the package:
 
-```{r examp, eval=T, echo = F}
-
+```{.r}
 data(neotropical_comm)
 data_comm <- neotropical_comm[, -c(1, 2)] # removing latitude and longitude
-
-
 ```
 
 First the user must obtain the data necessary to enter in `FishPhyloMaker` function using `FishTaxaMaker`
 
-```{r FishTaxaFunc, eval=T, echo = T}
-
+```{.r}
 taxon_data <- FishTaxaMaker(data_comm)
-
 ```
 
 And finally run `FishPhyloMaker`
 
-```{r maker_examp, eval=T, echo = T}
-
+```{.r}
 res_phylo <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
 Hisonotus # genus to insert Curculionichthys
 Synbranchidae # family to insert Synbranchus marmoratus
-
 ```
 
 The output has two objects, a newick that contains the phylogeny for the local pool of species, and can be directly plot
 
-```{r plot_examp, eval=T, echo = T}
-
+```{.r}
 plot(res_phylo$Phylogeny, cex = 0.7)
-
 ```
 
 And a data frame containing in which level the species of local pool was inserted
 
-```{r table_examp, eval=T, echo = T}
-
+```{.r}
 res_phylo$Insertions_data
-
 ```
 
 For more details and updates in package functioning see [FishPhyloMaker web page](https://gabrielnakamura.github.io/FishPhyloMaker/)
