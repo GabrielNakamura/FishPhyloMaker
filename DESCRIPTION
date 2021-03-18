@@ -1,6 +1,6 @@
 Package: FishPhyloMaker
 Title: An R Package to Generate Phylogeny for a Local List of Fish Species
-Version: 0.1.0
+Version: 0.1.2
 Authors@R: 
     c(person(given = "Gabriel",
            family = "Nakamura",
