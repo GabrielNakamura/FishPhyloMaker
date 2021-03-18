@@ -79,4 +79,4 @@ res_phylo$Insertions_data
 
 ```
 
-For more details and updates in package functioning see [FishPhyloMaker web page](file:///Users/gabrielnakamura/OneDrive/Packages/FishPhyloMaker/docs/index.html)
+For more details and updates in package functioning see [FishPhyloMaker web page](https://gabrielnakamura.github.io/FishPhyloMaker/)
