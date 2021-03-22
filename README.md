@@ -46,6 +46,8 @@ First the user must obtain the data necessary to enter in `FishPhyloMaker` funct
 
 ```{.r}
 taxon_data <- FishTaxaMaker(data_comm)
+Loricariidae
+Siluriformes
 ```
 
 And finally run `FishPhyloMaker`
