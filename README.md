@@ -8,14 +8,16 @@
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 
-**Making phylogenies for a local pool fish species**
+**Making phylogenies for a local pool of fish species**
 
 The FishPhyloMaker package has as the core function `FishPhyloMaker`, that works by downloading the [most inclusive phylogeny of bony fishes](https://fishtreeoflife.org/) provided by [Rabosky (2018)](https://onlinelibrary.wiley.com/doi/10.1111/jbi.13839) and edit this phylogeny, in a sequential way by replacing and dropping the fish species of the original phylogeny to obtain a phylogenetic tree containing only the desired species specified in a data frame. The procedure starts by adding all species of fish that already present any Genus in the tree (Congeneric species). For species that do not present any representative of the same Genus, the function finds out for all species of the same family, if not present any species in the tree the search is performed for species of the same Order. By an interactively procedure, the user must specify which Genus from that family (or families in orders) in the tree the species to be inserted is most related. The function returns a newick file containing the phylogeny of species provide in data argument and a data frame (if argument `return.insertions = TRUE`) containing all species with an character indicating at which level the species was added in the tree. There are four possible categories in which species can be tagged regarding their order of insertion:
 
 -   **Present_in_tree** the species was already present in the original tree;
 -   **Congeneric_insertion** species inserted as a sister species of the same genus presented in the tree;
+-   **Congeneric_insertion_roundFamily** species inserted as a sister species of the same genus presented in the tree, but that were added during the insertion procedure in family level;
 -   **Family_insertion** species inserted as being related to a given genus, between two genus or at the node that corresponds to the Family;
 -   **Order_insertion** species inserted as being related to a given family, between two families or at the node that corresponds to the Family;
+-   **Not_inserted** species that was not inserted in the tree because did not presented any representative at the Order level;
 
 The user must provide to `FishPhyloMaker` function a data frame that present the following format:
 
