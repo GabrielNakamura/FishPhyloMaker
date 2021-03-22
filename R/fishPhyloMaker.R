@@ -442,19 +442,20 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
                                                        tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
             
             if (return.insertions == TRUE) {
-              family_level_insertions <- unique(setdiff(data_exRound2$s, 
-                                                        data_exRound3$s))
               insertions <- rep("NA", nrow(data))
               species_to_genus2 <- unlist(species_to_genus2)
               data_insertions <- cbind(data, insertions)
               data_insertions[match(species_to_genus1, data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus1))
+              family_level_insertions <- unique(setdiff(data_exRound2$s, 
+                                                        data_exRound3$s))
+              
               if(length(species_to_genus2) >= 1){
                 data_insertions[match(species_to_genus2, data$s), "insertions"] <- rep("Congeneric_insertion_roundFamily", length(unlist(species_to_genus2)))
                 data_exRound2 <- data_exRound2[-match(species_to_genus2, data_exRound2$s), ]
                 family_insertions <- setdiff(family_level_insertions, species_to_genus1, species_to_genus2)
+              } else{
+                family_insertions <- setdiff(family_level_insertions, species_to_genus1)
               }
-              
-              family_insertions <- setdiff(family_level_insertions, species_to_genus1)
               data_insertions[match(family_insertions, 
                                     data$s), "insertions"] <- rep("Family_insertion", 
                                                                   length(family_insertions))
@@ -470,7 +471,6 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
               names(list_res) <- c("Phylogeny", "Insertions_data")
               return(list_res)
             }
-            warning(print(paste("Species", no_represent_tree, "do not have any representative in Order level\n", sep = " ")))
             return(tree_res)
           }
           for (i in 1:length(families_round3)) {
@@ -524,17 +524,21 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
           tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
                                                      tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
           if (return.insertions == TRUE) {
-            family_level_insertions <- unique(setdiff(data_exRound2$s, 
-                                                      data_exRound3$s))
             insertions <- rep("NA", nrow(data))
             data_insertions <- cbind(data, insertions)
-            data_insertions[which(c(species_to_genus1, species_to_genus2) == 
-                                    data$s), "insertions"] <- rep("Congeneric_insertion", 
-                                                                  length(c(species_to_genus1, species_to_genus2)))
-            family_insertions <- setdiff(family_level_insertions, c(species_to_genus1, species_to_genus2))
+            species_to_genus2 <- unlist(species_to_genus2)
+            data_insertions <- cbind(data, insertions)
+            data_insertions[match(species_to_genus1, data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus1))
+            if(length(species_to_genus2) >= 1){
+              data_insertions[match(species_to_genus2, data$s), "insertions"] <- rep("Congeneric_insertion_roundFamily", length(unlist(species_to_genus2)))
+              data_exRound2 <- data_exRound2[-match(species_to_genus2, data_exRound2$s), ]
+            }
+            family_level_insertions <- unique(setdiff(data_exRound2$s, 
+                                                      data_exRound3$s))
+            family_insertions <- setdiff(family_level_insertions, species_to_genus1, species_to_genus2)
             data_insertions[match(family_insertions, 
                                   data$s), "insertions"] <- rep("Family_insertion", 
-                                                                length(family_insertions))
+                                                                length(family_insertions))            
             
             data_insertions[match(data_exRound3$s, data$s), 
                             "insertions"] <- rep("Order_insertion", 
