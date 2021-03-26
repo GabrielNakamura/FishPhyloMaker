@@ -535,7 +535,7 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
             }
             family_level_insertions <- unique(setdiff(data_exRound2$s, 
                                                       data_exRound3$s))
-            family_insertions <- setdiff(family_level_insertions, species_to_genus1, species_to_genus2)
+            family_insertions <- setdiff(family_level_insertions, species_to_genus1)
             data_insertions[match(family_insertions, 
                                   data$s), "insertions"] <- rep("Family_insertion", 
                                                                 length(family_insertions))            
