@@ -452,7 +452,7 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
               if(length(species_to_genus2) >= 1){
                 data_insertions[match(species_to_genus2, data$s), "insertions"] <- rep("Congeneric_insertion_roundFamily", length(unlist(species_to_genus2)))
                 data_exRound2 <- data_exRound2[-match(species_to_genus2, data_exRound2$s), ]
-                family_insertions <- setdiff(family_level_insertions, species_to_genus1, species_to_genus2)
+                family_insertions <- setdiff(family_level_insertions, c(species_to_genus, species_to_genus2))
               } else{
                 family_insertions <- setdiff(family_level_insertions, species_to_genus1)
               }
