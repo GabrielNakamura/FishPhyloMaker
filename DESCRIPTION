@@ -31,4 +31,6 @@ Imports:
 Depends: 
     R (>= 2.10)
 Suggests: 
-    rmarkdown
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
