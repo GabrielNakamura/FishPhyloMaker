@@ -1,5 +1,5 @@
 ---
-title: "FishPhyloMaker_vignette"
+title: "Using FishPhyloMaker to build phylogenies for bony fishes"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{FishPhyloMaker_vignette}
