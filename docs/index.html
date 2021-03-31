@@ -55,7 +55,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/FishPhyloMaker_vignette.html">FishPhyloMaker_vignette</a>
+      <a href="articles/FishPhyloMaker_vignette.html">Using FishPhyloMaker to build phylogenies for bony fishes</a>
     </li>
   </ul>
 </li>
@@ -138,8 +138,8 @@ Siluriformes</code></pre>
 <p><code>FishTaxaMaker</code> finds in <a href="https://www.fishbase.se/search.php">Fishbase</a> for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species <em>Curculionichthys inseperatus</em> was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.</p>
 <p>Finally run <code>FishPhyloMaker</code></p>
 <pre class="{.r}"><code>res_phylo &lt;- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
-Hisonotus # genus to insert Curculionichthys
-Synbranchidae # family to insert Synbranchus marmoratus</code></pre>
+Hisonotus 
+Synbranchidae </code></pre>
 <p>The species are inserted in a sequential procedure. Those species with any congeneric representatives will be printed in the console jointly with a list of Genus in which the user must choose. The user have three options:</p>
 <ol>
 <li>Insert <strong>near to a specific Genus</strong>, then the user must type the name of this Genus;</li>
