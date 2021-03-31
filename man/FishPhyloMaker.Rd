@@ -2,7 +2,7 @@
 % Please edit documentation in R/fishPhyloMaker.R
 \name{FishPhyloMaker}
 \alias{FishPhyloMaker}
-\title{Editing fish phylogeny according to a local pool of species}
+\title{Obtaining fish phylogeny according to a local pool of species}
 \usage{
 FishPhyloMaker(data, return.insertions = FALSE)
 }
@@ -19,7 +19,7 @@ will be a list of length two containg the newick phylogeny and a data frame equa
 indicating at which level each species was inserted in the tree
 }
 \description{
-Editing fish phylogeny according to a local pool of species
+Obtaining fish phylogeny according to a local pool of species
 }
 \examples{
 \dontrun{
