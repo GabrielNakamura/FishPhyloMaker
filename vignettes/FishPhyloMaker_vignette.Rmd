@@ -1,8 +1,9 @@
 ---
 title: "Using FishPhyloMaker to build phylogenies for bony fishes"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{FishPhyloMaker_vignette}
+  %\VignetteIndexEntry{Using FishPhyloMaker to build phylogenies for bony fishes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

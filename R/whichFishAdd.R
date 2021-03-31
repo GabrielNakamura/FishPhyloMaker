@@ -212,13 +212,8 @@ whichFishAdd <- function(data){
         else {
           insertions <- rep("NA", nrow(data))
           data_insertions <- cbind(data, insertions)
-          species_to_genus2 <- unlist(species_to_genus2)
           data_insertions <- cbind(data, insertions)
           data_insertions[match(species_to_genus1, data$s), "insertions"] <- rep("Congeneric_insertion", length(species_to_genus1))
-          if(length(species_to_genus2) >= 1){
-            data_insertions[match(species_to_genus2, data$s), "insertions"] <- rep("Congeneric_insertion_roundFamily", length(unlist(species_to_genus2)))
-            data_exRound2 <- data_exRound2[-match(species_to_genus2, data_exRound2$s), ]
-          }
           family_level_insertions <- unique(setdiff(data_exRound2$s, 
                                                     data_exRound3$s))
           family_insertions <- setdiff(family_level_insertions, species_to_genus1)
@@ -229,7 +224,7 @@ whichFishAdd <- function(data){
           data_insertions[match(data_exRound3$s, data$s), 
                           "insertions"] <- rep("Order_insertion", 
                                                length(data_exRound3$s))
-          spp_on_tree <- data[-match(c(species_to_genus1, species_to_genus2,
+          spp_on_tree <- data[-match(c(species_to_genus1,
                                        family_insertions, 
                                        data_exRound3$s), data$s), "s"]
           data_insertions[match(spp_on_tree, data$s), 

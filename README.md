@@ -59,8 +59,8 @@ Finally run `FishPhyloMaker`
 
 ```{.r}
 res_phylo <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
-Hisonotus # genus to insert Curculionichthys
-Synbranchidae # family to insert Synbranchus marmoratus
+Hisonotus 
+Synbranchidae 
 ```
 
 The species are inserted in a sequential procedure. Those species with any congeneric representatives will be printed in the console jointly with a list of Genus in which the user must choose. The user have three options: 
