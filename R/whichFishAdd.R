@@ -11,6 +11,15 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#'     data(neotropical_comm)
+#'     data_comm <- neotropical_comm[, -c(1, 2)]
+#'     taxon_data <- tab_function(data_comm) # formating data
+#'     Loricariidae # informing Family of Curculionichthys insperatus
+#'     Siluriformes # informing Order of Curculionichthys insperatus
+#'     res_test <- whichFishAdd(data = taxon_data)
+#' }
+#' 
 #' 
 whichFishAdd <- function(data){
   tree_complete <- fishtree::fishtree_phylogeny()
