@@ -1,4 +1,4 @@
-#' Editing fish phylogeny according to a local pool of species
+#' Obtaining fish phylogeny according to a local pool of species
 #'
 #' @param data A data frame with three columns containing the name of species (s), the Family (f) and the Order (o). This data frame can be generated 
 #'     with tab_function function
@@ -73,8 +73,8 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
     families_order_and_data <- unique(c(rank_family, families_in_orders))
     list_family <- vector(mode = "list", length = length(families_order_and_data))
     for (i in 1:length(families_order_and_data)) {
-      list_family[[i]] <- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = families_order_and_data[i], 
-                                                                            type = "chronogram_mrca")$tip.label)), error = function(e) paste(print(families_order_and_data[i])))
+      list_family[[i]] <- tryCatch(paste(fishtree::fishtree_phylogeny(rank = families_order_and_data[i], 
+                                                                      type = "chronogram_mrca")$tip.label), error = function(e) paste(print(families_order_and_data[i])))
     }
     names(list_family) <- families_order_and_data
     monotipic_family <- names(unlist(lapply(list_family, 
@@ -95,8 +95,8 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
     all_orders_include <- unique(c(rank_order, unique(orders_to_add)))
     list_order <- vector(mode = "list", length = length(all_orders_include))
     for (i in 1:length(all_orders_include)) {
-      list_order[[i]] <- tryCatch(paste(print(fishtree::fishtree_phylogeny(rank = all_orders_include[i], 
-                                                                           type = "chronogram_mrca")$tip.label)), error = function(e) paste(print(all_orders_include[i])))
+      list_order[[i]] <- tryCatch(paste(fishtree::fishtree_phylogeny(rank = all_orders_include[i], 
+                                                                     type = "chronogram_mrca")$tip.label), error = function(e) paste(print(all_orders_include[i])))
     }
     names(list_order) <- all_orders_include
     phylo_order <- filter_rank(order = list_order)
@@ -241,7 +241,6 @@ FishPhyloMaker <- function (data, return.insertions = FALSE)
         )]
         spp_to_add_round2 <- setdiff(data_exRound2$s, 
                                      data_exRound3$s)
-        
         count <- 0
         species_to_genus2 <- vector(mode = "list")
         while (length(spp_to_add_round2) >= 1) {
