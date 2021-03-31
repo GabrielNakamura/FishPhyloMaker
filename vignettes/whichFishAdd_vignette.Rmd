@@ -1,0 +1,55 @@
+---
+title: "How to find for species that must be added?"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to find for species that must be added?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this article we will show how to find for species that must be added to the mega-tree. When there are few species that must be added, the interactive insertion process is ease to follow. However, when we are dealing with big data bases with many species, it is desirable that before to initiate the insertion process with `FishPhyloMaker` function we know which species must be inserted and at which levels of insertion. So, in order to facilitate this process the function `whichFishAdd` take all species informed by the user and provide a classification of each level in which the species that must be inserted will be inserted when running `FishPhyloMaker` function.
+
+First lets read `{FishPhyloMaker}` package and the data containing more than 650 fish species with occurrence in the Neotropical region.
+
+```{r setup, eval=FALSE, echo=TRUE}
+library(FishPhyloMaker)
+data("fish_SAmerica")
+```
+
+Then, we will check for the names of the species in the data base through the function `FishTaxaMaker`, and inform manually the Family and the Order of the species that were not find in Fishbase.
+
+```{r taxondata, eval=FALSE, echo=TRUE}
+taxon_data <- FishTaxaMaker(data = fish_SAmerica)
+Loricariidae
+Siluriformes
+Anostomidae 
+Characiformes
+Anostomidae 
+Characiformes
+Anostomidae 
+Characiformes
+Serrasalmidae
+Characiformes
+Auchenipteridae
+Siluriformes
+Auchenipteridae
+Siluriformes
+Auchenipteridae
+Siluriformes
+```
+
+taxon_data contain the taxonomic information for all species, and can be used in `whichFishAdd` function to perform the classification of each species.
+
+```{r addFish, eval=FALSE, echo=TRUE}
+class_fish <- whichFishAdd(data = taxon_data) 
+```
+
+class_fish is a dataframe that contain in insertion column an indication of which level the each species must be inserted (or if the species are already on tree). This data can be used to find for specific phylogenetic position for some species previous to run `FishPhyloMaker`.

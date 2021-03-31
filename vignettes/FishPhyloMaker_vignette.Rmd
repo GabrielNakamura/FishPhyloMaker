@@ -28,7 +28,7 @@ We will use a data base that contain fish species from rivers and streams of neo
 
 ```{r read_data, eval=FALSE, echo=TRUE} 
 library(FishPhyloMaker)
-data(fish_SAmerica)
+data("fish_SAmerica")
 ```
 
 `fish_SAmerica` correspond to a data frame containing the occurrence of 679 fish species at 37 basins in the neotropical region. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in `FishPhyloMaker` function, that correspond to a data frame with three column containing the taxonomic information of each one of the 679 species. To obtain this data we will use the function `FishTaxaMaker` that finds for each name of species present in the `fish_SAmerica` data and checks if these names are found in [Fishbase]("https://www.fishbase.se/search.php"). 
