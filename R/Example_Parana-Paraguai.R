@@ -1,7 +1,11 @@
+library(FishPhyloMaker)
+library(ggplot2)
+library(ggtree)
+library(viridis)
+
 data(neotropical_comm)
 data_comm <- neotropical_comm[, -c(1, 2)] # removing latitude and longitude
 
-library(FishPhyloMaker)
 taxon_dataPR <- FishTaxaMaker(data_comm)
 Loricariidae
 Siluriformes
@@ -11,6 +15,7 @@ Hisonotus
 Synbranchidae 
 
 tree.PR<- res_phylo$Phylogeny
+
 tree.PR <- ape::makeNodeLabel(tree.PR)
 phylo <- tree.PR
 
@@ -33,9 +38,18 @@ pos.node <- unlist(lapply(names.fam, function(x){
 df.phylo <- data.frame(Fam.names = names.fam,
                        node.number = pos.node)
 
-ggtree(phylo, layout = "circular") + geom_tiplab2(size = 2) +
-  geom_hilight(data = df.phylo, aes(node = node.number, fill = Fam.names), 
-               alpha = .6) +
-  scale_fill_viridis(discrete = T) #+ theme(legend.position = "none")
+plot.base <- ggtree(phylo) + theme_tree2()
+windows()
+plot1 <- revts(plot.base) + scale_x_continuous(labels=abs)
 
 
+PR.PG <- plot1 + geom_hilight(data = df.phylo, aes(node = node.number, fill = Fam.names), 
+                      alpha = .6) +
+  scale_fill_viridis(discrete = T, name = "Family names")
+windows()
+PR.PG
+
+png(here::here("vignettes", "Phylo_Parana-Paraguai.png"), width = 18,
+     height = 12, units = "cm", res = 300)
+PR.PG
+dev.off()
