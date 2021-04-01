@@ -68,7 +68,7 @@ These three options are shown in the following code:
 *NOTE* - The function can take several minutes to run depending on the number of species that must be inserted.
 
 ```{r phylo_make, eval=FALSE, echo=TRUE}
-phylo_fish_SAmerica <- FishPhyloMaker(data = data.fish, return.insertions = T)
+phylo_fish_SAmerica <- FishPhyloMaker(data = taxon_data, return.insertions = T)
 Serrasalmidae
 Acanthicus
 Schizodon
