@@ -15,113 +15,92 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this article we will show how to obtain a phylogeny for a pool of species using FishPhyloMaker package. First of all, we need to install and read FishPhyloMaker package, that can be made using the following code:
+In this article we will show how to obtain a phylogeny for a pool of species using FishPhyloMaker package. First of all, we need to install and read `{FishPhyloMaker}` package, that can be made using the following code:
 
 
 ```{r install_pkg, echo=TRUE, eval=FALSE}
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 ```
 
-We will use a data base that contain fish species from rivers and streams of neotropical region, this data are present in the package and can be easily accessed by typing:
+We will use a data base that contain stream fish species from Paraná and Paraguai basins. These comprises two of the main basins in Neotropical region. This data are embbeded in the package and can be easily accessed by typing:
 
 ```{r read_data, eval=FALSE, echo=TRUE} 
 library(FishPhyloMaker)
-data("fish_SAmerica")
+data(neotropical_comm)
+data_comm <- neotropical_comm[, -c(1, 2)] # removing Latitude and Longitude
 ```
 
-`fish_SAmerica` correspond to a data frame containing the occurrence of 679 fish species at 37 basins in the neotropical region. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in `FishPhyloMaker` function, that correspond to a data frame with three column containing the taxonomic information of each one of the 679 species. To obtain this data we will use the function `FishTaxaMaker` that finds for each name of species present in the `fish_SAmerica` data and checks if these names are found in [Fishbase]("https://www.fishbase.se/search.php"). 
-Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of the species that was not found. The names must be typed sequentially, as in the following code.
+`neotropical_comm` correspond to a data frame containing the abundance of 59 fish species collected in 20 headwater streams, being 10 in Paraná and 10 in Paraguay Basin. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in `FishPhyloMaker` function, that correspond to a data frame with three column containing the taxonomic information of each one of the 59 species. To prepare this data we will use the function `FishTaxaMaker` that finds for each species name present in the data_comm and checks if these names are found in [Fishbase]("https://www.fishbase.se/search.php"). 
+Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.
 
 ```{r taxon_data, echo=TRUE, eval=FALSE}
-taxon_data <- FishTaxaMaker(data = fish_SAmerica)
+taxon_data <- FishTaxaMaker(data = data_comm)
 Loricariidae
-Siluriformes
-Anostomidae 
-Characiformes
-Anostomidae 
-Characiformes
-Anostomidae 
-Characiformes
-Serrasalmidae
-Characiformes
-Auchenipteridae
-Siluriformes
-Auchenipteridae
-Siluriformes
-Auchenipteridae
 Siluriformes
 ```
 
-This function will return a data frame with three columns and the same number of species present in `fish_SAmerica` data, and now this data can be used in `FishPhyloMaker` function to generate the phylogenetic tree for these species. In this example we will set the argument return.insertions = TRUE, since we want to know at which level of insertion each species was inserted in the process. Like `FishTaxaMaker` function, `FishPhyloMaker` also have a interactive process of insertion in which the user must inform at which genus or family the species must be inserted in the mega-tree. There are three options: 
+This function will return a data frame with three columns and the same number of species present in data_comm, and now taxon_data can be used in `FishPhyloMaker` function to generate the phylogenetic tree for these species. In this example we will set the argument return.insertions = TRUE, since we want to know at which level of hierarchical taxonomy each species was inserted in the process, the levels are explained in the [introductory article](https://gabrielnakamura.github.io/FishPhyloMaker/index.html). Like `FishTaxaMaker` function, `FishPhyloMaker` also have a interactive process of insertion in which the user must inform at which position species must be inserted in the mega-tree. There are three options: 
 
-1. **Insert the species near to a given genus/family**: To insert the species near to a specific genus/family, the user must       type the name of the genus (or family) at which the species must be inserted;
+1. **Insert the species near to a specific genus/family**: To insert the species near to a specific genus/family,
+    the user must type the name of the genus (or family) at which the species must be inserted;
 
-2. **Insert the species between two genus/families**: To insert the species between two different genus or families, the user 
+2. **Insert the species between two genus/families**: To insert the species between two different genus/families, the user 
     must type the names of the two genus/families separated by a blank space;
 
-3. **Insert at the root of the family/order**: To insert the species at the node that corresponds to the family (or order), the user must type the name of the family.
+3. **Insert at the root of the family/order**: To insert the species at the node that corresponds to the family (or order), 
+    the user must type the name of the family.
 
-These three options are shown in the following code:
+For each species a list of names containing Genus names or Family names will appear at command prompt, and the user
+    must decide among one of the previous option.
 
 *NOTE* - The function can take several minutes to run depending on the number of species that must be inserted.
 
 ```{r phylo_make, eval=FALSE, echo=TRUE}
-phylo_fish_SAmerica <- FishPhyloMaker(data = taxon_data, return.insertions = T)
-Serrasalmidae
-Acanthicus
-Schizodon
-Liosomadoras
-Hemiancistrus
-Ctenolucius
-Roeboexodon Exodon
-Leporinus
-Gymnotus
-Loricariichthys
-Anostomus
-Furcodontichthys
-Lasiancistrus
-Leporinus
-Schizodon Hypomasticus
-Batrochoglanis
-Pseudolithoxus
-Leporinus
-Anodus
-Paralonchurus
-Pachypops
-Vandellia Paravandellia
-Pachyurus
-Anostomus
-Sternarchorhamphus
-Vandellia
-Odontognathus
-Exallodontus
-Myleus
-Gnathodolus
-Trachelyopterus
-Hemiodontichthys
-Rhinelepis
-Pseudohemiodon
-Schizodon
-Gnathodolus
-Panaque Panaqolus
-Pseudacanthicus Leporacanthicus
-Hypopomidae
-Sternarchogiton
-Platyurosternarchus
-Gymnocorymbus
-Schizodon
-Synbranchidae
-Ageneiosus
-Asterophysus
-Trachelyopterus
-Ageneiosus
+phylo_fish_streams <- FishPhyloMaker(data = taxon_data, return.insertions = T)
+Hisonotus 
+Synbranchidae 
 ```
 
-The result is a list containing two objects, a phylogenetic tree and a dataframe indicating at which level each species was inserted in the phylogeny. We can directly plot the phylogenetic tree
+In this example I choose to insert the species *Curculionichthys insperatus* near to Genus *Hisonotus*, and species *Synbranchus marmoratus* at the 
+    base of its family, that is Synbranchidae.
+    
+The result of `FishPhyloMaker` is a list containing two objects, a phylogenetic tree and a data frame indicating at which level each species was inserted in the phylogeny.
+We can use the result contained in phylo_fish_streams to plot the tree. We can use the following code to highlight the families in the tree.
 
 ```{r plot_phylo, eval=FALSE, echo=TRUE}
-plot(phylo_fish_SAmerica$Phylogeny, cex = 0.3)
+tree.PR<- phylo_fish_streams$Phylogeny
+
+tree.PR <- ape::makeNodeLabel(tree.PR)
+phylo <- tree.PR
+
+rm.famNames <- which(table(taxon_dataPR$f) == 1) # monotipic families
+names.fam <- setdiff(unique(taxon_dataPR$f), names(rm.famNames)) # removing monotipic families from the names 
+
+for (i in 1:length(names.fam)) {
+  set <- subset(taxon_dataPR, f == names.fam[i])
+  phylo <- ape::makeNodeLabel(phylo, "u", nodeList = list(Fam_name = set$s))
+  
+  phylo$node.label[which(phylo$node.label == 
+                           "Fam_name") ] <- paste(set$f[1])
+}
+
+pos.node <- unlist(lapply(names.fam, function(x){
+  which(phylo$node.label == x) + length(phylo$tip.label)
+}))
+
+df.phylo <- data.frame(Fam.names = names.fam,
+                       node.number = pos.node)
+
+plot.base <- ggtree(phylo) + theme_tree2()
+plot1 <- revts(plot.base) + scale_x_continuous(labels=abs)
+
+
+PR.PG <- plot1 + geom_hilight(data = df.phylo, aes(node = node.number, fill = Fam.names), 
+                      alpha = .6) +
+  scale_fill_viridis(discrete = T, name = "Family names")
 ```
 
+With this code we will obtain a phylogenetic tree like that in Figure 1. The species that are not shaded with colours corresponds to monotipic families.
 
+![Fig. 1 - Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brasil).](../vignettes/Phylo_Parana-Paraguai.png)
 
