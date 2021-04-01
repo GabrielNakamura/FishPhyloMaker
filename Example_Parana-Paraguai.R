@@ -49,7 +49,7 @@ PR.PG <- plot1 + geom_hilight(data = df.phylo, aes(node = node.number, fill = Fa
 windows()
 PR.PG
 
-png(here::here("vignettes", "Phylo_Parana-Paraguai.png"), width = 18,
-     height = 12, units = "cm", res = 300)
+png(here::here("vignettes", "Phylo_Parana-Paraguai.png"), width = 12,
+     height = 8, units = "cm", res = 300)
 PR.PG
 dev.off()
