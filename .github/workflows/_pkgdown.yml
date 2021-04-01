@@ -65,7 +65,7 @@
   <link rel="assets" href="https://github.githubassets.com/">
   
 
-  <meta name="request-id" content="CBF6:24B5:5D1F4:9CA83:60663D3C" data-pjax-transient="true"/><meta name="html-safe-nonce" content="d8eb17397bc08a6d14d20b36fd0cc19d9eae79c9afc627a3eaa2a693abab6321" data-pjax-transient="true"/><meta name="visitor-payload" content="eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJDQkY2OjI0QjU6NUQxRjQ6OUNBODM6NjA2NjNEM0MiLCJ2aXNpdG9yX2lkIjoiODEyNzk5MTIwMjg2NzE5OTI5MiIsInJlZ2lvbl9lZGdlIjoiaWFkIiwicmVnaW9uX3JlbmRlciI6ImlhZCJ9" data-pjax-transient="true"/><meta name="visitor-hmac" content="3b92ad53bf855ab85efbcd9f89f0b455987876deae5215e548f5ccfe30977872" data-pjax-transient="true"/>
+  <meta name="request-id" content="CE7B:70FB:ACF12:FAB77:60663F6B" data-pjax-transient="true"/><meta name="html-safe-nonce" content="5f718f8750d1aecc7d05a9ec2408e38d69b792d515d4ab9fa97628bae70af701" data-pjax-transient="true"/><meta name="visitor-payload" content="eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJDRTdCOjcwRkI6QUNGMTI6RkFCNzc6NjA2NjNGNkIiLCJ2aXNpdG9yX2lkIjoiNjQwNjY4MDkxMTc4Nzk5OTA4MyIsInJlZ2lvbl9lZGdlIjoiaWFkIiwicmVnaW9uX3JlbmRlciI6ImlhZCJ9" data-pjax-transient="true"/><meta name="visitor-hmac" content="8ed7b4e50453408f63a655f8d4c583ed14c516af1ba1eb1f59f14a7effd83911" data-pjax-transient="true"/>
 
     <meta name="hovercard-subject-tag" content="repository:336899540" data-pjax-transient>
 
@@ -319,7 +319,7 @@
           spellcheck="false"
           autocomplete="off"
           >
-          <input type="hidden" data-csrf="true" class="js-data-jump-to-suggestions-path-csrf" value="v341TW/xvwQdUrpWLlg/X4LeLjLrySTezE5fW2PLbSX3UroJ3vEGQbwLozEVupLtGY8Yq+cnDCKVfbnEZZeZxg==" />
+          <input type="hidden" data-csrf="true" class="js-data-jump-to-suggestions-path-csrf" value="i1ZVPI7RPSxYoSzf+Slfb24iAuyzE1rsDVR8KfFG5IU8io/UyhIqxprV+X1TuahabHZcAHJiehapGT46WCjt0Q==" />
           <input type="hidden" class="js-site-search-type-field" name="type" >
             <img src="https://github.githubassets.com/images/search-key-slash.svg" alt="" class="mr-2 header-search-key-slash">
 
@@ -708,7 +708,7 @@
   
 
 
-    <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/GabrielNakamura/FishPhyloMaker/blob/e37f235de29a183eeea4e5e6faed22f964089587/_pkgdown.yml">Permalink</a>
+    <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/GabrielNakamura/FishPhyloMaker/blob/21b8bccd3352b72875f3aa2c5b2b85a928e2bd8b/_pkgdown.yml">Permalink</a>
 
     <!-- blob contrib key: blob_contributors:v22:37db354e12531038ff7f95bbd0eb9752b8acb2721709c29bc295a93f2b986448 -->
 
@@ -876,7 +876,7 @@
               </clipboard-copy>
             </li>
             <li>
-              <clipboard-copy value="https://github.com/GabrielNakamura/FishPhyloMaker/blob/e37f235de29a183eeea4e5e6faed22f964089587/_pkgdown.yml" class="dropdown-item cursor-pointer" data-toggle-for="blob-more-options-details" >
+              <clipboard-copy value="https://github.com/GabrielNakamura/FishPhyloMaker/blob/21b8bccd3352b72875f3aa2c5b2b85a928e2bd8b/_pkgdown.yml" class="dropdown-item cursor-pointer" data-toggle-for="blob-more-options-details" >
                 <span class="d-flex flex-items-baseline">
                   <span class="flex-auto">Copy permalink</span>
                 </span>
@@ -969,7 +969,7 @@
             Copy permalink
           </clipboard-copy>
         </li>
-        <li><a class="dropdown-item js-update-url-with-hash" id="js-view-git-blame" role="menuitem" href="/GabrielNakamura/FishPhyloMaker/blame/e37f235de29a183eeea4e5e6faed22f964089587/_pkgdown.yml">View git blame</a></li>
+        <li><a class="dropdown-item js-update-url-with-hash" id="js-view-git-blame" role="menuitem" href="/GabrielNakamura/FishPhyloMaker/blame/21b8bccd3352b72875f3aa2c5b2b85a928e2bd8b/_pkgdown.yml">View git blame</a></li>
           <li><a class="dropdown-item" id="js-new-issue" role="menuitem" href="/GabrielNakamura/FishPhyloMaker/issues/new">Reference in new issue</a></li>
       </ul>
     </details-menu>
