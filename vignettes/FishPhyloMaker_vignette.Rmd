@@ -15,8 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Making a phylogeny of fish species using FishPhyloMaker package
-
 In this article we will show how to obtain a phylogeny for a pool of species using FishPhyloMaker package. First of all, we need to install and read FishPhyloMaker package, that can be made using the following code:
 
 
