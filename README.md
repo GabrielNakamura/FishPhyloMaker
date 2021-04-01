@@ -38,6 +38,7 @@ devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 To run an example the user can load a data set contained in the package:
 
 ```{.r}
+library(FishPhyloMaker)
 data(neotropical_comm)
 data_comm <- neotropical_comm[, -c(1, 2)] # removing latitude and longitude
 ```
