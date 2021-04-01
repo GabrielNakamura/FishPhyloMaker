@@ -1,5 +1,5 @@
 ---
-title: "How to find for species that must be added?"
+title: "How to know which species must be added to phylogeny?"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -15,8 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this article we will show how to find for species that must be added to the mega-tree. When there are few species that must be added, the interactive insertion process is ease to follow. However, when we are dealing with big data bases with many species, it is desirable that before to initiate the insertion process with `FishPhyloMaker` function we know which species must be inserted and at which levels of insertion. So, in order to facilitate this process the function `whichFishAdd` take all species informed by the user and provide a classification of each level in which the species that must be inserted will be inserted when running `FishPhyloMaker` function. The classification follows similar classification from that presented in the insertion process:
-
+In this article we will show how to find for species that must be added to the mega-tree, before runing the `FishPhyloMaker` function. When there are few species that must be added, the interactive insertion process is ease to follow. However, when we are dealing with big data bases with many species, it is desirable that before to initiate the insertion process with `FishPhyloMaker` function we know which species must be inserted and at which position in phylogenetic tree. So, in order to facilitate this process the function `whichFishAdd` take all species informed by the user and provide a classification of each level in which the species be inserted when running `FishPhyloMaker` function. The code of classification follows similar classification from that presented in the insertion process:
 
 -   **Present_in_tree** the species was already present in the original tree;
 -   **Congeneric_insertion** species inserted as a sister species of the same genus presented in the tree;
@@ -24,14 +23,14 @@ In this article we will show how to find for species that must be added to the m
 -   **Order_insertion** if not found any genus of the same family of the species that must be inserted, the species will be inserted near to a given family, between two families or at the node that corresponds to the Order of this species;
 
 
-First lets read `{FishPhyloMaker}` package and the data containing more than 650 fish species with occurrence in the Neotropical region.
+First, lets read `{FishPhyloMaker}` package and the data containing more than 650 fish species with occurrence in the Neotropical region.
 
 ```{r setup, eval=FALSE, echo=TRUE}
 library(FishPhyloMaker)
 data("fish_SAmerica")
 ```
 
-Then, we will check for the names of the species in the data base through the function `FishTaxaMaker`, and inform manually the Family and the Order of the species that were not find in Fishbase.
+Then, we will check for the names of the species in the data base through the function `FishTaxaMaker`, and inform manually the Family and the Order of the species that were not find in Fishbase. This procedure is better explained in other [articles](https://gabrielnakamura.github.io/FishPhyloMaker/articles/FishPhyloMaker_vignette.html)
 
 ```{r taxondata, eval=FALSE, echo=TRUE}
 taxon_data <- FishTaxaMaker(data = fish_SAmerica)
@@ -59,4 +58,4 @@ taxon_data contain the taxonomic information for all species, and can be used in
 class_fish <- whichFishAdd(data = taxon_data) 
 ```
 
-class_fish is a dataframe that contain in insertion column an indication of which level the each species must be inserted (or if the species are already on tree). This data can be used to find for specific phylogenetic position for some species previous to run `FishPhyloMaker`.
+class_fish is a data frame that contain in insertion column an indication of which level each species must be inserted (or if the species are already on tree). This data can be used previous than `FishPhyloMaker` to find for phylogenetic position of the absent species.
