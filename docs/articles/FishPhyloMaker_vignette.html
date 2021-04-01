@@ -80,7 +80,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using FishPhyloMaker to build phylogenies for bony fishes</h1>
             
-            <h4 class="date">2021-03-31</h4>
+            <h4 class="date">2021-04-01</h4>
       
       
       <div class="hidden name"><code>FishPhyloMaker_vignette.Rmd</code></div>
@@ -89,9 +89,6 @@
 
     
     
-<div id="making-a-phylogeny-of-fish-species-using-fishphylomaker-package" class="section level1">
-<h1 class="hasAnchor">
-<a href="#making-a-phylogeny-of-fish-species-using-fishphylomaker-package" class="anchor"></a>Making a phylogeny of fish species using FishPhyloMaker package</h1>
 <p>In this article we will show how to obtain a phylogeny for a pool of species using FishPhyloMaker package. First of all, we need to install and read FishPhyloMaker package, that can be made using the following code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"GabrielNakamura/FishPhyloMaker"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></code></pre></div>
@@ -126,7 +123,7 @@
 </ol>
 <p>These three options are shown in the following code:</p>
 <p><em>NOTE</em> - The function can take several minutes to run depending on the number of species that must be inserted.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>phylo_fish_SAmerica &lt;-<span class="st"> </span><span class="kw">FishPhyloMaker</span>(<span class="dt">data =</span> data.fish, <span class="dt">return.insertions =</span> T)</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>phylo_fish_SAmerica &lt;-<span class="st"> </span><span class="kw">FishPhyloMaker</span>(<span class="dt">data =</span> taxon_data, <span class="dt">return.insertions =</span> T)</span>
 <span id="cb4-2"><a href="#cb4-2"></a>Serrasalmidae</span>
 <span id="cb4-3"><a href="#cb4-3"></a>Acanthicus</span>
 <span id="cb4-4"><a href="#cb4-4"></a>Schizodon</span>
@@ -178,14 +175,11 @@
 <p>The result is a list containing two objects, a phylogenetic tree and a dataframe indicating at which level each species was inserted in the phylogeny. We can directly plot the phylogenetic tree</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">phylo_fish_SAmerica</span><span class="op">$</span><span class="va">Phylogeny</span>, cex <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></code></pre></div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
