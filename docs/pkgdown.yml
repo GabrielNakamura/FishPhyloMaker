@@ -1,0 +1,8 @@
+pandoc: 2.9.2.1
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  FishPhyloMaker_vignette: FishPhyloMaker_vignette.html
+  whichFishAdd_vignette: whichFishAdd_vignette.html
+last_built: 2021-04-02T13:00Z
+
