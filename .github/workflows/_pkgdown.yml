@@ -17,7 +17,7 @@
 
   <link crossorigin="anonymous" media="all" integrity="sha512-uGiH6wbEDXS0vWuvN3hZbENUuT1jRMWy2XVfJIgd3mEESUBtD/hnFdIiujVyRcPJ5dofwZ6e196xmCczSkgz9g==" rel="stylesheet" href="https://github.githubassets.com/assets/frameworks-b86887eb06c40d74b4bd6baf3778596c.css" />
   <link crossorigin="anonymous" media="all" integrity="sha512-gEUpuli94xYShC0AAbAVQoQqxAoVyNDUWuD3x6Hsvwm8f1L7gbiu4bEM1HDLEkRz4ofHAvdAdmeqaUtzBCy6xg==" rel="stylesheet" href="https://github.githubassets.com/assets/site-804529ba58bde31612842d0001b01542.css" />
-    <link crossorigin="anonymous" media="all" integrity="sha512-hn7ufFGnBX0esN9X35VSMcJ1zvAQdLE3mHyRjRIAOhONBc/ZrIwG792eQfp0hRpKHjdoRrc1ianAOC196/3RBQ==" rel="stylesheet" href="https://github.githubassets.com/assets/behaviors-867eee7c51a7057d1eb0df57df955231.css" />
+    <link crossorigin="anonymous" media="all" integrity="sha512-8rXKu7ZOFdS3H7Rk0wJ38WQFoEp6b7HTSZ58yDoWzKX+JDPYC6vtbIdTIbhWT90/16upZIaZDCPOA8P9a8mv5A==" rel="stylesheet" href="https://github.githubassets.com/assets/behaviors-f2b5cabbb64e15d4b71fb464d30277f1.css" />
     
     
     
@@ -25,9 +25,9 @@
 
   <script crossorigin="anonymous" defer="defer" integrity="sha512-CzeY4A6TiG4fGZSWZU8FxmzFFmcQFoPpArF0hkH0/J/S7UL4eed/LKEXMQXfTwiG5yEJBI+9BdKG8KQJNbhcIQ==" type="application/javascript" src="https://github.githubassets.com/assets/environment-0b3798e0.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-ia3qtqJLuIGCLGCUhnA3QhnKIliZYAtfi3Xkmtilql14AtLNrAioamn2hmiOwNnww74fBsaeWpiLDEn5iIoTaQ==" type="application/javascript" src="https://github.githubassets.com/assets/chunk-frameworks-89adeab6.js"></script>
-    <script crossorigin="anonymous" defer="defer" integrity="sha512-xGV0GaSP54Fo1IMOHVprXJXl3Dmjw/UNWVlqadPcSAa3AaLZVCkdbN0qaRhIJT2ExX5oWF9rcEzhZsU7nHeN9A==" type="application/javascript" src="https://github.githubassets.com/assets/chunk-vendor-c4657419.js"></script>
+    <script crossorigin="anonymous" defer="defer" integrity="sha512-8L7Awn9r6icJUbEhnp8KIHB7N6rzEQmJyDIL5WJO9l/eTeJ60nPC7krAsNYyydo10PQjZLOHbN+jorV80Xk9tQ==" type="application/javascript" src="https://github.githubassets.com/assets/chunk-vendor-f0bec0c2.js"></script>
   
-  <script crossorigin="anonymous" defer="defer" integrity="sha512-X0R9ZimlP3c76z7sCOOdWczwIhAq1w+0CFAuNMkIC8pZQtzi9BiUQRZcmWnmvWzjtjBblShCF3nmpN0sJnEybg==" type="application/javascript" src="https://github.githubassets.com/assets/behaviors-5f447d66.js"></script>
+  <script crossorigin="anonymous" defer="defer" integrity="sha512-0yKWpOhMUivojXJ8dK1xB0/Lf1OPdH3X+kmIjuzpGoTny9wqUKsFylShIKBJnNJ+UFoYRuZYexheeJ9qp3ix6Q==" type="application/javascript" src="https://github.githubassets.com/assets/behaviors-d32296a4.js"></script>
   
     <script crossorigin="anonymous" defer="defer" integrity="sha512-aEeAsfpL9cBt2DYP2NfaqKLyYLkN4BS+/ikvLHM+abhqZsoNmd3Wxqwu6TGp7Pf/vqvvGeL26/NswwMkS1WwQg==" type="application/javascript" data-module-id="./chunk-color-modes.js" data-src="https://github.githubassets.com/assets/chunk-color-modes-684780b1.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-zaLwmM/bgGhKnDy4YPvbl92aZ1yaF7e3A+bjdCoWZSCls/co65VBCDE+blnNwcfc61E/cQHJiFDokMdSGmTYxQ==" type="application/javascript" data-module-id="./chunk-contributions-spider-graph.js" data-src="https://github.githubassets.com/assets/chunk-contributions-spider-graph-cda2f098.js"></script>
@@ -36,7 +36,7 @@
     <script crossorigin="anonymous" defer="defer" integrity="sha512-aiqMIGGZGo8AQMjcoImKPMTsZVVRl6htCSY7BpRmpGPG/AF+Wq+P/Oj/dthWQOIk9cCNMPEas7O2zAR6oqn0tA==" type="application/javascript" data-module-id="./chunk-emoji-picker-element.js" data-src="https://github.githubassets.com/assets/chunk-emoji-picker-element-6a2a8c20.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-DAk56F8lz8k6kg6vf15oE4tu4MTIPDT9DUo3VwO8SLYyb3ws4QU433BG7eVXOS50wzl7dUuMFRfTP1rHlHi45g==" type="application/javascript" data-module-id="./chunk-filter-input.js" data-src="https://github.githubassets.com/assets/chunk-filter-input-0c0939e8.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-j5Eltv6XYkPt7XVCMWLH6qhNBoFOzxXLIsaoffjjTl2fw/sXVfluH+EGE5dYJPEBwsmqK0LenheRi9hmNcWnCA==" type="application/javascript" data-module-id="./chunk-insights-graph.js" data-src="https://github.githubassets.com/assets/chunk-insights-graph-8f9125b6.js"></script>
-    <script crossorigin="anonymous" defer="defer" integrity="sha512-sVIqil8dhsNYgUOKc4rNyuaZbkHt/6TzvgobHBXzW6WeIfI5tL0Ohce7vjtcLd/nftwzKtcvh0gX7BcqInoYtQ==" type="application/javascript" data-module-id="./chunk-jump-to.js" data-src="https://github.githubassets.com/assets/chunk-jump-to-b1522a8a.js"></script>
+    <script crossorigin="anonymous" defer="defer" integrity="sha512-CAVUvfanIIZ+unBmvTLWjBxfT4MRj8Yr7ZssMv95FlE4gorm82ITReUuDeMC2YGKV1KlKqvpqLrAlHISRRo6dw==" type="application/javascript" data-module-id="./chunk-jump-to.js" data-src="https://github.githubassets.com/assets/chunk-jump-to-080554bd.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-ma0OOy3nj0c1cqBx0BkcmIFsLqcSZ+MIukQxyEFM/OWTzZpG+QMgOoWPAHZz43M6fyjAUG1jH6c/6LPiiKPCyw==" type="application/javascript" data-module-id="./chunk-profile-pins-element.js" data-src="https://github.githubassets.com/assets/chunk-profile-pins-element-99ad0e3b.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-9WNXtB07IyWypiPmkuucspwog4mme9q5GKGMSgd7FI0DPimmg/pEw+aaAofFV1vuWMt9I8H5QpsVtlbHGg1YBA==" type="application/javascript" data-module-id="./chunk-runner-groups.js" data-src="https://github.githubassets.com/assets/chunk-runner-groups-f56357b4.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-JoWpXsdKsRKFyspZP0lsV/mUnqLhErMvFLeq7PwLuptuR0JgHOv5NMWIeBqqWHuWmhIltMifR+/rEjO553Raug==" type="application/javascript" data-module-id="./chunk-sortable-behavior.js" data-src="https://github.githubassets.com/assets/chunk-sortable-behavior-2685a95e.js"></script>
@@ -44,7 +44,7 @@
     <script crossorigin="anonymous" defer="defer" integrity="sha512-ZyozqjwhoIovRiwFwpwYmlQUgmIyGt5y8DgJhtiLHr9EM6f51vmXxaIIZap+ly64QSLa0zeA7DPCD6Yio2/AGA==" type="application/javascript" data-module-id="./chunk-tweetsodium.js" data-src="https://github.githubassets.com/assets/chunk-tweetsodium-672a33aa.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-ZX9coLzuHYwGQMYooo9cElDR0yuFzb/EXu/R9xWaVyITzfhe2rmwiIXtY6IExaSYJNNOcp/J60c/hBnP0yaTpw==" type="application/javascript" data-module-id="./chunk-user-status-submit.js" data-src="https://github.githubassets.com/assets/chunk-user-status-submit-657f5ca0.js"></script>
   
-  <script crossorigin="anonymous" defer="defer" integrity="sha512-+HpmEcdXRBtHeouF5DgP7cU6IQPpGaUwoHurX81Suht+ST3noNdGVA8urccbtnZ8knYr54rYx6CE629T0bDbhw==" type="application/javascript" src="https://github.githubassets.com/assets/repositories-f87a6611.js"></script>
+  <script crossorigin="anonymous" defer="defer" integrity="sha512-fYTjR9vHrMZ/jSK5QkUxPTOLZfrFalbVsQ3S0JqE1X23re+rheu3F9Dx37lxmdBM+81wynticn+I1mb+M/XWfg==" type="application/javascript" src="https://github.githubassets.com/assets/repositories-7d84e347.js"></script>
 <script crossorigin="anonymous" defer="defer" integrity="sha512-tLikv21ym1gzrqyQ2PnBEXFynzBgRo3Us4VMTwfWy08fJ/ZR9mThwBUb6k3VbwpmLUPcvQ763fWuxYitDjVHWw==" type="application/javascript" src="https://github.githubassets.com/assets/diffs-b4b8a4bf.js"></script>
 
   <meta name="viewport" content="width=device-width">
@@ -65,7 +65,7 @@
   <link rel="assets" href="https://github.githubassets.com/">
   
 
-  <meta name="request-id" content="CE7B:70FB:ACF12:FAB77:60663F6B" data-pjax-transient="true"/><meta name="html-safe-nonce" content="5f718f8750d1aecc7d05a9ec2408e38d69b792d515d4ab9fa97628bae70af701" data-pjax-transient="true"/><meta name="visitor-payload" content="eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJDRTdCOjcwRkI6QUNGMTI6RkFCNzc6NjA2NjNGNkIiLCJ2aXNpdG9yX2lkIjoiNjQwNjY4MDkxMTc4Nzk5OTA4MyIsInJlZ2lvbl9lZGdlIjoiaWFkIiwicmVnaW9uX3JlbmRlciI6ImlhZCJ9" data-pjax-transient="true"/><meta name="visitor-hmac" content="8ed7b4e50453408f63a655f8d4c583ed14c516af1ba1eb1f59f14a7effd83911" data-pjax-transient="true"/>
+  <meta name="request-id" content="C202:0DEE:6B2549:9DB9D5:6067168D" data-pjax-transient="true"/><meta name="html-safe-nonce" content="c444d87dc7e541e4e28b7937d93f5a13023ea03108e86f1ec4ebd287e7b2ffbb" data-pjax-transient="true"/><meta name="visitor-payload" content="eyJyZWZlcnJlciI6IiIsInJlcXVlc3RfaWQiOiJDMjAyOjBERUU6NkIyNTQ5OjlEQjlENTo2MDY3MTY4RCIsInZpc2l0b3JfaWQiOiI3Njg5Njk0ODMyNjAyMDYwNDMwIiwicmVnaW9uX2VkZ2UiOiJpYWQiLCJyZWdpb25fcmVuZGVyIjoiaWFkIn0=" data-pjax-transient="true"/><meta name="visitor-hmac" content="4ca0f218f079c3b3195e461b67118467db6d6c17689da828b6e1453e4dba5914" data-pjax-transient="true"/>
 
     <meta name="hovercard-subject-tag" content="repository:336899540" data-pjax-transient>
 
@@ -107,7 +107,7 @@
 
     <meta name="enabled-features" content="MARKETPLACE_PENDING_INSTALLATIONS,AUTOCOMPLETE_EMOJIS_IN_MARKDOWN_EDITOR">
 
-  <meta http-equiv="x-pjax-version" content="f13c6bd471e14897fb0f947c9a43bd9a6487633c350362ddb91f761de22cf91f">
+  <meta http-equiv="x-pjax-version" content="f18370fcf9510c5ae80d7a51b3812fe180f222d1bec162cb9a64501d19b9c404">
   
 
     
@@ -319,7 +319,7 @@
           spellcheck="false"
           autocomplete="off"
           >
-          <input type="hidden" data-csrf="true" class="js-data-jump-to-suggestions-path-csrf" value="i1ZVPI7RPSxYoSzf+Slfb24iAuyzE1rsDVR8KfFG5IU8io/UyhIqxprV+X1TuahabHZcAHJiehapGT46WCjt0Q==" />
+          <input type="hidden" data-csrf="true" class="js-data-jump-to-suggestions-path-csrf" value="oH2iYEdoxuPc9SRUSLgWDXAopGkqH4Qr6OUqVaTtUXGOeWx3FjVaEUmS7byZWvoLzonX1Ssy/U9/CwWBQZaSog==" />
           <input type="hidden" class="js-site-search-type-field" name="type" >
             <img src="https://github.githubassets.com/images/search-key-slash.svg" alt="" class="mr-2 header-search-key-slash">
 
@@ -708,7 +708,7 @@
   
 
 
-    <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/GabrielNakamura/FishPhyloMaker/blob/21b8bccd3352b72875f3aa2c5b2b85a928e2bd8b/_pkgdown.yml">Permalink</a>
+    <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/GabrielNakamura/FishPhyloMaker/blob/d0c5ad2d1b2b6cf178f14603c218ad95a43feb3b/_pkgdown.yml">Permalink</a>
 
     <!-- blob contrib key: blob_contributors:v22:37db354e12531038ff7f95bbd0eb9752b8acb2721709c29bc295a93f2b986448 -->
 
@@ -876,7 +876,7 @@
               </clipboard-copy>
             </li>
             <li>
-              <clipboard-copy value="https://github.com/GabrielNakamura/FishPhyloMaker/blob/21b8bccd3352b72875f3aa2c5b2b85a928e2bd8b/_pkgdown.yml" class="dropdown-item cursor-pointer" data-toggle-for="blob-more-options-details" >
+              <clipboard-copy value="https://github.com/GabrielNakamura/FishPhyloMaker/blob/d0c5ad2d1b2b6cf178f14603c218ad95a43feb3b/_pkgdown.yml" class="dropdown-item cursor-pointer" data-toggle-for="blob-more-options-details" >
                 <span class="d-flex flex-items-baseline">
                   <span class="flex-auto">Copy permalink</span>
                 </span>
@@ -969,7 +969,7 @@
             Copy permalink
           </clipboard-copy>
         </li>
-        <li><a class="dropdown-item js-update-url-with-hash" id="js-view-git-blame" role="menuitem" href="/GabrielNakamura/FishPhyloMaker/blame/21b8bccd3352b72875f3aa2c5b2b85a928e2bd8b/_pkgdown.yml">View git blame</a></li>
+        <li><a class="dropdown-item js-update-url-with-hash" id="js-view-git-blame" role="menuitem" href="/GabrielNakamura/FishPhyloMaker/blame/d0c5ad2d1b2b6cf178f14603c218ad95a43feb3b/_pkgdown.yml">View git blame</a></li>
           <li><a class="dropdown-item" id="js-new-issue" role="menuitem" href="/GabrielNakamura/FishPhyloMaker/issues/new">Reference in new issue</a></li>
       </ul>
     </details-menu>
