@@ -82,4 +82,5 @@ And a data frame indicating at which level the species of local pool was inserte
 res_phylo$Insertions_data
 ```
 
-For more details and updates in package functioning see [FishPhyloMaker web page](https://gabrielnakamura.github.io/FishPhyloMaker/)
+For more details and updates in package functioning see and specific articles showing
+    how to use `{FishPhyloMaker}` package see [FishPhyloMaker web page](https://gabrielnakamura.github.io/FishPhyloMaker/)
