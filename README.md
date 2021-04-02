@@ -84,3 +84,9 @@ res_phylo$Insertions_data
 
 For more details and updates in package functioning see and specific articles showing
     how to use `{FishPhyloMaker}` package see [FishPhyloMaker web page](https://gabrielnakamura.github.io/FishPhyloMaker/)
+    
+Here some examples of phylogenies that can be made with `{FishPhyloMaker}` package:
+
+![Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brasil).](../vignettes/Fig2_example_Phylo.png)
+
+![Phylogenetic tree containing more than 600 species of fishes in the Neotropical region, the symbols show the insertions made in the mega-tree.](../vignettes/phylo_SAmerica.png)
