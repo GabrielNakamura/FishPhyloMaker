@@ -112,40 +112,22 @@ The data frame can be extracted and the categories of insertion can be plotted i
 
 ```{r familyNames, echo=TRUE, eval=FALSE}
 library(phytools)
-plotTree(phylo_fish_SAmerica$Phylogeny, fsize = 0.1, ftype = "i",
-         type = "fan", lwd = 0.3)
+library(ggtree)
+insertions <- phylo_fish_SAmerica$Insertions_data[-which("Present_in_Tree" == 
+                                                            phylo_fish_SAmerica$Insertions_data[, "insertions"]), ]
 
-tree <- phylo_fish_SAmerica$Phylogeny
-tree <- ape::makeNodeLabel(tree)
+p.base <- ggtree(tree, layout = "circular", size = .3)  %<+% insertions +
+  geom_treescale(x = 0, width = 20, linesize = .5, color = "blue", 
+                fontsize = 0) + #  plot the scale bar
+  annotate("text", x = 4, y = 500, label = "20 myr", size = 1.5) # an attempt for add a scale bar
 
-phylo <- tree
-
-rm.famNames <- which(table(taxon_data$f) == 1) # monotipic families
-names.fam <- setdiff(unique(taxon_data$f), names(rm.famNames))
-
-for (i in 1:length(names.fam)) {
-  #i=3
-  set <- subset(taxon_data, f == names.fam[i])
-  phylo <- ape::makeNodeLabel(phylo, "u", nodeList = list(Fam_name = set$s))
-  
-  phylo$node.label[which(phylo$node.label == 
-                           "Fam_name") ] <- paste(set$f[1])
-}
-
-
-pos.node <- unlist(lapply(names.fam, function(x){
-  which(phylo$node.label == x) + length(tree$tip.label)
-}))
-
-df.phylo <- data.frame(Fam.names = names.fam[-33],
-                       node.number = pos.node[-33])
-
-library(viridis)
-p.base <- ggtree(phylo, layout = "circular") + # geom_tiplab2(size = 0.4) +
-  geom_hilight(data = df.phylo, aes(node = node.number, fill = Fam.names), 
-               alpha = .6) +
-  scale_fill_viridis(discrete = T) + theme(legend.position = "none")
-  
+p.full <- p.base +
+  geom_tippoint(aes(color = insertions), 
+                size = .5, alpha = .8) +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(size = 2)))  +
+  scale_color_viridis_d(name = NULL, na.translate = F,
+                       labels = c("Congeneric", "Congeneric F", "Family")) 
 ```
 
 In Figure 1 we can see all the insertions made in the insertion process.

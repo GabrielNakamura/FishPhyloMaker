@@ -68,6 +68,7 @@ The result of `FishPhyloMaker` is a list containing two objects, a phylogenetic 
 We can use the result contained in phylo_fish_streams to plot the tree. We can use the following code to highlight the families in the tree.
 
 ```{r plot_phylo, eval=FALSE, echo=TRUE}
+library(ggtree)
 tree.PR<- phylo_fish_streams$Phylogeny
 
 tree.PR <- ape::makeNodeLabel(tree.PR)
