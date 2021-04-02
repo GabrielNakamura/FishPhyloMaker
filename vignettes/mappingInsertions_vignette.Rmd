@@ -113,6 +113,7 @@ The data frame can be extracted and the categories of insertion can be plotted i
 ```{r familyNames, echo=TRUE, eval=FALSE}
 library(phytools)
 library(ggtree)
+tree <- phylo_fish_SAmerica$Phylogeny
 insertions <- phylo_fish_SAmerica$Insertions_data[-which("Present_in_Tree" == 
                                                             phylo_fish_SAmerica$Insertions_data[, "insertions"]), ]
 
