@@ -1,0 +1,153 @@
+---
+title: "How to map species insertions in phylogenetic tree?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to map species insertions in phylogenetic tree?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this article we will show how we can map the insertions made in phylogenetic tree through the procedure realized in `FishPhyloMaker` function. Mapping the insertions is of special importance since allow to understand how the gaps in phylogenetic knowledge is distributed in the [megatree]. For example, we can understand if the Characidae family present more phylogenetic gaps than Loricariidae family.
+
+This can be done by using the information contained in the output of `FishPhyloMaker` function when we set the argument `return.insertions = TRUE`. This returns a data frame containing the categories of insertion for each species, these categories are:
+
+-   **Present_in_tree** the species was already present in the original tree;
+-   **Congeneric_insertion** species inserted as a sister species of the same genus presented in the tree;
+-   **Congeneric_insertion_roundFamily** species inserted as a sister species of the same genus presented in the tree, but that were added after a species of local pool of the same genus be inserted in the tree;
+-   **Family_insertion** if not found any congeneric species, the species will be inserted near to, or between genus of the same family presented in the tree. The user can also insert the species in the base of the family;
+-   **Order_insertion** if not found any genus of the same family of the species that must be inserted, the species will be inserted near to a given family, between two families or at the node that corresponds to the Order of this species;
+-   **Not_inserted** if species was not inserted in any of the previous steps, it will not be inserted in the final tree;
+
+To obtain this data frame we need first to run `FishPhyloMaker` setting the argument `return.insertions = TRUE`. We will use data of fish occurrence in the Neotropical region present in `{FishPhyloMaker}` package.
+
+```{r setup}
+library(FishPhyloMaker)
+data("fish_SAmerica")
+```
+
+We need to format this data using function `FishTaxaMaker`
+
+```{r formatData, echo=TRUE, eval=FALSE}
+taxon_data <- FishTaxaMaker(data = fish_SAmerica)
+Loricariidae
+Siluriformes
+Anostomidae 
+Characiformes
+Anostomidae 
+Characiformes
+Anostomidae 
+Characiformes
+Serrasalmidae
+Characiformes
+Auchenipteridae
+Siluriformes
+Auchenipteridae
+Siluriformes
+Auchenipteridae
+Siluriformes
+```
+
+With taxon_data we can run `FishPhyloMaker` to obtain the phylogeny and the data frame with all the insertions made by each species
+
+```{r makingPhylo, echo=TRUE, eval=FALSE}
+phylo_fish_SAmerica <- FishPhyloMaker(data = taxon_data, return.insertions = T)
+Serrasalmidae
+Acanthicus
+Schizodon
+Liosomadoras
+Hemiancistrus
+Ctenolucius
+Roeboexodon Exodon
+Leporinus
+Gymnotus
+Loricariichthys
+Anostomus
+Furcodontichthys
+Lasiancistrus
+Leporinus
+Schizodon Hypomasticus
+Batrochoglanis
+Pseudolithoxus
+Leporinus
+Anodus
+Paralonchurus
+Pachypops
+Vandellia Paravandellia
+Pachyurus
+Anostomus
+Sternarchorhamphus
+Vandellia
+Odontognathus
+Exallodontus
+Myleus
+Gnathodolus
+Trachelyopterus
+Hemiodontichthys
+Rhinelepis
+Pseudohemiodon
+Schizodon
+Gnathodolus
+Panaque Panaqolus
+Pseudacanthicus Leporacanthicus
+Hypopomidae
+Sternarchogiton
+Platyurosternarchus
+Gymnocorymbus
+Schizodon
+Synbranchidae
+Ageneiosus
+Asterophysus
+Trachelyopterus
+Ageneiosus
+```
+
+The data frame can be extracted and the categories of insertion can be plotted in the phylogenetic tree by using the information on `phylo_fish_SAmerica$Insertions`
+
+```{r familyNames, echo=TRUE, eval=FALSE}
+library(phytools)
+plotTree(phylo_fish_SAmerica$Phylogeny, fsize = 0.1, ftype = "i",
+         type = "fan", lwd = 0.3)
+
+tree <- phylo_fish_SAmerica$Phylogeny
+tree <- ape::makeNodeLabel(tree)
+
+phylo <- tree
+
+rm.famNames <- which(table(taxon_data$f) == 1) # monotipic families
+names.fam <- setdiff(unique(taxon_data$f), names(rm.famNames))
+
+for (i in 1:length(names.fam)) {
+  #i=3
+  set <- subset(taxon_data, f == names.fam[i])
+  phylo <- ape::makeNodeLabel(phylo, "u", nodeList = list(Fam_name = set$s))
+  
+  phylo$node.label[which(phylo$node.label == 
+                           "Fam_name") ] <- paste(set$f[1])
+}
+
+
+pos.node <- unlist(lapply(names.fam, function(x){
+  which(phylo$node.label == x) + length(tree$tip.label)
+}))
+
+df.phylo <- data.frame(Fam.names = names.fam[-33],
+                       node.number = pos.node[-33])
+
+library(viridis)
+p.base <- ggtree(phylo, layout = "circular") + # geom_tiplab2(size = 0.4) +
+  geom_hilight(data = df.phylo, aes(node = node.number, fill = Fam.names), 
+               alpha = .6) +
+  scale_fill_viridis(discrete = T) + theme(legend.position = "none")
+  
+```
+
+In Figure 1 we can see all the insertions made in the insertion process.
+
+![Fig. 1 - Phylogenetic tree showing at which level each species was inserted in the mega-tree.](../vignettes/phylo_SAmerica.png)
