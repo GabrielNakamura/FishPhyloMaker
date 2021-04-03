@@ -87,6 +87,7 @@ For more details and updates in package functioning see and specific articles sh
     
 Here some examples of phylogenies that can be made with `{FishPhyloMaker}` package:
 
-![Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brasil).](../vignettes/Fig2_example_Phylo.png)
+<img src="man/figures/Fig2_example_Phylo.png" alt="img 1" width="900px" align="left"/>
 
-![Phylogenetic tree containing more than 600 species of fishes in the Neotropical region, the symbols show the insertions made in the mega-tree.](../vignettes/phylo_SAmerica.png)
+<img src="man/figures/phylo_SAmerica.png" alt="img 2" width="900px" align="left"/>
+
