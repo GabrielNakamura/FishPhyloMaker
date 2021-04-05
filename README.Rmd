@@ -23,7 +23,29 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Making phylogenies for a local pool of fish species**
 
-The FishPhyloMaker package has as the core function `FishPhyloMaker`, that works by downloading the [most inclusive phylogeny of bony fishes](https://fishtreeoflife.org/) provided by [Rabosky (2018)](https://onlinelibrary.wiley.com/doi/10.1111/jbi.13839) and edit this phylogeny, in a sequential way by replacing and dropping the fish species of the original phylogeny to obtain a phylogenetic tree containing only the desired species specified in a data frame. The procedure starts by adding all species of fish that already present any Genus in the tree (Congeneric species). For species that do not present any representative of the same Genus, the function finds out for all species of the same family, if not present any species in the tree the search is performed for species of the same Order. By an interactively procedure, the user must specify which Genus from that family (or families in orders) in the tree the species to be inserted is most related. The function returns a phylo object containing the phylogeny of species provide in data argument and a data frame (if argument `return.insertions = TRUE`) containing all species with an character indicating at which level the species was added in the tree. There are four possible categories in which species can be tagged regarding their order of insertion:
+`{FishPhyloMaker}` is a freely R package that has two main functions, `FishTaxaMaker` and `FishPhyloMaker`. The first generate a data frame from fish species names provided by the user, checking the validity of these names by using the information presented in [Fishbase database](http://www.fishbase.org/search.php) through the package [rfishbase](https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf) . Species that were not found in Fishbase are printed in the command line, and the user must inform manually the Family and the Order of these species. The output of `FishTaxaMaker` function is a data frame object containing three columns with the name of species (s), the Family (f) and the Order (o) of all species provided by the user. 
+
+Besides to help checking the validity of the names of species, the data frame returned by `FishTaxaMaker()` format the species data to be used in the core function `FishPhyloMaker()`. This function will use the information of the taxonomic hierarchy contained in the data frame returned from `FishTaxaMaker()`, joint with the information present in the the [fishtree of life project](https://fishtreeoflife.org/) to assemble the phylogenetic tree with the species informed by the user.
+
+`FishPhyloMaker()` works in a sequential way, basically with 4 levels of insertions. First the function finds for all species of local data that are already presented in the mega-tree. If any species remains for insertion, then the function finds for congeneric species that are already present in tree. If any, the congeneric species are added to the tree as a sister species of the respective genus by dividing the branch of congeneric species by two and inserting the new species. If there are more than one congeneric species in the tree the species will be added as a polytomy at the node that corresponds to the most recent ancestral (MRCA) that links all congeneric species. This round of insertion is what we call **Congeneric insertion**.
+
+After congeneric species insertions, if there are species that already must be inserted in the tree, FishPhyloMaker finds for the all the genus in the tree that are of the same family of the species that must be inserted. This comprises the **Family level** round of insertions. In this round, the user has three different insertion options: 
+
+1. **Insert the species near to a specific genus/family**: To insert the species near to a specific genus/family,
+    the user must type the name of the genus (or family) at which the species must be inserted;
+
+2. **Insert the species between two genus/families**: To insert the species between two different genus/families, the user 
+    must type the names of the two genus/families separated by a blank space;
+
+3. **Insert at the root of the family/order**: To insert the species at the node that corresponds to the family (or order), the user must type the name of the family.
+
+The user chooses one of these three options through an interactive procedure, in which all the genus of the same family of the species that must be inserted, and are already present in tree, are printed in the console. The user must type the name of a given genus for the first option, the name of two genus separated by a blank space for the second option and the name of the family for the third option.
+
+After all species with representative Genus of their families be inserted, if any species remains to be inserted in the tree, the function found for all families present in the tree that are of the same Order of the species that must be inserted, and an interactive procedure similar of that described previously for the family level is performed, but, instead to choose among Genus, one of the three options must be chosen by typing the families inside a given Order (or the name of the Order in the case to insert at the node that unites all families inside a given Order). This level of insertion is called **Order insertion** level. If any species remains to be inserted after these three levels, the function will inform the user that the species was not inserted in the tree. We adopt this decision since the insertions beyond Order will carry a lot of uncertainty regarding the phylogenetic position of this species.
+
+Another point that is important to mention is that at each level of insertion a check procedure is performed to check if any genus of the species that must be inserted was included in the tree. If this occur the species will be automatically inserted following the same procedure described in the Congeneric level of insertions.
+
+The last step consists in **subset the tree** to maintain only those species of interesting of the user. This is done by dropping all species that are not present at the names informed by the user. This returns a dated phylogenetic tree, and, optionally, a data frame with the same format of that the user obtained with `FishTaxaMaker()`, but with a new column indicating at which level the species was added in the procedure with the following code. 
 
 -   **Present_in_tree** the species was already present in the original tree;
 -   **Congeneric_insertion** species inserted as a sister species of the same genus presented in the tree;
@@ -32,7 +54,7 @@ The FishPhyloMaker package has as the core function `FishPhyloMaker`, that works
 -   **Order_insertion** if not found any genus of the same family of the species that must be inserted, the species will be inserted near to a given family, between two families or at the node that corresponds to the Order of this species;
 -   **Not_inserted** if species was not inserted in any of the previous steps, it will not be inserted in the final tree;
 
-The user must provide to `FishPhyloMaker` function a data frame that present the following format:
+To obtain a phylogeny of fish species, the user must provide to `FishPhyloMaker()` function a data frame that present the following format:
 
 |    s  |    f    |    o   |
 |:-----:|:-------:|:------:|
@@ -40,7 +62,7 @@ The user must provide to `FishPhyloMaker` function a data frame that present the
 | G_sp2 | Family2 | Order2 |
 | G_sp3 | Family3 | Order3 |
 
-This table can be done mannually or by passing to `FishTaxaMaker` a list of species or a community data matrix with species names in columns.
+This table can be done manually or by passing to `FishTaxaMaker()` a list of species or a community data matrix with species names in columns following the format *Genus_species*.
 
 To install the package the user must type:
 
@@ -66,7 +88,8 @@ taxon_data <- FishTaxaMaker(data_comm)
 Loricariidae
 Siluriformes
 ```
-`FishTaxaMaker` finds in [Fishbase](https://www.fishbase.se/search.php) for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species *Curculionichthys inseperatus* was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.
+
+`FishTaxaMaker` finds in [Fishbase](http://www.fishbase.org/search.php) for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species *Curculionichthys inseperatus* was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.
 
 
 Finally run `FishPhyloMaker`
@@ -100,8 +123,8 @@ For more details and updates in package functioning see and specific articles sh
     
 Here some examples of phylogenies that can be made with `{FishPhyloMaker}` package:
 
-<img src="man/figures/Fig2_example_Phylo.png" alt="img 1" width="900px" align="left"/>
+<img src="man/figures/Fig2_example_Phylo.png" alt="img 1" width="1000px" align="left"/>
 
-<img src="man/figures/phylo_SAmerica.png" alt="img 2" width="900px" align="left"/>
+<img src="man/figures/phylo_SAmerica.png" alt="img 2" width="1000px" align="left"/>
 
 
