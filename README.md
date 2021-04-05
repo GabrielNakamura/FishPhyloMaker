@@ -1,13 +1,3 @@
----
-title: "FishPhyloMaker: A R package to generate phylogenies for bony fish"
-author: "Gabriel Nakamura"
-date: "4/4/2021"
-output: 
-  html_document:
-    keep_md: yes
----
-
-
 
 <img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="200px" align="right"/>
 
