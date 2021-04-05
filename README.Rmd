@@ -1,3 +1,11 @@
+---
+title: "FishPhyloMaker: A R package to generate phylogenies for bony fish"
+author: "Gabriel Nakamura"
+date: "4/4/2021"
+output: 
+  html_document:
+    keep_md: yes
+---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -112,11 +120,3 @@ res_phylo$Insertions_data
 
 For more details and updates in package functioning see and specific articles showing
     how to use `{FishPhyloMaker}` package see [FishPhyloMaker web page](https://gabrielnakamura.github.io/FishPhyloMaker/)
-    
-Here some examples of phylogenies that can be made with `{FishPhyloMaker}` package:
-
-<img src="man/figures/Fig2_example_Phylo.png" alt="img 1" width="1000px" align="left"/>
-
-<img src="man/figures/phylo_SAmerica.png" alt="img 2" width="1000px" align="left"/>
-
-
