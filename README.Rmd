@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/FishPhyloMaker)](https://cran.r-project.org/package=FishPhyloMaker)
 
-[![codecov](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker/branch/master/graph/badge.svg)](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker)
+[![codecov](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker/branch/main/graph/badge.svg?token=WHYLBPOJNA)](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker)
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 
