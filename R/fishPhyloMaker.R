@@ -497,8 +497,10 @@ FishPhyloMaker <-
               return(tree_res)
             }
             for (i in 1:length(families_round3)) {
-              user_option_family <-  ifelse(match(families_round3[[i]], phylo_order$node.label) >= 1, families_round3[[i]])
-              user_option_family <- user_option_family[which(user_option_family != "NA")]
+              user_option_family <- !is.na(unlist(unique(ifelse(match(unlist(families_round3[[i]]), 
+                                                                      phylo_order$node.label) >= 1, families_round3[[i]]))))
+              user_option_family <- unlist(unique(ifelse(match(unlist(families_round3[[i]]), 
+                                                               phylo_order$node.label) >= 1, families_round3[[i]])))[user_option_family]
               local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
                                                                             spp = data_exRound3$s[i], data_exRound3$o[i]))
               family_user_opt <- unlist(strsplit(local_to_add_spp_family, 
@@ -507,7 +509,6 @@ FishPhyloMaker <-
                 if (family_user_opt == data_exRound3$o[i]) {
                   node_order_pos <- which(c(phylo_order$tip.label, 
                                             phylo_order$node.label) == data_exRound3$o[i])
-                  
                   phylo_order <- phytools::bind.tip(tree = phylo_order, 
                                                     tip.label = data_exRound3$s[i], where = node_order_pos, 
                                                     position = 0)
@@ -515,7 +516,6 @@ FishPhyloMaker <-
                 family_nspp <- length(list_family[[match(family_user_opt, 
                                                          names(list_family))]])
                 if (family_nspp > 1) {
-                  
                   position_family <- which(c(phylo_order$tip.label, 
                                              phylo_order$node.label) == family_user_opt)
                   size_branch_family <- phylo_order$edge.length[sapply(position_family, 
@@ -538,8 +538,10 @@ FishPhyloMaker <-
                 }
               }
               if (length(family_user_opt) == 2) {
-                spp_to_add_tmp_family1 <- ape::extract.clade(phylo_order, node = family_user_opt[1])$tip.label[1]
-                spp_to_add_tmp_family2 <- ape::extract.clade(phylo_order, node = family_user_opt[2])$tip.label[1]
+                spp_to_add_tmp_family1 <- ape::extract.clade(phylo_order, 
+                                                             node = family_user_opt[1])$tip.label[1]
+                spp_to_add_tmp_family2 <- ape::extract.clade(phylo_order, 
+                                                             node = family_user_opt[2])$tip.label[1]
                 node_btw_genus_family <- phytools::fastMRCA(tree = phylo_order, 
                                                             sp1 = spp_to_add_tmp_family1, sp2 = spp_to_add_tmp_family2)
                 phylo_order <- phytools::bind.tip(tree = phylo_order, 
