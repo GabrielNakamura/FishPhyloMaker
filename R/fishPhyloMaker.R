@@ -497,10 +497,9 @@ FishPhyloMaker <-
               return(tree_res)
             }
             for (i in 1:length(families_round3)) {
-              user_option_family <- !is.na(unlist(unique(ifelse(match(unlist(families_round3[[i]]), 
-                                                                      phylo_order$node.label) >= 1, families_round3[[i]]))))
-              user_option_family <- unlist(unique(ifelse(match(unlist(families_round3[[i]]), 
-                                                               phylo_order$node.label) >= 1, families_round3[[i]])))[user_option_family]
+              user_option_family <- phylo_order$node.label[match(unlist(families_round3[[i]]), 
+                                                                 phylo_order$node.label)[-match(NA, match(unlist(families_round3[[ i]]), 
+                                                                                                          phylo_order$node.label))]]
               local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
                                                                             spp = data_exRound3$s[i], data_exRound3$o[i]))
               family_user_opt <- unlist(strsplit(local_to_add_spp_family, 
@@ -516,8 +515,8 @@ FishPhyloMaker <-
                 family_nspp <- length(list_family[[match(family_user_opt, 
                                                          names(list_family))]])
                 if (family_nspp > 1) {
-                  position_family <- which(c(phylo_order$tip.label, 
-                                             phylo_order$node.label) == family_user_opt)
+                  position_family <- which(family_user_opt == c(phylo_order$tip.label, 
+                                                                phylo_order$node.label))
                   size_branch_family <- phylo_order$edge.length[sapply(position_family, 
                                                                        function(x, y) which(y == x), y = phylo_order$edge[, 
                                                                                                                           2])]
