@@ -62,10 +62,6 @@ FishPhyloMaker <-
       rank_order <- as.character(unique(data$o))
       rank_family <- as.character(unique(data$f))
       spp <- as.character(data$s)
-      cichliformes_ord <- which(rank_order == "Cichliformes")
-      if (length(cichliformes_ord) == 1) {
-        rank_order[cichliformes_ord] <- "Perciformes"
-      }
       all_families <- unique(unlist(lapply(rank_order, function(x) {
         fishbase[which(x == fishbase$Order), 10]
       })))
@@ -430,10 +426,6 @@ FishPhyloMaker <-
             }
           }
           else {
-            has_cichli <- which(data_exRound3$o == "Cichliformes")
-            if (length(has_cichli) >= 1) {
-              data_exRound3[has_cichli, "o"] <- "Perciformes"
-            }
             rank_order_Round3 <- rank_order[match(data_exRound3$o, 
                                                   rank_order)]
             families_round3 <- lapply(lapply(rank_order_Round3, 
@@ -496,10 +488,18 @@ FishPhyloMaker <-
               }
               return(tree_res)
             }
+            order_add_round3 <- unique(data_exRound3$o[which(is.na(match(data_exRound3$o, phylo_order$node.label)) == TRUE)])
+            for (i in 1:length(order_add_round3)) {
+              list_names_round3 <- list_order[[which(names(list_order) == order_add_round3[1])]]
+              phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
+                                                nodeList = list(Ord_name = list_names_round3))
+              phylo_order$node.label[which(phylo_order$node.label == 
+                                             "Ord_name")] <- order_add_round3[i]
+            }
             for (i in 1:length(families_round3)) {
               user_option_family <- phylo_order$node.label[match(unlist(families_round3[[i]]), 
-                                                                 phylo_order$node.label)[-match(NA, match(unlist(families_round3[[ i]]), 
-                                                                                                          phylo_order$node.label))]]
+                                                                 phylo_order$node.label)[-which(match(match(unlist(families_round3[[i]]), 
+                                                                                                            phylo_order$node.label), NA) == 1)]]
               local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
                                                                             spp = data_exRound3$s[i], data_exRound3$o[i]))
               family_user_opt <- unlist(strsplit(local_to_add_spp_family, 
@@ -515,8 +515,8 @@ FishPhyloMaker <-
                 family_nspp <- length(list_family[[match(family_user_opt, 
                                                          names(list_family))]])
                 if (family_nspp > 1) {
-                  position_family <- which(family_user_opt == c(phylo_order$tip.label, 
-                                                                phylo_order$node.label))
+                  position_family <- which(family_user_opt == 
+                                             c(phylo_order$tip.label, phylo_order$node.label))
                   size_branch_family <- phylo_order$edge.length[sapply(position_family, 
                                                                        function(x, y) which(y == x), y = phylo_order$edge[, 
                                                                                                                           2])]
