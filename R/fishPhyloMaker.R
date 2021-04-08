@@ -101,12 +101,7 @@ FishPhyloMaker <-
       order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 
                                                                            1))))
       list_order <- list_order[-match(order_rm_list, names(list_order))]
-      for (i in 1:length(list_order)) {
-        phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
-                                          nodeList = list(Ord_name = list_order[[i]]))
-        phylo_order$node.label[which(phylo_order$node.label == 
-                                       "Ord_name")] <- names(list_order)[i]
-      }
+      
       list_non_monotipic <- list_family[setdiff(names(list_family), 
                                                 monotipic_family)]
       for (i in 1:length(list_non_monotipic)) {
@@ -129,12 +124,6 @@ FishPhyloMaker <-
       }
       phylo_order <- suppressWarnings(filter_rank(order = list_family))
       phylo_order <- ape::makeNodeLabel(phy = phylo_order)
-      for (i in 1:length(list_order)) {
-        phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
-                                          nodeList = list(Ord_name = list_order[[i]]))
-        phylo_order$node.label[which(phylo_order$node.label == 
-                                       "Ord_name")] <- names(list_order)[i]
-      }
       phylo_order <- phytools::force.ultrametric(phylo_order)
       families_not_found_fishtree <- names(unlist(lapply(lapply(list_family, 
                                                                 function(x) {
@@ -488,9 +477,9 @@ FishPhyloMaker <-
               }
               return(tree_res)
             }
-            order_add_round3 <- unique(data_exRound3$o[which(is.na(match(data_exRound3$o, phylo_order$node.label)) == TRUE)])
+            order_add_round3 <- unique(data_exRound3$o)
             for (i in 1:length(order_add_round3)) {
-              list_names_round3 <- list_order[[which(names(list_order) == order_add_round3[1])]]
+              list_names_round3 <- list_order[[which(names(list_order) == order_add_round3[i])]]
               phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
                                                 nodeList = list(Ord_name = list_names_round3))
               phylo_order$node.label[which(phylo_order$node.label == 
