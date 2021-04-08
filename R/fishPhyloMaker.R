@@ -183,9 +183,8 @@ FishPhyloMaker <-
           if (return.insertions == TRUE) {
             insertions <- rep("NA", nrow(data))
             data_insertions <- cbind(data, insertions)
-            data_insertions[which(species_to_genus1 == 
-                                    data$s), "insertions"] <- rep("Congeneric_insertion", 
-                                                                  length(species_to_genus1))
+            data_insertions[match(species_to_genus1, data$s), "insertions"] <- rep("Congeneric_insertion",
+                                                                                   length(species_to_genus1))
             spp_on_tree <- data[-match(species_to_genus1, 
                                        data$s), "s"]
             data_insertions[match(spp_on_tree, data$s), 
