@@ -52,6 +52,10 @@ FishTaxaMaker <- function (data)
     cat("\n")
   }
   if (dim(not_found)[1] == 0) {
+    sub_Perciformes <- which(list_local$f == "Cichlidae")
+    if(length(sub_Perciformes) >= 1){
+      list_local[sub_Perciformes, "o"] <- "Cichliformes"
+    }
     return(list_local)
   }
   else {
@@ -63,8 +67,10 @@ FishTaxaMaker <- function (data)
       list_local[match(not_found$s[i], list_local$s), 
                  "o"] <- spp_order
     }
-    sub_Perciformes <- which(list_local$o == "Perciformes")
-    list_local[sub_Perciformes, "o"] <- "Cichliformes"
+    sub_Perciformes <- which(list_local$f == "Cichlidae")
+    if(length(sub_Perciformes) >= 1){
+      list_local[sub_Perciformes, "o"] <- "Cichliformes"
+    }
     return(list_local)
   }
   if(dim(not_found)[1] >= 1){
