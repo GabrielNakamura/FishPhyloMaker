@@ -41,13 +41,12 @@ FishPhyloMaker <-
     if (length(round_1_check) == length(data$s)) {
       data_final <- 1:length(as.character(data$s))
       names(data_final) <- as.character(data$s)
-      tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
-                                                 tip = treedata_modif(phy = phylo_order, data = data_final)$nc$tree_not_data))
+      tree_res <- suppressWarnings(ape::drop.tip(phy = tree_complete, 
+                                                 tip = treedata_modif(phy = tree_complete, data = data_final)$nc$tree_not_data))
       if (return.insertions == TRUE) {
         insertions <- rep("NA", nrow(data))
         data_insertions <- cbind(data, insertions)
-        data_insertions[match(spp_on_tree, data$s), "insertions"] <- rep("Present_in_Tree", 
-                                                                         nrow(data))
+        data_insertions[ , "insertions"] <- rep("Present_in_Tree", nrow(data))
         list_res <- vector(mode = "list", length = 2)
         list_res[[1]] <- tree_res
         list_res[[2]] <- data_insertions
