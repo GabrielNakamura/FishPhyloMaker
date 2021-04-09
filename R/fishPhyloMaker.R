@@ -46,7 +46,8 @@ FishPhyloMaker <-
       if (return.insertions == TRUE) {
         insertions <- rep("NA", nrow(data))
         data_insertions <- cbind(data, insertions)
-        data_insertions[ , "insertions"] <- rep("Present_in_Tree", nrow(data))
+        data_insertions[, "insertions"] <- rep("Present_in_Tree", 
+                                               nrow(data))
         list_res <- vector(mode = "list", length = 2)
         list_res[[1]] <- tree_res
         list_res[[2]] <- data_insertions
@@ -97,10 +98,8 @@ FishPhyloMaker <-
       names(list_order) <- all_orders_include
       phylo_order <- filter_rank(order = list_order)
       phylo_order <- ape::makeNodeLabel(phy = phylo_order)
-      order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 
-                                                                           1))))
+      order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 1))))
       list_order <- list_order[-match(order_rm_list, names(list_order))]
-      
       list_non_monotipic <- list_family[setdiff(names(list_family), 
                                                 monotipic_family)]
       for (i in 1:length(list_non_monotipic)) {
@@ -182,8 +181,9 @@ FishPhyloMaker <-
           if (return.insertions == TRUE) {
             insertions <- rep("NA", nrow(data))
             data_insertions <- cbind(data, insertions)
-            data_insertions[match(species_to_genus1, data$s), "insertions"] <- rep("Congeneric_insertion",
-                                                                                   length(species_to_genus1))
+            data_insertions[match(species_to_genus1, data$s), 
+                            "insertions"] <- rep("Congeneric_insertion", 
+                                                 length(species_to_genus1))
             spp_on_tree <- data[-match(species_to_genus1, 
                                        data$s), "s"]
             data_insertions[match(spp_on_tree, data$s), 
@@ -413,6 +413,7 @@ FishPhyloMaker <-
             }
           }
           else {
+            data_exRound3 <- data_exRound3[- match(order_rm_list, data_exRound3$o)[!is.na(match(order_rm_list, data_exRound3$o))], ]
             rank_order_Round3 <- rank_order[match(data_exRound3$o, 
                                                   rank_order)]
             families_round3 <- lapply(lapply(rank_order_Round3, 
@@ -477,9 +478,10 @@ FishPhyloMaker <-
             }
             order_add_round3 <- unique(data_exRound3$o)
             for (i in 1:length(order_add_round3)) {
-              list_names_round3 <- list_order[[which(names(list_order) == order_add_round3[i])]]
-              phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
-                                                nodeList = list(Ord_name = list_names_round3))
+              list_names_round3 <- list_order[[which(names(list_order) == 
+                                                       order_add_round3[i])]]
+              phylo_order <- ape::makeNodeLabel(phylo_order, 
+                                                "u", nodeList = list(Ord_name = list_names_round3))
               phylo_order$node.label[which(phylo_order$node.label == 
                                              "Ord_name")] <- order_add_round3[i]
             }
@@ -558,15 +560,26 @@ FishPhyloMaker <-
                                                         data_exRound3$s))
               family_insertions <- setdiff(family_level_insertions, 
                                            species_to_genus1)
+              test_order_absent <- match(order_rm_list, data$o)
+              if(any(is.numeric(test_order_absent)) == TRUE){
+                data_insertions[match(order_rm_list, data$o)[!is.na(match(order_rm_list, data$o))], "insertions"] <- "Not_inserted"
+                not_in_tree <- data_insertions[match(order_rm_list, data$o)[!is.na(match(order_rm_list, data$o))], "s"]
+              }
               data_insertions[match(family_insertions, 
                                     data$s), "insertions"] <- rep("Family_insertion", 
                                                                   length(family_insertions))
               data_insertions[match(data_exRound3$s, data$s), 
                               "insertions"] <- rep("Order_insertion", 
                                                    length(data_exRound3$s))
-              spp_on_tree <- data[-match(c(species_to_genus1, 
-                                           species_to_genus2, family_insertions, data_exRound3$s), 
-                                         data$s), "s"]
+              if(length(not_in_tree >= 1)){
+                spp_on_tree <- data[-match(c(species_to_genus1, 
+                                             species_to_genus2, family_insertions, data_exRound3$s, not_in_tree), 
+                                           data$s), "s"]
+              } else{
+                spp_on_tree <- data[-match(c(species_to_genus1, 
+                                             species_to_genus2, family_insertions, data_exRound3$s), 
+                                           data$s), "s"]
+              }
               data_insertions[match(spp_on_tree, data$s), 
                               "insertions"] <- rep("Present_in_Tree", 
                                                    length(spp_on_tree))
