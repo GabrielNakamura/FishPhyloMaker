@@ -98,7 +98,8 @@ FishPhyloMaker <-
       names(list_order) <- all_orders_include
       phylo_order <- filter_rank(order = list_order)
       phylo_order <- ape::makeNodeLabel(phy = phylo_order)
-      order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 1))))
+      order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 
+                                                                           1))))
       list_order <- list_order[-match(order_rm_list, names(list_order))]
       list_non_monotipic <- list_family[setdiff(names(list_family), 
                                                 monotipic_family)]
@@ -136,23 +137,25 @@ FishPhyloMaker <-
                                                           }), function(y) which(y == 0))))
       list_family_tobeaddnames <- list_family_tobeaddnames[-match(family_no_spp_in_tree, 
                                                                   names(list_family_tobeaddnames))]
-      for (i in 1:length(list_family_tobeaddnames)) {
-        na_check <- sum(!is.na(match(list_family_tobeaddnames[[i]], 
-                                     phylo_order$tip.label)))
-        if (na_check == 1) {
-          spp_singleton <- unlist(list(list_family_tobeaddnames[[i]][!is.na(match(list_family_tobeaddnames[[i]], 
-                                                                                  phylo_order$tip.label))]))
-          spp_singleton_add <- paste(sub("_.*", "", spp_singleton), 
-                                     "_", "singleton", sep = "")
-          phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                        species = spp_singleton_add)
-          list_family_tobeaddnames[i] <- list(c(spp_singleton, 
-                                                spp_singleton_add))
+      if(length(list_family_tobeaddnames) > 0){
+        for (i in 1:length(list_family_tobeaddnames)) {
+          na_check <- sum(!is.na(match(list_family_tobeaddnames[[i]], 
+                                       phylo_order$tip.label)))
+          if (na_check == 1) {
+            spp_singleton <- unlist(list(list_family_tobeaddnames[[i]][!is.na(match(list_family_tobeaddnames[[i]], 
+                                                                                    phylo_order$tip.label))]))
+            spp_singleton_add <- paste(sub("_.*", "", spp_singleton), 
+                                       "_", "singleton", sep = "")
+            phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                          species = spp_singleton_add)
+            list_family_tobeaddnames[i] <- list(c(spp_singleton, 
+                                                  spp_singleton_add))
+          }
+          phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
+                                            nodeList = list(Fam_name = list_family_tobeaddnames[[i]]))
+          phylo_order$node.label[which(phylo_order$node.label == 
+                                         "Fam_name")] <- paste(names(list_family_tobeaddnames)[i])
         }
-        phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
-                                          nodeList = list(Fam_name = list_family_tobeaddnames[[i]]))
-        phylo_order$node.label[which(phylo_order$node.label == 
-                                       "Fam_name")] <- paste(names(list_family_tobeaddnames)[i])
       }
       spp_data <- 1:length(spp)
       names(spp_data) <- spp
@@ -413,7 +416,9 @@ FishPhyloMaker <-
             }
           }
           else {
-            data_exRound3 <- data_exRound3[- match(order_rm_list, data_exRound3$o)[!is.na(match(order_rm_list, data_exRound3$o))], ]
+            data_exRound3 <- data_exRound3[-match(order_rm_list, 
+                                                  data_exRound3$o)[!is.na(match(order_rm_list, 
+                                                                                data_exRound3$o))], ]
             rank_order_Round3 <- rank_order[match(data_exRound3$o, 
                                                   rank_order)]
             families_round3 <- lapply(lapply(rank_order_Round3, 
@@ -560,10 +565,15 @@ FishPhyloMaker <-
                                                         data_exRound3$s))
               family_insertions <- setdiff(family_level_insertions, 
                                            species_to_genus1)
-              test_order_absent <- match(order_rm_list, data$o)
-              if(any(is.numeric(test_order_absent)) == TRUE){
-                data_insertions[match(order_rm_list, data$o)[!is.na(match(order_rm_list, data$o))], "insertions"] <- "Not_inserted"
-                not_in_tree <- data_insertions[match(order_rm_list, data$o)[!is.na(match(order_rm_list, data$o))], "s"]
+              test_order_absent <- match(order_rm_list, 
+                                         data$o)
+              if (any(is.numeric(test_order_absent)) == 
+                  TRUE) {
+                data_insertions[match(order_rm_list, data$o)[!is.na(match(order_rm_list, 
+                                                                          data$o))], "insertions"] <- "Not_inserted"
+                not_in_tree <- data_insertions[match(order_rm_list, 
+                                                     data$o)[!is.na(match(order_rm_list, data$o))], 
+                                               "s"]
               }
               data_insertions[match(family_insertions, 
                                     data$s), "insertions"] <- rep("Family_insertion", 
@@ -571,14 +581,16 @@ FishPhyloMaker <-
               data_insertions[match(data_exRound3$s, data$s), 
                               "insertions"] <- rep("Order_insertion", 
                                                    length(data_exRound3$s))
-              if(length(not_in_tree >= 1)){
+              if (length(not_in_tree >= 1)) {
                 spp_on_tree <- data[-match(c(species_to_genus1, 
-                                             species_to_genus2, family_insertions, data_exRound3$s, not_in_tree), 
-                                           data$s), "s"]
-              } else{
+                                             species_to_genus2, family_insertions, 
+                                             data_exRound3$s, not_in_tree), data$s), 
+                                    "s"]
+              }
+              else {
                 spp_on_tree <- data[-match(c(species_to_genus1, 
-                                             species_to_genus2, family_insertions, data_exRound3$s), 
-                                           data$s), "s"]
+                                             species_to_genus2, family_insertions, 
+                                             data_exRound3$s), data$s), "s"]
               }
               data_insertions[match(spp_on_tree, data$s), 
                               "insertions"] <- rep("Present_in_Tree", 
