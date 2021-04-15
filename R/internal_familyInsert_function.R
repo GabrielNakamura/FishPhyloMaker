@@ -5,9 +5,12 @@
 #'
 #' @return a list with length two 
 #'
-insert_allbasefamily <- function(phy = phylo_order, spp_to_add_round2 = spp_to_add_round2){
+insert_allbasefamily <- function(phy = phylo_order, spp_to_add_round2 = spp_to_add_round2, data_round3 = data_exRound3){
+  count <- 0
+  species_to_genus2 <- vector(mode = "list")
   add_all_family <- spp_to_add_round2 
   while(length(add_all_family) >= 1){
+    count <- count + 1
     family_name <- data[match(add_all_family[1], 
                               data$s), "f"]
     node_family <- which(c(phylo_order$tip.label, 
@@ -43,36 +46,18 @@ insert_allbasefamily <- function(phy = phylo_order, spp_to_add_round2 = spp_to_a
                                                  tip = treedata_modif(phy = phylo_order, 
                                                                       data = data_final)$nc$tree_not_data))
       data_exRound3 <- NULL
-      res <- vector(mode = "list", length = )
+      res <- vector(mode = "list", length = 2)
       res[[1]] <- data_exRound3
       res[[2]] <- phylo_order
       return(res)
       break
     }
     else {
-      list_spp_step2 <- vector(mode = "list", length = length(rank_family2))
-      for (i in 1:length(rank_family2)) {
-        list_spp_step2[[i]] <- tryCatch(paste(ape::extract.clade(phy = phylo_order, 
-                                                                 node = as.character(rank_family2[i]))$tip.label), 
-                                        error = function(e) paste("noFamily", 
-                                                                  as.character(data[which(rank_family2[i] == 
-                                                                                            data$f), 1]), sep = "_"))
-      }
-      names(list_spp_step2) <- rank_family2
-      spp_family <- 1:nrow(data_exRound2)
-      names(spp_family) <- data_exRound2$s
-      spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
-                                                          function(x) which(sub("_.*", "", x) != 
-                                                                              "noFamily")), function(y) which(length(y) != 
-                                                                                                                0))) > 0))
-      spp_family_inTree <- list_spp_step2[match(spp_with_family, 
-                                                names(list_spp_step2))]
       add_all_family <- setdiff(insert_spp, 
-                                   data_exRound3$s)
-      
+                                   data_round3$s)
     }
   }
-  res <- vector(mode = "list", length = )
+  res <- vector(mode = "list", length = 2)
   res[[1]] <- data_exRound3
   res[[2]] <- phylo_order
   return(res)
