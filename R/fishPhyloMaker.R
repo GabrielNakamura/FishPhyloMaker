@@ -4,6 +4,10 @@
 #'     with tab_function function
 #' @param return.insertions Logical, if TRUE the output is a list of length two containing the phylogeny 
 #'     and a dataframe with a column indicating at which level each species was inserted
+#' @param insert.base.node Logical argument indicating if the species must be added automatically
+#'     in the family and order (when needed) nodes. Default is FALSE
+#' @param progress.bar Logical argument. If TRUE a progress bar will be shown in console
+#'    
 #'     
 #' @return A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
 #'     will be a list of length two containg the newick phylogeny and a data frame equal that provided in data plus a column 

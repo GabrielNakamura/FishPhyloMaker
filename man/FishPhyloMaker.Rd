@@ -4,7 +4,12 @@
 \alias{FishPhyloMaker}
 \title{Obtaining fish phylogeny according to a local pool of species}
 \usage{
-FishPhyloMaker(data, return.insertions = FALSE)
+FishPhyloMaker(
+  data,
+  insert.base.node = FALSE,
+  return.insertions = FALSE,
+  progress.bar = TRUE
+)
 }
 \arguments{
 \item{data}{A data frame with three columns containing the name of species (s), the Family (f) and the Order (o). This data frame can be generated
