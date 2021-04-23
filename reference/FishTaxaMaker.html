@@ -143,7 +143,7 @@ Auxiliar function to obtain taxonomic classification and check the names of spec
 present in species pool</p>
     </div>
 
-    <pre class="usage"><span class='fu'>FishTaxaMaker</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>FishTaxaMaker</span><span class='op'>(</span><span class='va'>data</span>, allow.manual.insert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,11 +152,22 @@ present in species pool</p>
       <th>data</th>
       <td><p>A character vector with species names or a community matrix with species names in columns</p></td>
     </tr>
+    <tr>
+      <th>allow.manual.insert</th>
+      <td><p>Logical, if TRUE (default), the user must type the names of Family and Order of species
+not found in Fishbase</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame with three columns containing the name of species (s), the Family (f) and Order (o)</p>
+    <p>List with four elements.
+- A data frame containing the taxonomic classification of valid species accordingy to Fishbase
+- A data frame with three columns containing the name of species (s), the Family (f) and Order (o) that can be used in
+FishPhyloMaker function
+- A data frame containing species all possible duplicated species informed by the user with their correspondent
+valid name according to Fishbase
+- A character vector containing all names of species that was not find in Fishbase</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -166,6 +177,7 @@ present in species pool</p>
     <span class='va'>Loricariidae</span> <span class='co'># informing Family of Curculionichthys insperatus</span>
     <span class='va'>Siluriformes</span> <span class='co'># informing Order of Curculionichthys insperatus</span>
 <span class='op'>}</span>
+
 
 
 </div></pre>
