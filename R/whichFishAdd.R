@@ -22,6 +22,7 @@
 #' 
 #' 
 whichFishAdd <- function(data){
+  fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
   tree_complete <- fishtree::fishtree_phylogeny()
   round_1_check <- match(data$s, tree_complete$tip.label)
   round_1_check <- round_1_check[!is.na(round_1_check)]
@@ -36,12 +37,8 @@ whichFishAdd <- function(data){
     rank_order <- as.character(unique(data$o))
     rank_family <- as.character(unique(data$f))
     spp <- as.character(data$s)
-    cichliformes_ord <- which(rank_order == "Cichliformes")
-    if (length(cichliformes_ord) == 1) {
-      rank_order[cichliformes_ord] <- "Perciformes"
-    }
     all_families <- unique(unlist(lapply(rank_order, function(x) {
-      fishbase[which(x == fishbase$Order), 10]
+      fishbasedata[which(x == fishbasedata$Order), 5]
     })))
     families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != 
                                                                 all_families)])
