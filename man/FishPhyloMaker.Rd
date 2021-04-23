@@ -4,14 +4,24 @@
 \alias{FishPhyloMaker}
 \title{Obtaining fish phylogeny according to a local pool of species}
 \usage{
-FishPhyloMaker(data, return.insertions = FALSE)
+FishPhyloMaker(
+  data,
+  insert.base.node = FALSE,
+  return.insertions = FALSE,
+  progress.bar = TRUE
+)
 }
 \arguments{
 \item{data}{A data frame with three columns containing the name of species (s), the Family (f) and the Order (o). This data frame can be generated
 with tab_function function}
 
+\item{insert.base.node}{Logical argument indicating if the species must be added automatically
+in the family and order (when needed) nodes. Default is FALSE}
+
 \item{return.insertions}{Logical, if TRUE the output is a list of length two containing the phylogeny
 and a dataframe with a column indicating at which level each species was inserted}
+
+\item{progress.bar}{Logical argument. If TRUE a progress bar will be shown in console}
 }
 \value{
 A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output

@@ -4,6 +4,10 @@
 #'     with tab_function function
 #' @param return.insertions Logical, if TRUE the output is a list of length two containing the phylogeny 
 #'     and a dataframe with a column indicating at which level each species was inserted
+#' @param insert.base.node Logical argument indicating if the species must be added automatically
+#'     in the family and order (when needed) nodes. Default is FALSE
+#' @param progress.bar Logical argument. If TRUE a progress bar will be shown in console
+#'    
 #'     
 #' @return A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
 #'     will be a list of length two containg the newick phylogeny and a data frame equal that provided in data plus a column 
@@ -24,7 +28,7 @@
 #' 
 #' 
 FishPhyloMaker <- 
-  function (data, return.insertions = FALSE) 
+  function (data, insert.base.node = FALSE, return.insertions = FALSE, progress.bar = TRUE) 
   {
     if (dim(data)[2] != 3) {
       stop("/n data must be a dataframe with three columns (s, f, o)")
@@ -35,6 +39,7 @@ FishPhyloMaker <-
     if (is.data.frame(data) == FALSE) {
       stop("/n data must be a data frame object")
     }
+    fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
     tree_complete <- fishtree::fishtree_phylogeny()
     round_1_check <- match(data$s, tree_complete$tip.label)
     round_1_check <- round_1_check[!is.na(round_1_check)]
@@ -63,15 +68,26 @@ FishPhyloMaker <-
       rank_family <- as.character(unique(data$f))
       spp <- as.character(data$s)
       all_families <- unique(unlist(lapply(rank_order, function(x) {
-        fishbase[which(x == fishbase$Order), 10]
+        fishbasedata[which(x == fishbasedata$Order), 5]
       })))
       families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != 
                                                                   all_families)])
       families_order_and_data <- unique(c(rank_family, families_in_orders))
       list_family <- vector(mode = "list", length = length(families_order_and_data))
+      if(progress.bar == TRUE){
+        pb_download_family <- progress::progress_bar$new(
+          format = "  downloading families [:bar] :percent",
+          total = length(families_order_and_data), clear = FALSE, width= 60,
+          current = "<",
+          incomplete = ">",
+          complete = ">")
+      }
       for (i in 1:length(families_order_and_data)) {
         list_family[[i]] <- tryCatch(paste(fishtree::fishtree_phylogeny(rank = families_order_and_data[i], 
-                                                                        type = "chronogram_mrca")$tip.label), error = function(e) paste(print(families_order_and_data[i])))
+                                                                        type = "chronogram_mrca")$tip.label), error = function(e) paste(families_order_and_data[i]))
+        if(progress.bar == TRUE){
+          pb_download_family$tick()
+        }
       }
       names(list_family) <- families_order_and_data
       monotipic_family <- names(unlist(lapply(list_family, 
@@ -91,9 +107,20 @@ FishPhyloMaker <-
       }
       all_orders_include <- unique(c(rank_order, unique(orders_to_add)))
       list_order <- vector(mode = "list", length = length(all_orders_include))
+      if(progress.bar == TRUE){
+        pb_download_order <- progress::progress_bar$new(
+          format = "  downloading orders [:bar] :percent",
+          total = length(all_orders_include), clear = FALSE, width= 60,
+          current = "<",
+          incomplete = ">",
+          complete = ">")
+      }
       for (i in 1:length(all_orders_include)) {
         list_order[[i]] <- tryCatch(paste(fishtree::fishtree_phylogeny(rank = all_orders_include[i], 
                                                                        type = "chronogram_mrca")$tip.label), error = function(e) paste(print(all_orders_include[i])))
+        if(progress.bar == TRUE){
+          pb_download_order$tick()
+        }
       }
       names(list_order) <- all_orders_include
       phylo_order <- filter_rank(order = list_order)
@@ -103,11 +130,22 @@ FishPhyloMaker <-
       list_order <- list_order[-match(order_rm_list, names(list_order))]
       list_non_monotipic <- list_family[setdiff(names(list_family), 
                                                 monotipic_family)]
+      if(progress.bar == TRUE){
+        pb_names_family <- progress::progress_bar$new(
+          format = "  Naming family nodes [:bar] :percent",
+          total = length(list_non_monotipic), clear = FALSE, width= 60,
+          current = "<",
+          incomplete = ">",
+          complete = ">")
+      }
       for (i in 1:length(list_non_monotipic)) {
         phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
                                           nodeList = list(Fam_name = list_non_monotipic[[i]]))
         phylo_order$node.label[which(phylo_order$node.label == 
                                        "Fam_name")] <- paste(names(list_non_monotipic)[i])
+        if(progress.bar == TRUE){
+          pb_names_family$tick()
+        }
       }
       families_in_tree <- families_order_and_data[which(!is.na(match(families_order_and_data, 
                                                                      phylo_order$node.label)) == T)]
@@ -138,6 +176,14 @@ FishPhyloMaker <-
       list_family_tobeaddnames <- list_family_tobeaddnames[-match(family_no_spp_in_tree, 
                                                                   names(list_family_tobeaddnames))]
       if(length(list_family_tobeaddnames) > 0){
+        if(progress.bar == TRUE){
+          pb_names_family_toadd <- progress::progress_bar$new(
+            format = "  Naming monotipic family nodes [:bar] :percent",
+            total = length(list_family_tobeaddnames), clear = FALSE, width= 60,
+            current = "<",
+            incomplete = ">",
+            complete = ">")
+        }
         for (i in 1:length(list_family_tobeaddnames)) {
           na_check <- sum(!is.na(match(list_family_tobeaddnames[[i]], 
                                        phylo_order$tip.label)))
@@ -155,6 +201,9 @@ FishPhyloMaker <-
                                             nodeList = list(Fam_name = list_family_tobeaddnames[[i]]))
           phylo_order$node.label[which(phylo_order$node.label == 
                                          "Fam_name")] <- paste(names(list_family_tobeaddnames)[i])
+          if(progress.bar == TRUE){
+            pb_names_family_toadd$tick()
+          }
         }
       }
       spp_data <- 1:length(spp)
@@ -169,9 +218,20 @@ FishPhyloMaker <-
         species_to_genus1 <- insert_spp[which(is.na(insert_spp[match(sub("_.*", 
                                                                          "", insert_spp), genus_in_tree)]) == FALSE)]
         if (length(species_to_genus1) >= 1) {
+          if(progress.bar == TRUE){
+            pb_congeneric <- progress::progress_bar$new(
+              format = "Adding congeneric species [:bar] :percent",
+              total = length(species_to_genus1), clear = FALSE, width= 60,
+              current = "<",
+              incomplete = ">",
+              complete = ">")
+          }
           for (i in 1:length(species_to_genus1)) {
             phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
                                                           species = species_to_genus1[i])
+            if(progress.bar == TRUE){
+              pb_congeneric$tick()
+            }
           }
         }
         insert_spp2 <- treedata_modif(phy = phylo_order, 
@@ -227,158 +287,208 @@ FishPhyloMaker <-
                                                     names(list_spp_step2))]
           spp_to_add_round2 <- setdiff(data_exRound2$s, 
                                        data_exRound3$s)
-          count <- 0
-          species_to_genus2 <- vector(mode = "list")
-          while (length(spp_to_add_round2) >= 1) {
-            count <- count + 1
-            family_name <- data[match(spp_to_add_round2[1], 
-                                      data$s), "f"]
-            spp_Byfamily_inTree <- as.character(unlist(spp_family_inTree[match(family_name, 
-                                                                               names(spp_family_inTree))]))
-            user_option_spp <- unique(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))
-            local_to_add_spp <- readline(prompt = print_cat(print_cat = user_option_spp, 
-                                                            spp = spp_to_add_round2[1], family_name))
-            spp_user_opt <- unlist(strsplit(local_to_add_spp, 
-                                            split = " "))
-            if (length(spp_user_opt) > 2) {
-              stop("/n Only two genus can be chosen to insert species")
+          
+          if(insert.base.node == TRUE){
+            pb_length <- unique(sub("_.*", "", as.character(spp_to_add_round2)))
+            if(progress.bar == TRUE){
+              pb_insert_family_node <- progress::progress_bar$new(
+                format = "Adding species to family node [:bar] :percent",
+                total = length(pb_length), clear = FALSE, width= 60,
+                current = "<",
+                incomplete = ">",
+                complete = ">")
             }
-            if (length(spp_user_opt) < 1) {
-              stop("/n At least one genus/family can be chosen to insert species")
-            }
-            if (any(is.na(match(spp_user_opt, user_option_spp) && 
-                          is.na(match(spp_user_opt, family_name))))) {
-              stop("/n Choose a validy genus/family to insert species")
-            }
-            if (length(spp_user_opt) == 2) {
-              spp_to_add_tmp <- spp_Byfamily_inTree[match(spp_user_opt, 
-                                                          sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))]
-              node_btw_genus <- phytools::fastMRCA(tree = phylo_order, 
-                                                   sp1 = spp_to_add_tmp[1], sp2 = spp_to_add_tmp[2])
+            count <- 0
+            species_to_genus2 <- vector(mode = "list")
+            while(length(spp_to_add_round2) >= 1){
+              count <- count + 1
+              family_name <- data[match(spp_to_add_round2[1], 
+                                        data$s), "f"]
+              node_family <- which(c(phylo_order$tip.label, 
+                                     phylo_order$node.label) == family_name)
               phylo_order <- phytools::bind.tip(tree = phylo_order, 
-                                                tip.label = spp_to_add_round2[1], where = node_btw_genus, 
+                                                tip.label = spp_to_add_round2[1], where = node_family, 
                                                 position = 0)
-            }
-            if (length(spp_user_opt) == 1) {
-              if (length(match(spp_user_opt, c(user_option_spp, 
-                                               family_name))) != 1) {
-                stop(paste("\n Check the spelling of Genus or Family in:", 
-                           spp_user_opt, sep = " "))
+              spp_data <- 1:length(spp_to_add_round2)
+              names(spp_data) <- spp_to_add_round2
+              insert_spp <- treedata_modif(phy = phylo_order, 
+                                           data = spp_data, warnings = F)$nc$data_not_tree
+              genus_in_tree <- sub("_.*", "", phylo_order$tip.label)[match(sub("_.*", 
+                                                                               "", insert_spp), sub("_.*", "", phylo_order$tip.label))][!is.na(sub("_.*", 
+                                                                                                                                                   "", phylo_order$tip.label)[match(sub("_.*", 
+                                                                                                                                                                                        "", insert_spp), sub("_.*", "", phylo_order$tip.label))])]
+              if (length(genus_in_tree) >= 1) {
+                species_to_genus <- insert_spp[which(is.na(insert_spp[match(sub("_.*", 
+                                                                                "", insert_spp), genus_in_tree)]) == FALSE)]
+                species_to_genus2[[count]] <- species_to_genus
+                for (i in 1:length(species_to_genus)) {
+                  phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                                species = species_to_genus[i])
+                }
+                insert_spp <- treedata_modif(phy = phylo_order, 
+                                             data = spp_data, warnings = F)$nc$data_not_tree
               }
-              if (any(spp_user_opt == family_name)) {
-                node_family <- which(c(phylo_order$tip.label, 
-                                       phylo_order$node.label) == family_name)
+              
+              spp_to_add_round2 <- setdiff(insert_spp, 
+                                           data_exRound3$s)
+              if(progress.bar == TRUE){
+                pb_insert_family_node$tick()
+              }
+            }
+          } else {
+            count <- 0
+            species_to_genus2 <- vector(mode = "list")
+            while (length(spp_to_add_round2) >= 1) {
+              count <- count + 1
+              family_name <- data[match(spp_to_add_round2[1], 
+                                        data$s), "f"]
+              spp_Byfamily_inTree <- as.character(unlist(spp_family_inTree[match(family_name, 
+                                                                                 names(spp_family_inTree))]))
+              user_option_spp <- unique(sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))
+              local_to_add_spp <- readline(prompt = print_cat(print_cat = user_option_spp, 
+                                                              spp = spp_to_add_round2[1], family_name))
+              spp_user_opt <- unlist(strsplit(local_to_add_spp, 
+                                              split = " "))
+              if (length(spp_user_opt) > 2) {
+                stop("/n Only two genus can be chosen to insert species")
+              }
+              if (length(spp_user_opt) < 1) {
+                stop("/n At least one genus/family can be chosen to insert species")
+              }
+              if (any(is.na(match(spp_user_opt, user_option_spp) && 
+                            is.na(match(spp_user_opt, family_name))))) {
+                stop("/n Choose a validy genus/family to insert species")
+              }
+              if (length(spp_user_opt) == 2) {
+                spp_to_add_tmp <- spp_Byfamily_inTree[match(spp_user_opt, 
+                                                            sub("_.*", "", as.character(unlist(spp_Byfamily_inTree))))]
+                node_btw_genus <- phytools::fastMRCA(tree = phylo_order, 
+                                                     sp1 = spp_to_add_tmp[1], sp2 = spp_to_add_tmp[2])
                 phylo_order <- phytools::bind.tip(tree = phylo_order, 
-                                                  tip.label = spp_to_add_round2[1], where = node_family, 
+                                                  tip.label = spp_to_add_round2[1], where = node_btw_genus, 
                                                   position = 0)
               }
-              else {
-                genus_nspp <- match(spp_user_opt, names(which(table(sub("_.*", 
-                                                                        "", as.character(unlist(spp_Byfamily_inTree)))) > 
-                                                                1)))
-                if (!is.na(genus_nspp) == TRUE) {
-                  list_to_be_named <- list(spp_user_opt = spp_user_opt)
-                  name_list <- paste("MRCA", count, sep = "")
-                  names(list_to_be_named) <- name_list
-                  phylo_order2 <- ape::makeNodeLabel(phy = phylo_order, 
-                                                     method = "u", nodeList = list_to_be_named)
-                  position_MRCA2 <- which(c(phylo_order2$tip.label, 
-                                            phylo_order2$node.label) == name_list)
-                  check_name_node <- phylo_order$node.label[position_MRCA2 - 
-                                                              length(phylo_order$tip.label)]
-                  if (check_name_node == family_name) {
+              if (length(spp_user_opt) == 1) {
+                if (length(match(spp_user_opt, c(user_option_spp, 
+                                                 family_name))) != 1) {
+                  stop(paste("\n Check the spelling of Genus or Family in:", 
+                             spp_user_opt, sep = " "))
+                }
+                if (any(spp_user_opt == family_name)) {
+                  node_family <- which(c(phylo_order$tip.label, 
+                                         phylo_order$node.label) == family_name)
+                  phylo_order <- phytools::bind.tip(tree = phylo_order, 
+                                                    tip.label = spp_to_add_round2[1], where = node_family, 
+                                                    position = 0)
+                }
+                else {
+                  genus_nspp <- match(spp_user_opt, names(which(table(sub("_.*", 
+                                                                          "", as.character(unlist(spp_Byfamily_inTree)))) > 
+                                                                  1)))
+                  if (!is.na(genus_nspp) == TRUE) {
                     list_to_be_named <- list(spp_user_opt = spp_user_opt)
                     name_list <- paste("MRCA", count, sep = "")
                     names(list_to_be_named) <- name_list
-                    phylo_order <- ape::makeNodeLabel(phy = phylo_order, 
-                                                      method = "u", nodeList = list_to_be_named)
-                    position_MRCA2 <- which(c(phylo_order$tip.label, 
-                                              phylo_order$node.label) == name_list)
-                    size_branch <- phylo_order$edge.length[sapply(position_MRCA2, 
-                                                                  function(x, y) which(y == x), y = phylo_order$edge[, 
-                                                                                                                     2])]
-                    phylo_order <- phytools::bind.tip(phylo_order, 
-                                                      spp_to_add_round2[1], where = position_MRCA2, 
-                                                      position = size_branch/2)
-                    node_pos_new <- phytools::fastMRCA(tree = phylo_order, 
-                                                       sp1 = spp_Byfamily_inTree[1], sp2 = spp_to_add_round2[1])
-                    phylo_order$node.label[node_pos_new - 
-                                             length(phylo_order$tip.label)] <- family_name
+                    phylo_order2 <- ape::makeNodeLabel(phy = phylo_order, 
+                                                       method = "u", nodeList = list_to_be_named)
+                    position_MRCA2 <- which(c(phylo_order2$tip.label, 
+                                              phylo_order2$node.label) == name_list)
+                    check_name_node <- phylo_order$node.label[position_MRCA2 - 
+                                                                length(phylo_order$tip.label)]
+                    if (check_name_node == family_name) {
+                      list_to_be_named <- list(spp_user_opt = spp_user_opt)
+                      name_list <- paste("MRCA", count, sep = "")
+                      names(list_to_be_named) <- name_list
+                      phylo_order <- ape::makeNodeLabel(phy = phylo_order, 
+                                                        method = "u", nodeList = list_to_be_named)
+                      position_MRCA2 <- which(c(phylo_order$tip.label, 
+                                                phylo_order$node.label) == name_list)
+                      size_branch <- phylo_order$edge.length[sapply(position_MRCA2, 
+                                                                    function(x, y) which(y == x), y = phylo_order$edge[, 
+                                                                                                                       2])]
+                      phylo_order <- phytools::bind.tip(phylo_order, 
+                                                        spp_to_add_round2[1], where = position_MRCA2, 
+                                                        position = size_branch/2)
+                      node_pos_new <- phytools::fastMRCA(tree = phylo_order, 
+                                                         sp1 = spp_Byfamily_inTree[1], sp2 = spp_to_add_round2[1])
+                      phylo_order$node.label[node_pos_new - 
+                                               length(phylo_order$tip.label)] <- family_name
+                    }
+                    else {
+                      phylo_order <- ape::makeNodeLabel(phy = phylo_order, 
+                                                        method = "u", nodeList = list_to_be_named)
+                      position_MRCA <- which(c(phylo_order$tip.label, 
+                                               phylo_order$node.label) == name_list)
+                      size_branch <- phylo_order$edge.length[sapply(position_MRCA, 
+                                                                    function(x, y) which(y == x), y = phylo_order$edge[, 
+                                                                                                                       2])]
+                      phylo_order <- phytools::bind.tip(phylo_order, 
+                                                        spp_to_add_round2[1], where = position_MRCA, 
+                                                        position = size_branch/2)
+                    }
                   }
-                  else {
-                    phylo_order <- ape::makeNodeLabel(phy = phylo_order, 
-                                                      method = "u", nodeList = list_to_be_named)
-                    position_MRCA <- which(c(phylo_order$tip.label, 
-                                             phylo_order$node.label) == name_list)
-                    size_branch <- phylo_order$edge.length[sapply(position_MRCA, 
-                                                                  function(x, y) which(y == x), y = phylo_order$edge[, 
-                                                                                                                     2])]
-                    phylo_order <- phytools::bind.tip(phylo_order, 
-                                                      spp_to_add_round2[1], where = position_MRCA, 
-                                                      position = size_branch/2)
+                  if (is.na(genus_nspp) == TRUE) {
+                    phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                                  species = paste(sub("_.*", "", as.character(spp_user_opt)), 
+                                                                                  "toadd", sep = "_"))
+                    position_problem2 <- which(phylo_order$tip.label == 
+                                                 paste(sub("_.*", "", as.character(spp_user_opt)), 
+                                                       "toadd", sep = "_"))
+                    phylo_order$tip.label[position_problem2] <- spp_to_add_round2[1]
                   }
                 }
-                if (is.na(genus_nspp) == TRUE) {
-                  phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                                species = paste(sub("_.*", "", as.character(spp_user_opt)), 
-                                                                                "toadd", sep = "_"))
-                  position_problem2 <- which(phylo_order$tip.label == 
-                                               paste(sub("_.*", "", as.character(spp_user_opt)), 
-                                                     "toadd", sep = "_"))
-                  phylo_order$tip.label[position_problem2] <- spp_to_add_round2[1]
-                }
               }
-            }
-            spp_data <- 1:nrow(data_exRound2)
-            names(spp_data) <- data_exRound2$s
-            insert_spp <- treedata_modif(phy = phylo_order, 
-                                         data = spp_data, warnings = F)$nc$data_not_tree
-            genus_in_tree <- sub("_.*", "", phylo_order$tip.label)[match(sub("_.*", 
-                                                                             "", insert_spp), sub("_.*", "", phylo_order$tip.label))][!is.na(sub("_.*", 
-                                                                                                                                                 "", phylo_order$tip.label)[match(sub("_.*", 
-                                                                                                                                                                                      "", insert_spp), sub("_.*", "", phylo_order$tip.label))])]
-            if (length(genus_in_tree) >= 1) {
-              species_to_genus <- insert_spp[which(is.na(insert_spp[match(sub("_.*", 
-                                                                              "", insert_spp), genus_in_tree)]) == FALSE)]
-              species_to_genus2[[count]] <- species_to_genus
-              for (i in 1:length(species_to_genus)) {
-                phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                              species = species_to_genus[i])
-              }
+              spp_data <- 1:nrow(data_exRound2)
+              names(spp_data) <- data_exRound2$s
               insert_spp <- treedata_modif(phy = phylo_order, 
                                            data = spp_data, warnings = F)$nc$data_not_tree
-            }
-            rank_family2 <- unique(as.character(data[match(insert_spp, 
-                                                           as.character(data$s)), 2]))
-            if (length(rank_family2) == 0) {
-              data_final <- 1:length(as.character(data$s))
-              names(data_final) <- as.character(data$s)
-              tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
-                                                         tip = treedata_modif(phy = phylo_order, 
-                                                                              data = data_final)$nc$tree_not_data))
-              data_exRound3 <- NULL
-              break
-            }
-            else {
-              list_spp_step2 <- vector(mode = "list", length = length(rank_family2))
-              for (i in 1:length(rank_family2)) {
-                list_spp_step2[[i]] <- tryCatch(paste(ape::extract.clade(phy = phylo_order, 
-                                                                         node = as.character(rank_family2[i]))$tip.label), 
-                                                error = function(e) paste("noFamily", 
-                                                                          as.character(data[which(rank_family2[i] == 
-                                                                                                    data$f), 1]), sep = "_"))
+              genus_in_tree <- sub("_.*", "", phylo_order$tip.label)[match(sub("_.*", 
+                                                                               "", insert_spp), sub("_.*", "", phylo_order$tip.label))][!is.na(sub("_.*", 
+                                                                                                                                                   "", phylo_order$tip.label)[match(sub("_.*", 
+                                                                                                                                                                                        "", insert_spp), sub("_.*", "", phylo_order$tip.label))])]
+              if (length(genus_in_tree) >= 1) {
+                species_to_genus <- insert_spp[which(is.na(insert_spp[match(sub("_.*", 
+                                                                                "", insert_spp), genus_in_tree)]) == FALSE)]
+                species_to_genus2[[count]] <- species_to_genus
+                for (i in 1:length(species_to_genus)) {
+                  phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                                species = species_to_genus[i])
+                }
+                insert_spp <- treedata_modif(phy = phylo_order, 
+                                             data = spp_data, warnings = F)$nc$data_not_tree
               }
-              names(list_spp_step2) <- rank_family2
-              spp_family <- 1:nrow(data_exRound2)
-              names(spp_family) <- data_exRound2$s
-              spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
-                                                                  function(x) which(sub("_.*", "", x) != 
-                                                                                      "noFamily")), function(y) which(length(y) != 
-                                                                                                                        0))) > 0))
-              spp_family_inTree <- list_spp_step2[match(spp_with_family, 
-                                                        names(list_spp_step2))]
-              spp_to_add_round2 <- setdiff(insert_spp, 
-                                           data_exRound3$s)
+              rank_family2 <- unique(as.character(data[match(insert_spp, 
+                                                             as.character(data$s)), 2]))
+              if (length(rank_family2) == 0) {
+                data_final <- 1:length(as.character(data$s))
+                names(data_final) <- as.character(data$s)
+                tree_res <- suppressWarnings(ape::drop.tip(phy = phylo_order, 
+                                                           tip = treedata_modif(phy = phylo_order, 
+                                                                                data = data_final)$nc$tree_not_data))
+                data_exRound3 <- NULL
+                break
+              }
+              else {
+                list_spp_step2 <- vector(mode = "list", length = length(rank_family2))
+                for (i in 1:length(rank_family2)) {
+                  list_spp_step2[[i]] <- tryCatch(paste(ape::extract.clade(phy = phylo_order, 
+                                                                           node = as.character(rank_family2[i]))$tip.label), 
+                                                  error = function(e) paste("noFamily", 
+                                                                            as.character(data[which(rank_family2[i] == 
+                                                                                                      data$f), 1]), sep = "_"))
+                }
+                names(list_spp_step2) <- rank_family2
+                spp_family <- 1:nrow(data_exRound2)
+                names(spp_family) <- data_exRound2$s
+                spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
+                                                                    function(x) which(sub("_.*", "", x) != 
+                                                                                        "noFamily")), function(y) which(length(y) != 
+                                                                                                                          0))) > 0))
+                spp_family_inTree <- list_spp_step2[match(spp_with_family, 
+                                                          names(list_spp_step2))]
+                spp_to_add_round2 <- setdiff(insert_spp, 
+                                             data_exRound3$s)
+              }
             }
           }
           if (is.null(data_exRound3)) {
@@ -416,14 +526,12 @@ FishPhyloMaker <-
             }
           }
           else {
-            data_exRound3 <- data_exRound3[-match(order_rm_list, 
-                                                  data_exRound3$o)[!is.na(match(order_rm_list, 
-                                                                                data_exRound3$o))], ]
+            data_exRound3 <- data_exRound3[is.na(match(data_exRound3$o, order_rm_list)), ]
             rank_order_Round3 <- rank_order[match(data_exRound3$o, 
                                                   rank_order)]
             families_round3 <- lapply(lapply(rank_order_Round3, 
                                              function(x) {
-                                               fishbase[which(x == fishbase$Order), 10]
+                                               fishbasedata[which(x == fishbasedata$Order), 5]
                                              }), function(y) unique(y))
             names(families_round3) <- rank_order_Round3
             orders_round_3 <- unique(rank_order_Round3)
@@ -454,7 +562,7 @@ FishPhyloMaker <-
                   data_exRound2 <- data_exRound2[-match(species_to_genus2, 
                                                         data_exRound2$s), ]
                   family_insertions <- setdiff(family_level_insertions, 
-                                               c(species_to_genus, species_to_genus2))
+                                               c(species_to_genus1, species_to_genus2))
                 }
                 else {
                   family_insertions <- setdiff(family_level_insertions, 
@@ -482,6 +590,14 @@ FishPhyloMaker <-
               return(tree_res)
             }
             order_add_round3 <- unique(data_exRound3$o)
+            if(progress.bar == TRUE){
+              pb_insert_order_node_remaining <- progress::progress_bar$new(
+                format = "Adding species to order node [:bar] :percent",
+                total = nrow(data_exRound3), clear = FALSE, width= 60,
+                current = "<",
+                incomplete = ">",
+                complete = ">")
+            }
             for (i in 1:length(order_add_round3)) {
               list_names_round3 <- list_order[[which(names(list_order) == 
                                                        order_add_round3[i])]]
@@ -490,56 +606,67 @@ FishPhyloMaker <-
               phylo_order$node.label[which(phylo_order$node.label == 
                                              "Ord_name")] <- order_add_round3[i]
             }
-            for (i in 1:length(families_round3)) {
-              user_option_family <- phylo_order$node.label[match(unlist(families_round3[[i]]), 
-                                                                 phylo_order$node.label)[-which(match(match(unlist(families_round3[[i]]), 
-                                                                                                            phylo_order$node.label), NA) == 1)]]
-              local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
-                                                                            spp = data_exRound3$s[i], data_exRound3$o[i]))
-              family_user_opt <- unlist(strsplit(local_to_add_spp_family, 
-                                                 split = " "))
-              if (length(family_user_opt) == 1) {
-                if (family_user_opt == data_exRound3$o[i]) {
-                  node_order_pos <- which(c(phylo_order$tip.label, 
-                                            phylo_order$node.label) == data_exRound3$o[i])
+            if(insert.base.node == TRUE) {
+              for(i in 1:nrow(data_exRound3)){
+                node_order_pos <- which(c(phylo_order$tip.label, 
+                                          phylo_order$node.label) == data_exRound3$o[i])
+                phylo_order <- phytools::bind.tip(tree = phylo_order, 
+                                                  tip.label = data_exRound3$s[i], where = node_order_pos, 
+                                                  position = 0)
+                pb_insert_order_node_remaining$tick()
+              }
+            } else {
+              for (i in 1:length(families_round3)) {
+                user_option_family <- phylo_order$node.label[match(unlist(families_round3[[i]]), 
+                                                                   phylo_order$node.label)[-which(match(match(unlist(families_round3[[i]]), 
+                                                                                                              phylo_order$node.label), NA) == 1)]]
+                local_to_add_spp_family <- readline(prompt = print_cat_family(print_cat = unlist(user_option_family), 
+                                                                              spp = data_exRound3$s[i], data_exRound3$o[i]))
+                family_user_opt <- unlist(strsplit(local_to_add_spp_family, 
+                                                   split = " "))
+                if (length(family_user_opt) == 1) {
+                  if (family_user_opt == data_exRound3$o[i]) {
+                    node_order_pos <- which(c(phylo_order$tip.label, 
+                                              phylo_order$node.label) == data_exRound3$o[i])
+                    phylo_order <- phytools::bind.tip(tree = phylo_order, 
+                                                      tip.label = data_exRound3$s[i], where = node_order_pos, 
+                                                      position = 0)
+                  }
+                  family_nspp <- length(list_family[[match(family_user_opt, 
+                                                           names(list_family))]])
+                  if (family_nspp > 1) {
+                    position_family <- which(family_user_opt == 
+                                               c(phylo_order$tip.label, phylo_order$node.label))
+                    size_branch_family <- phylo_order$edge.length[sapply(position_family, 
+                                                                         function(x, y) which(y == x), y = phylo_order$edge[, 
+                                                                                                                            2])]
+                    phylo_order <- phytools::bind.tip(phylo_order, 
+                                                      data_exRound3$s[i], where = position_family, 
+                                                      position = size_branch_family/2)
+                  }
+                  if (family_nspp == 1) {
+                    phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
+                                                                  species = paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == 
+                                                                                                                                   family_user_opt)]][1])), "toadd", 
+                                                                                  sep = "_"))
+                    position_problem_family <- which(phylo_order$tip.label == 
+                                                       paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == 
+                                                                                                              family_user_opt)]][1])), "toadd", 
+                                                             sep = "_"))
+                    phylo_order$tip.label[position_problem_family] <- data_exRound3$s[i]
+                  }
+                }
+                if (length(family_user_opt) == 2) {
+                  spp_to_add_tmp_family1 <- ape::extract.clade(phylo_order, 
+                                                               node = family_user_opt[1])$tip.label[1]
+                  spp_to_add_tmp_family2 <- ape::extract.clade(phylo_order, 
+                                                               node = family_user_opt[2])$tip.label[1]
+                  node_btw_genus_family <- phytools::fastMRCA(tree = phylo_order, 
+                                                              sp1 = spp_to_add_tmp_family1, sp2 = spp_to_add_tmp_family2)
                   phylo_order <- phytools::bind.tip(tree = phylo_order, 
-                                                    tip.label = data_exRound3$s[i], where = node_order_pos, 
+                                                    tip.label = data_exRound3$s[i], where = node_btw_genus_family, 
                                                     position = 0)
                 }
-                family_nspp <- length(list_family[[match(family_user_opt, 
-                                                         names(list_family))]])
-                if (family_nspp > 1) {
-                  position_family <- which(family_user_opt == 
-                                             c(phylo_order$tip.label, phylo_order$node.label))
-                  size_branch_family <- phylo_order$edge.length[sapply(position_family, 
-                                                                       function(x, y) which(y == x), y = phylo_order$edge[, 
-                                                                                                                          2])]
-                  phylo_order <- phytools::bind.tip(phylo_order, 
-                                                    data_exRound3$s[i], where = position_family, 
-                                                    position = size_branch_family/2)
-                }
-                if (family_nspp == 1) {
-                  phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                                species = paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == 
-                                                                                                                                 family_user_opt)]][1])), "toadd", 
-                                                                                sep = "_"))
-                  position_problem_family <- which(phylo_order$tip.label == 
-                                                     paste(sub("_.*", "", as.character(list_family[[which(names(list_family) == 
-                                                                                                            family_user_opt)]][1])), "toadd", 
-                                                           sep = "_"))
-                  phylo_order$tip.label[position_problem_family] <- data_exRound3$s[i]
-                }
-              }
-              if (length(family_user_opt) == 2) {
-                spp_to_add_tmp_family1 <- ape::extract.clade(phylo_order, 
-                                                             node = family_user_opt[1])$tip.label[1]
-                spp_to_add_tmp_family2 <- ape::extract.clade(phylo_order, 
-                                                             node = family_user_opt[2])$tip.label[1]
-                node_btw_genus_family <- phytools::fastMRCA(tree = phylo_order, 
-                                                            sp1 = spp_to_add_tmp_family1, sp2 = spp_to_add_tmp_family2)
-                phylo_order <- phytools::bind.tip(tree = phylo_order, 
-                                                  tip.label = data_exRound3$s[i], where = node_btw_genus_family, 
-                                                  position = 0)
               }
             }
             data_final <- 1:length(as.character(data$s))
@@ -558,23 +685,19 @@ FishPhyloMaker <-
                 data_insertions[match(species_to_genus2, 
                                       data$s), "insertions"] <- rep("Congeneric_insertion_roundFamily", 
                                                                     length(unlist(species_to_genus2)))
+                
+                data_exRound2 <- data[match(insert_spp2, as.character(data$s)), ]
                 data_exRound2 <- data_exRound2[-match(species_to_genus2, 
                                                       data_exRound2$s), ]
               }
-              family_level_insertions <- unique(setdiff(data_exRound2$s, 
-                                                        data_exRound3$s))
-              family_insertions <- setdiff(family_level_insertions, 
-                                           species_to_genus1)
-              test_order_absent <- match(order_rm_list, 
-                                         data$o)
-              if (any(is.numeric(test_order_absent)) == 
-                  TRUE) {
-                data_insertions[match(order_rm_list, data$o)[!is.na(match(order_rm_list, 
-                                                                          data$o))], "insertions"] <- "Not_inserted"
-                not_in_tree <- data_insertions[match(order_rm_list, 
-                                                     data$o)[!is.na(match(order_rm_list, data$o))], 
-                                               "s"]
+              test_order_absent <- rownames(data[!is.na(match(data$o, order_rm_list)), ])
+              if (length(test_order_absent) >= 1) {
+                data_insertions[match(test_order_absent, rownames(data)), 
+                                "insertions"] <- rep("Not_inserted", length(test_order_absent))
+                not_in_tree <- data_insertions[match(test_order_absent, rownames(data)), "s"]
               }
+              family_insertions <- unique(setdiff(data_exRound2$s, 
+                                                  c(not_in_tree, data_exRound3$s)))
               data_insertions[match(family_insertions, 
                                     data$s), "insertions"] <- rep("Family_insertion", 
                                                                   length(family_insertions))

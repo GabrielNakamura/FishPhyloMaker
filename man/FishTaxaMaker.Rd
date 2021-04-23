@@ -6,13 +6,22 @@
 Auxiliar function to obtain taxonomic classification and check the names of species
 present in species pool}
 \usage{
-FishTaxaMaker(data)
+FishTaxaMaker(data, allow.manual.insert = TRUE)
 }
 \arguments{
 \item{data}{A character vector with species names or a community matrix with species names in columns}
+
+\item{allow.manual.insert}{Logical, if TRUE (default), the user must type the names of Family and Order of species
+not found in Fishbase}
 }
 \value{
-Data frame with three columns containing the name of species (s), the Family (f) and Order (o)
+List with four elements.
+- A data frame containing the taxonomic classification of valid species accordingy to Fishbase
+- A data frame with three columns containing the name of species (s), the Family (f) and Order (o) that can be used in
+FishPhyloMaker function
+- A data frame containing species all possible duplicated species informed by the user with their correspondent
+valid name according to Fishbase
+- A character vector containing all names of species that was not find in Fishbase
 }
 \description{
 Generate a list of species
@@ -27,6 +36,7 @@ present in species pool
     Loricariidae # informing Family of Curculionichthys insperatus
     Siluriformes # informing Order of Curculionichthys insperatus
 }
+
 
 
 }

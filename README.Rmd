@@ -1,5 +1,5 @@
 ---
-title: "FishPhyloMaker: A R package to generate phylogenies for bony fish"
+title: "FishPhyloMaker: An R package to generate phylogenies for bony fish"
 author: "Gabriel Nakamura"
 date: "4/4/2021"
 output: 
@@ -17,15 +17,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/FishPhyloMaker)](https://cran.r-project.org/package=FishPhyloMaker)
 
-[![codecov](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker/branch/main/graph/badge.svg?token=WHYLBPOJNA)](https://codecov.io/gh/GabrielNakamura/FishPhyloMaker)
-
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 
 **Making phylogenies for a local pool of fish species**
 
-`{FishPhyloMaker}` is a freely R package that has two main functions, `FishTaxaMaker` and `FishPhyloMaker`. The first generate a data frame from fish species names provided by the user, checking the validity of these names by using the information presented in [Fishbase database](http://www.fishbase.org/search.php) through the package [rfishbase](https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf) . Species that were not found in Fishbase are printed in the command line, and the user must inform manually the Family and the Order of these species. The output of `FishTaxaMaker()` function is a data frame object containing three columns with the name of species (s), the Family (f) and the Order (o) of all species provided by the user. 
+`{FishPhyloMaker}` is an R package that has two main functions, `FishTaxaMaker` and `FishPhyloMaker`. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information presented in [Fishbase database](http://www.fishbase.org/search.php) through the package [rfishbase](https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf) . Species that were not found in Fishbase are printed in the command line, and the user must inform manually the Family and the Order of these species. The output of `FishTaxaMaker()` function is a list containing the following objects: 
+- **All_info_fishbase**: A data frame containing the taxonomic classification of valid species accordingy to Fishbase;
+- **Taxon_data_FishPhyloMaker**: A data frame with three colum containing the valid name of species
+    (s), its family (f) and order (o). This data frame can be used in `FishPhyloMaker()` to generate the phylogeny;
+- **Duplicated_species**: A data frame showing the names of species that the user provided and the        names of species valid accordingly fishbase. This data frame contains only those species that         represents duplicated species
+- **Species_not_in_Fishbase**: A character vectorn containing the names of species that was not find      in Fishbase with a valid name
+data frame object containing three columns with the name of species (s), the Family (f) and the Order (o) of all species provided by the user. 
 
-Besides to help checking the validity of the names of species, the data frame returned by `FishTaxaMaker()` format the species data to be used in the core function `FishPhyloMaker()`. This function will use the information of the taxonomic hierarchy contained in the data frame returned from `FishTaxaMaker()`, joint with the information present in the the [fishtree of life project](https://fishtreeoflife.org/) to assemble the phylogenetic tree with the species informed by the user.
+Besides to help checking the validity of the names of species, its synonyms and duplicated species, the data frame returned by `FishTaxaMaker()` in **Taxon_data_FishPhyoMaker** are formatted to be directly used in the core function `FishPhyloMaker()`. This function will use the information of the taxonomic hierarchy contained in the data frame returned from `FishTaxaMaker()`, joint with the information present in the the [fishtree of life project](https://fishtreeoflife.org/) to assemble the phylogenetic tree with the species informed by the user.
 
 `FishPhyloMaker()` works in a sequential way, with 4 levels of insertions. First the function finds for all species of local data that are already presented in the mega-tree. If any species remains for insertion, then the function finds for congeneric species that are already present in tree. If any, the congeneric species are added to the tree as a sister species of the respective genus by dividing the branch of congeneric species by two and inserting the new species. If there are more than one congeneric species in the tree the species will be added as a polytomy at the node that corresponds to the most recent ancestral (MRCA) that links all congeneric species. This round of insertion is what we call **Congeneric insertion**.
 
