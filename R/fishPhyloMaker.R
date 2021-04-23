@@ -39,7 +39,7 @@ FishPhyloMaker <-
     if (is.data.frame(data) == FALSE) {
       stop("/n data must be a data frame object")
     }
-    
+    fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
     tree_complete <- fishtree::fishtree_phylogeny()
     round_1_check <- match(data$s, tree_complete$tip.label)
     round_1_check <- round_1_check[!is.na(round_1_check)]
@@ -68,7 +68,7 @@ FishPhyloMaker <-
       rank_family <- as.character(unique(data$f))
       spp <- as.character(data$s)
       all_families <- unique(unlist(lapply(rank_order, function(x) {
-        fishbase[which(x == fishbase$Order), 10]
+        fishbasedata[which(x == fishbasedata$Order), 5]
       })))
       families_in_orders <- suppressWarnings(all_families[which(unique(data$f) != 
                                                                   all_families)])
@@ -531,7 +531,7 @@ FishPhyloMaker <-
                                                   rank_order)]
             families_round3 <- lapply(lapply(rank_order_Round3, 
                                              function(x) {
-                                               fishbase[which(x == fishbase$Order), 10]
+                                               fishbasedata[which(x == fishbasedata$Order), 5]
                                              }), function(y) unique(y))
             names(families_round3) <- rank_order_Round3
             orders_round_3 <- unique(rank_order_Round3)
