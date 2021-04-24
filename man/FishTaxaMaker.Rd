@@ -15,13 +15,13 @@ FishTaxaMaker(data, allow.manual.insert = TRUE)
 not found in Fishbase}
 }
 \value{
-List with four elements.
-- A data frame containing the taxonomic classification of valid species accordingy to Fishbase
+List with three elements.\preformatted{- A data frame containing the taxonomic classification of valid species accordingy to Fishbase
+
 - A data frame with three columns containing the name of species (s), the Family (f) and Order (o) that can be used in
-FishPhyloMaker function
-- A data frame containing species all possible duplicated species informed by the user with their correspondent
-valid name according to Fishbase
+   FishPhyloMaker function
+   
 - A character vector containing all names of species that was not find in Fishbase
+}
 }
 \description{
 Generate a list of species
