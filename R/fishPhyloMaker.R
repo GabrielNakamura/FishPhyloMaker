@@ -21,9 +21,7 @@
 #'     taxon_data <- tab_function(data_comm) # formating data
 #'     Loricariidae # informing Family of Curculionichthys insperatus
 #'     Siluriformes # informing Order of Curculionichthys insperatus
-#'     res_test <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
-#'     res_test$Phylogeny # newick object
-#'     res_test$insertions # dataframe containing the level in which each species was inserted
+#'     res_test <- FishPhyloMaker(data = taxon_data, insert.base.node = FALSE, return.insertions = FALSE, progress.bar = TRUE)
 #' }
 #' 
 #' 
@@ -500,14 +498,14 @@ FishPhyloMaker <-
               not_inserted <- data$s[is.na(match(data$s, tree_res$tip.label))]
               Congeneric_round_family <- species_to_genus2
               Family_insertion <- insert_spp2[-match(c(Congeneric_round_family, not_inserted), insert_spp2)]
-              data_insertions[match(Present_in_tree, data_insertions_test$s), "insertions"] <- "Present_in_Tree"
-              data_insertions[match(Congeneric_insertion, data_insertions_test$s), "insertions"] <- "Congeneric_insertion"
-              data_insertions[match(Family_insertion, data_insertions_test$s), "insertions"] <- "Family_insertion"
+              data_insertions[match(Present_in_tree, data_insertions$s), "insertions"] <- "Present_in_Tree"
+              data_insertions[match(Congeneric_insertion, data_insertions$s), "insertions"] <- "Congeneric_insertion"
+              data_insertions[match(Family_insertion, data_insertions$s), "insertions"] <- "Family_insertion"
               if(length(not_inserted) >= 1){
-                data_insertions[match(not_inserted, data_insertions_test$s), "insertions"] <- "Not_inserted"
+                data_insertions[match(not_inserted, data_insertions$s), "insertions"] <- "Not_inserted"
               }
               if(length(Congeneric_round_family) >= 1){
-                data_insertions[match(Congeneric_round_family, data_insertions_test$s), "insertions"] <- "Congeneric_insertion_roundFamily"
+                data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_insertion_roundFamily"
               }
               list_res <- vector(mode = "list", length = 2)
               list_res[[1]] <- tree_res
@@ -549,14 +547,14 @@ FishPhyloMaker <-
                 not_inserted <- data$s[is.na(match(data$s, tree_res$tip.label))]
                 Congeneric_round_family <- species_to_genus2
                 Family_insertion <- insert_spp2[-match(c(Congeneric_round_family, not_inserted), insert_spp2)]
-                data_insertions[match(Present_in_tree, data_insertions_test$s), "insertions"] <- "Present_in_Tree"
-                data_insertions[match(Congeneric_insertion, data_insertions_test$s), "insertions"] <- "Congeneric_insertion"
-                data_insertions[match(Family_insertion, data_insertions_test$s), "insertions"] <- "Family_insertion"
+                data_insertions[match(Present_in_tree, data_insertions$s), "insertions"] <- "Present_in_Tree"
+                data_insertions[match(Congeneric_insertion, data_insertions$s), "insertions"] <- "Congeneric_insertion"
+                data_insertions[match(Family_insertion, data_insertions$s), "insertions"] <- "Family_insertion"
                 if(length(not_inserted) >= 1){
-                  data_insertions[match(not_inserted, data_insertions_test$s), "insertions"] <- "Not_inserted"
+                  data_insertions[match(not_inserted, data_insertions$s), "insertions"] <- "Not_inserted"
                 }
                 if(length(Congeneric_round_family) >= 1){
-                  data_insertions[match(Congeneric_round_family, data_insertions_test$s), "insertions"] <- "Congeneric_insertion_roundFamily"
+                  data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_insertion_roundFamily"
                 }
                 list_res <- vector(mode = "list", length = 2)
                 list_res[[1]] <- tree_res
@@ -660,14 +658,14 @@ FishPhyloMaker <-
               not_inserted <- data$s[is.na(match(data$s, tree_res$tip.label))]
               Congeneric_round_family <- species_to_genus2
               Family_insertion <- insert_spp2[-match(c(Congeneric_round_family, not_inserted), insert_spp2)]
-              data_insertions[match(Present_in_tree, data_insertions_test$s), "insertions"] <- "Present_in_Tree"
-              data_insertions[match(Congeneric_insertion, data_insertions_test$s), "insertions"] <- "Congeneric_insertion"
-              data_insertions[match(Family_insertion, data_insertions_test$s), "insertions"] <- "Family_insertion"
+              data_insertions[match(Present_in_tree, data_insertions$s), "insertions"] <- "Present_in_Tree"
+              data_insertions[match(Congeneric_insertion, data_insertions$s), "insertions"] <- "Congeneric_insertion"
+              data_insertions[match(Family_insertion, data_insertions$s), "insertions"] <- "Family_insertion"
               if(length(not_inserted) >= 1){
-                data_insertions[match(not_inserted, data_insertions_test$s), "insertions"] <- "Not_inserted"
+                data_insertions[match(not_inserted, data_insertions$s), "insertions"] <- "Not_inserted"
               }
               if(length(Congeneric_round_family) >= 1){
-                data_insertions[match(Congeneric_round_family, data_insertions_test$s), "insertions"] <- "Congeneric_insertion_roundFamily"
+                data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_insertion_roundFamily"
               }
               list_res <- vector(mode = "list", length = 2)
               list_res[[1]] <- tree_res
