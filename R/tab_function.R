@@ -27,7 +27,7 @@
 #' }
 #' 
 #' 
-#' 
+#'
 FishTaxaMaker <- function(data, allow.manual.insert = TRUE) 
 {
   if (is.data.frame(data) == TRUE) {
@@ -50,10 +50,10 @@ FishTaxaMaker <- function(data, allow.manual.insert = TRUE)
   }
   df_taxon <- data.frame(user_spp = names_data, 
                          valid_names = rep(NA, length(names_data))
-                         )
+  )
   fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
   not_find <- names_data_rfishbase[which(is.na(match(names_data_rfishbase, 
-                                           fishbasedata$Species)) == TRUE)]
+                                                     fishbasedata$Species)) == TRUE)]
   found <- gsub("_", " ", names_data[which(!is.na(match(names_data_rfishbase, 
                                                         fishbasedata$Species)) == TRUE)])
   names_not_find <- rfishbase::synonyms(species_list = not_find)
@@ -61,10 +61,10 @@ FishTaxaMaker <- function(data, allow.manual.insert = TRUE)
   df_taxon[match(found, gsub("_", " ", df_taxon$user_spp)), "valid_names"] <- found
   df_taxon[match(names_not_find_valid$synonym,
                  gsub("_", " ", df_taxon$user_spp)
-                 ), 
-           "valid_names"] <- names_not_find_valid$Species
+  ), 
+  "valid_names"] <- names_not_find_valid$Species
   not_found_fishtree <- data.frame(names_not_find[match(gsub("_", " ", df_taxon[which(is.na(df_taxon$valid_names) == TRUE), "user_spp"]),
-                                                       names_not_find$synonym), ])$synonym
+                                                        names_not_find$synonym), ])$synonym
   
   list_res <- vector(mode = "list", length = 3)
   tax_hierarch <- fishbasedata[match(df_taxon$valid_names, fishbasedata$Species), c("Subfamily", "Family", "Order", "Class", "SuperClass")]
@@ -76,6 +76,7 @@ FishTaxaMaker <- function(data, allow.manual.insert = TRUE)
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   list_res[[2]][match(gsub(" ", "_", not_found_fishtree), list_res[[1]]$user_spp), "s"] <- not_found_fishtree
   list_res[[2]][match(gsub(" ", "_", not_found_fishtree), list_res[[1]]$user_spp), c("f", "o")] <- paste("not_find")
+  list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   if(length(not_found_fishtree) >= 1) {
     list_res[[3]] <- not_found_fishtree
   } else {
@@ -96,7 +97,7 @@ FishTaxaMaker <- function(data, allow.manual.insert = TRUE)
         spp_family <- readline(prompt = print_cat_Family(not_found_fishtree = not_found_fishtree[i]))
         spp_order <- readline(prompt = print_cat_Order(not_found_fishtree = not_found_fishtree[i]))
         list_res[[2]][which(list_res[[1]]$user_spp == gsub(" ", "_", not_found_fishtree[i])), c("s", "f")] <- c(not_found_fishtree[i],
-                                                                                                        spp_family)
+                                                                                                                spp_family)
         list_res[[2]][which(list_res[[2]]$s == not_found_fishtree[i]), "o"] <- spp_order
       }
       return(list_res)
