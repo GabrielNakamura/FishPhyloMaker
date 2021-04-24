@@ -10,8 +10,6 @@
 #'     - A data frame containing the taxonomic classification of valid species accordingy to Fishbase
 #'     - A data frame with three columns containing the name of species (s), the Family (f) and Order (o) that can be used in
 #'        FishPhyloMaker function
-#'     - A data frame containing species all possible duplicated species informed by the user with their correspondent
-#'       valid name according to Fishbase
 #'     - A character vector containing all names of species that was not find in Fishbase
 #' 
 #' @export
@@ -62,35 +60,25 @@ FishTaxaMaker <- function(data, allow.manual.insert = TRUE)
                  gsub("_", " ", df_taxon$user_spp)
                  ), 
            "valid_names"] <- names_not_find_valid$Species
-  duplicate_names <- df_taxon[unlist(lapply(names(which(table(df_taxon$valid_names) > 1)), 
-                                            function(x) which(x == df_taxon$valid_names)
-                                            )
-                                     ),
-                              ]
-  
   not_found_fishtree <- data.frame(names_not_find[match(gsub("_", " ", df_taxon[which(is.na(df_taxon$valid_names) == TRUE), "user_spp"]),
                                                        names_not_find$synonym), ])$synonym
   
-  list_res <- vector(mode = "list", length = 4)
+  list_res <- vector(mode = "list", length = 3)
   tax_hierarch <- fishbasedata[match(df_taxon$valid_names, fishbasedata$Species), c("Subfamily", "Family", "Order", "Class", "SuperClass")]
   data_fishbase_complete <- cbind(df_taxon, tax_hierarch)
   list_res[[1]] <- data_fishbase_complete
   list_res[[2]] <- data_fishbase_complete[, c("valid_names", "Family", "Order")]
   colnames(list_res[[2]]) <- c("s", "f", "o")
+  list_res[[2]] <- list_res[[2]][match(unique(list_res[[2]]$s), list_res[[2]]$s), ]
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   list_res[[2]][match(gsub(" ", "_", not_found_fishtree), list_res[[1]]$user_spp), "s"] <- not_found_fishtree
   list_res[[2]][match(gsub(" ", "_", not_found_fishtree), list_res[[1]]$user_spp), c("f", "o")] <- paste("not_find")
-  if(dim(duplicate_names)[1] >= 1){
-    list_res[[3]] <- duplicate_names
-  } else {
-    list_res[[3]] <- paste("No species present duplicated registers")
-  }
   if(length(not_found_fishtree) >= 1) {
-    list_res[[4]] <- not_found_fishtree
+    list_res[[3]] <- not_found_fishtree
   } else {
-    list_res[[4]] <- paste("All species were found in Fishtree")
+    list_res[[3]] <- paste("All species were found in Fishtree")
   }
-  names(list_res) <- c("All_info_fishbase", "Taxon_data_FishPhyloMaker", "Duplicated_species", "Species_not_in_Fishbase")
+  names(list_res) <- c("All_info_fishbase", "Taxon_data_FishPhyloMaker", "Species_not_in_Fishbase")
   if(length(not_found_fishtree) >= 1){
     if(allow.manual.insert == TRUE){
       print_cat_Family <- function(not_found_fishtree) {
