@@ -177,9 +177,7 @@ indicating at which level each species was inserted in the tree</p>
     <span class='va'>taxon_data</span> <span class='op'>&lt;-</span> <span class='fu'>tab_function</span><span class='op'>(</span><span class='va'>data_comm</span><span class='op'>)</span> <span class='co'># formating data</span>
     <span class='va'>Loricariidae</span> <span class='co'># informing Family of Curculionichthys insperatus</span>
     <span class='va'>Siluriformes</span> <span class='co'># informing Order of Curculionichthys insperatus</span>
-    <span class='va'>res_test</span> <span class='op'>&lt;-</span> <span class='fu'>FishPhyloMaker</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>taxon_data</span>, return.insertions <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-    <span class='va'>res_test</span><span class='op'>$</span><span class='va'>Phylogeny</span> <span class='co'># newick object</span>
-    <span class='va'>res_test</span><span class='op'>$</span><span class='va'>insertions</span> <span class='co'># dataframe containing the level in which each species was inserted</span>
+    <span class='va'>res_test</span> <span class='op'>&lt;-</span> <span class='fu'>FishPhyloMaker</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>taxon_data</span>, insert.base.node <span class='op'>=</span> <span class='cn'>FALSE</span>, return.insertions <span class='op'>=</span> <span class='cn'>FALSE</span>, progress.bar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 
