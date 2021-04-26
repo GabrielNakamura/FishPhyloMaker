@@ -28,7 +28,6 @@
 #' 
 #' 
 #'
-data<-occ_drainage$X6.Fishbase.Valid.Species.Name
 FishTaxaMaker <- function(data, allow.manual.insert = TRUE) 
 {
   if (is.data.frame(data) == TRUE) {
