@@ -133,7 +133,12 @@
     <p>Obtaining fish phylogeny according to a local pool of species</p>
     </div>
 
-    <pre class="usage"><span class='fu'>FishPhyloMaker</span><span class='op'>(</span><span class='va'>data</span>, return.insertions <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>FishPhyloMaker</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  insert.base.node <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  return.insertions <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  progress.bar <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,9 +149,18 @@
 with tab_function function</p></td>
     </tr>
     <tr>
+      <th>insert.base.node</th>
+      <td><p>Logical argument indicating if the species must be added automatically
+in the family and order (when needed) nodes. Default is FALSE</p></td>
+    </tr>
+    <tr>
       <th>return.insertions</th>
       <td><p>Logical, if TRUE the output is a list of length two containing the phylogeny
 and a dataframe with a column indicating at which level each species was inserted</p></td>
+    </tr>
+    <tr>
+      <th>progress.bar</th>
+      <td><p>Logical argument. If TRUE a progress bar will be shown in console</p></td>
     </tr>
     </table>
 
@@ -163,9 +177,7 @@ indicating at which level each species was inserted in the tree</p>
     <span class='va'>taxon_data</span> <span class='op'>&lt;-</span> <span class='fu'>tab_function</span><span class='op'>(</span><span class='va'>data_comm</span><span class='op'>)</span> <span class='co'># formating data</span>
     <span class='va'>Loricariidae</span> <span class='co'># informing Family of Curculionichthys insperatus</span>
     <span class='va'>Siluriformes</span> <span class='co'># informing Order of Curculionichthys insperatus</span>
-    <span class='va'>res_test</span> <span class='op'>&lt;-</span> <span class='fu'>FishPhyloMaker</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>taxon_data</span>, return.insertions <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-    <span class='va'>res_test</span><span class='op'>$</span><span class='va'>Phylogeny</span> <span class='co'># newick object</span>
-    <span class='va'>res_test</span><span class='op'>$</span><span class='va'>insertions</span> <span class='co'># dataframe containing the level in which each species was inserted</span>
+    <span class='va'>res_test</span> <span class='op'>&lt;-</span> <span class='fu'>FishPhyloMaker</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>taxon_data</span>, insert.base.node <span class='op'>=</span> <span class='cn'>FALSE</span>, return.insertions <span class='op'>=</span> <span class='cn'>FALSE</span>, progress.bar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 

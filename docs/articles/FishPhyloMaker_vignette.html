@@ -83,7 +83,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using FishPhyloMaker to build phylogenies for bony fishes</h1>
             
-            <h4 class="date">2021-04-07</h4>
+            <h4 class="date">2021-04-26</h4>
       
       
       <div class="hidden name"><code>FishPhyloMaker_vignette.Rmd</code></div>
@@ -120,7 +120,7 @@
 <p>In this example I choose to insert the species <em>Curculionichthys insperatus</em> near to Genus <em>Hisonotus</em>, and species <em>Synbranchus marmoratus</em> at the base of its family, that is Synbranchidae.</p>
 <p>The result of <code>FishPhyloMaker</code> is a list containing two objects, a phylogenetic tree and a data frame indicating at which level each species was inserted in the phylogeny. We can use the result contained in phylo_fish_streams to plot the tree. We can use the following code to highlight the families in the tree.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggtree</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/treedata-book/">ggtree</a></span><span class="op">)</span>
 <span class="va">tree.PR</span><span class="op">&lt;-</span> <span class="va">phylo_fish_streams</span><span class="op">$</span><span class="va">Phylogeny</span>
 
 <span class="va">tree.PR</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/makeNodeLabel.html">makeNodeLabel</a></span><span class="op">(</span><span class="va">tree.PR</span><span class="op">)</span>
@@ -144,11 +144,11 @@
 <span class="va">df.phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Fam.names <span class="op">=</span> <span class="va">names.fam</span>,
                        node.number <span class="op">=</span> <span class="va">pos.node</span><span class="op">)</span>
 
-<span class="va">plot.base</span> <span class="op">&lt;-</span> <span class="fu">ggtree</span><span class="op">(</span><span class="va">phylo</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_tree2</span><span class="op">(</span><span class="op">)</span>
-<span class="va">plot1</span> <span class="op">&lt;-</span> <span class="fu">revts</span><span class="op">(</span><span class="va">plot.base</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_x_continuous</span><span class="op">(</span>labels<span class="op">=</span><span class="va">abs</span><span class="op">)</span>
+<span class="va">plot.base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/ggtree.html">ggtree</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/theme_tree2.html">theme_tree2</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">plot1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/revts.html">revts</a></span><span class="op">(</span><span class="va">plot.base</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_x_continuous</span><span class="op">(</span>labels<span class="op">=</span><span class="va">abs</span><span class="op">)</span>
 
 
-<span class="va">PR.PG</span> <span class="op">&lt;-</span> <span class="va">plot1</span> <span class="op">+</span> <span class="fu">geom_hilight</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df.phylo</span>, <span class="fu">aes</span><span class="op">(</span>node <span class="op">=</span> <span class="va">node.number</span>, fill <span class="op">=</span> <span class="va">Fam.names</span><span class="op">)</span>, 
+<span class="va">PR.PG</span> <span class="op">&lt;-</span> <span class="va">plot1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/ggtree/man/geom-hilight.html">geom_hilight</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df.phylo</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>node <span class="op">=</span> <span class="va">node.number</span>, fill <span class="op">=</span> <span class="va">Fam.names</span><span class="op">)</span>, 
                       alpha <span class="op">=</span> <span class="fl">.6</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_fill_viridis</span><span class="op">(</span>discrete <span class="op">=</span> <span class="cn">T</span>, name <span class="op">=</span> <span class="st">"Family names"</span><span class="op">)</span></code></pre></div>
 <p>With this code we will obtain a phylogenetic tree like that in Figure 1. The species that are not shaded with colors corresponds to monotipic families.</p>
