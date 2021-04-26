@@ -28,6 +28,7 @@
 #' 
 #' 
 #'
+data<-occ_drainage$X6.Fishbase.Valid.Species.Name
 FishTaxaMaker <- function(data, allow.manual.insert = TRUE) 
 {
   if (is.data.frame(data) == TRUE) {
@@ -74,8 +75,8 @@ FishTaxaMaker <- function(data, allow.manual.insert = TRUE)
   colnames(list_res[[2]]) <- c("s", "f", "o")
   list_res[[2]] <- list_res[[2]][match(unique(list_res[[2]]$s), list_res[[2]]$s), ]
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
-  list_res[[2]][match(gsub(" ", "_", not_found_fishtree), list_res[[1]]$user_spp), "s"] <- not_found_fishtree
-  list_res[[2]][match(gsub(" ", "_", not_found_fishtree), list_res[[1]]$user_spp), c("f", "o")] <- paste("not_find")
+  list_res[[2]][match(gsub(" ", "_", na.omit(not_found_fishtree)), list_res[[1]]$user_spp), "s"] <- na.omit(not_found_fishtree)
+  list_res[[2]][match(gsub(" ", "_", na.omit(not_found_fishtree)), list_res[[1]]$user_spp), c("f", "o")] <- paste("not_find")
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   if(length(not_found_fishtree) >= 1) {
     list_res[[3]] <- not_found_fishtree
