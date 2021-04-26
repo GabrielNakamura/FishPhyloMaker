@@ -2,4 +2,5 @@
 
 export(FishPhyloMaker)
 export(FishTaxaMaker)
+export(PD_defict)
 export(whichFishAdd)
