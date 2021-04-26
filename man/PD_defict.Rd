@@ -7,10 +7,10 @@
 PD_defict(phylo, data, level = "Congeneric_insertion")
 }
 \arguments{
-\item{phylo}{Phylogenetic tree in newick format, can be an object from \code{\link[=FishPhyloMaker]{FishPhyloMaker()}} function}
+\item{phylo}{Phylogenetic tree in newick format, can be an object from \code{\link{FishPhyloMaker}} function}
 
 \item{data}{A data frame containing the classification  informing the level of insertions. This can be obtained
-from \code{\link[=FishPhyoMaker]{FishPhyoMaker()}} function}
+from \code{\link{FishPhyloMaker}} function}
 
 \item{level}{Character indicating which level must be considered in the calculation of PD deficit.
 default is "Congeneric_insertion"}
@@ -22,5 +22,5 @@ A scalar containing the value of PD deficit for the level chosen
 Title Calculate the amount of phylogenetic deficit in assemblages
 }
 \seealso{
-\code{\link[=FishPhyloMaker]{FishPhyloMaker()}} for phylogeny and data frame containing the classification of insertions
+\code{\link{FishPhyloMaker}} for phylogeny and data frame containing the classification of insertions
 }
