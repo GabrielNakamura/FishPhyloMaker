@@ -34,7 +34,7 @@ data_comm <- neotropical_comm[, -c(1, 2)] # removing Latitude and Longitude
 Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.
 
 ```{r taxon_data, echo=TRUE, eval=FALSE}
-taxon_data <- FishTaxaMaker(data = data_comm)
+taxon_data <- FishTaxaMaker(data = data_comm, allow.manual.insert = TRUE)
 Loricariidae
 Siluriformes
 ```
@@ -56,7 +56,10 @@ For each species a list of names containing Genus names or Family names will app
 *NOTE* - The function can take several minutes to run depending on the number of species that must be inserted.
 
 ```{r phylo_make, eval=FALSE, echo=TRUE}
-phylo_fish_streams <- FishPhyloMaker(data = taxon_data, return.insertions = T)
+phylo_fish_streams <- FishPhyloMaker(data = taxon_data, 
+                                     return.insertions = TRUE,
+                                     insert.base.node = FALSE, 
+                                     progress.bar = TRUE)
 Hisonotus 
 Synbranchidae 
 ```
