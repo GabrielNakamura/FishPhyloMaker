@@ -1,17 +1,17 @@
 #' Obtaining fish phylogeny according to a local pool of species
 #'
 #' @param data A data frame with three columns containing the name of species (s), the Family (f) and the Order (o). This data frame can be generated 
-#'     with tab_function function
-#' @param return.insertions Logical, if TRUE the output is a list of length two containing the phylogeny 
-#'     and a dataframe with a column indicating at which level each species was inserted
+#'     with tab_function function.
+#' @param return.insertions Logical, if TRUE (default) the output is a list of length two containing the phylogeny 
+#'     and a dataframe with a column indicating at which level each species was inserted.
 #' @param insert.base.node Logical argument indicating if the species must be added automatically
 #'     in the family and order (when needed) nodes. Default is FALSE
-#' @param progress.bar Logical argument. If TRUE a progress bar will be shown in console
+#' @param progress.bar Logical argument. If TRUE (default) a progress bar will be shown in console.
 #'    
 #'     
 #' @return A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
 #'     will be a list of length two containg the newick phylogeny and a data frame equal that provided in data plus a column 
-#'     indicating at which level each species was inserted in the tree
+#'     indicating at which level each species was inserted in the tree.
 #' @export
 #'
 #' @examples
@@ -26,7 +26,7 @@
 #' 
 #' 
 FishPhyloMaker <- 
-  function (data, insert.base.node = FALSE, return.insertions = FALSE, progress.bar = TRUE) 
+  function (data, insert.base.node = FALSE, return.insertions = TRUE, progress.bar = TRUE) 
   {
     if (dim(data)[2] != 3) {
       stop("/n data must be a dataframe with three columns (s, f, o)")
@@ -505,7 +505,7 @@ FishPhyloMaker <-
                 data_insertions[match(not_inserted, data_insertions$s), "insertions"] <- "Not_inserted"
               }
               if(length(Congeneric_round_family) >= 1){
-                data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_insertion_roundFamily"
+                data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_Family_level"
               }
               list_res <- vector(mode = "list", length = 2)
               list_res[[1]] <- tree_res
@@ -554,7 +554,7 @@ FishPhyloMaker <-
                   data_insertions[match(not_inserted, data_insertions$s), "insertions"] <- "Not_inserted"
                 }
                 if(length(Congeneric_round_family) >= 1){
-                  data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_insertion_roundFamily"
+                  data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_Family_level"
                 }
                 list_res <- vector(mode = "list", length = 2)
                 list_res[[1]] <- tree_res
@@ -665,7 +665,10 @@ FishPhyloMaker <-
                 data_insertions[match(not_inserted, data_insertions$s), "insertions"] <- "Not_inserted"
               }
               if(length(Congeneric_round_family) >= 1){
-                data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_insertion_roundFamily"
+                data_insertions[match(Congeneric_round_family, data_insertions$s), "insertions"] <- "Congeneric_Family_level"
+              }
+              if(dim(data_exRound3)[1] >= 1){
+                data_insertions[match(data_exRound3$s, data_insertions$s), "insertions"] <- "Order_insertion"
               }
               list_res <- vector(mode = "list", length = 2)
               list_res[[1]] <- tree_res
