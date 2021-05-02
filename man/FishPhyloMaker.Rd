@@ -38,7 +38,10 @@ Obtaining fish phylogeny according to a local pool of species
     taxon_data <- tab_function(data_comm) # formating data
     Loricariidae # informing Family of Curculionichthys insperatus
     Siluriformes # informing Order of Curculionichthys insperatus
-    res_test <- FishPhyloMaker(data = taxon_data, insert.base.node = FALSE, return.insertions = FALSE, progress.bar = TRUE)
+    res_test <- FishPhyloMaker(data = taxon_data,
+                               insert.base.node = FALSE, 
+                               return.insertions = FALSE, 
+                               progress.bar = TRUE)
 }
 
 
