@@ -15,6 +15,8 @@
 #'        
 #'     - A character vector containing all names of species that was not find in Fishbase
 #' 
+#' @importFrom stats na.omit
+#' 
 #' @export
 #'
 #' @examples 
@@ -77,9 +79,9 @@ FishTaxaMaker <- function (data, allow.manual.insert = TRUE)
   list_res[[2]] <- list_res[[2]][match(unique(list_res[[2]]$s), 
                                        list_res[[2]]$s), ]
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
-  list_res[[2]][match(gsub(" ", "_", stats::na.omit(not_found_fishtree)), 
-                      list_res[[1]]$user_spp), "s"] <- stats::na.omit(not_found_fishtree)
-  list_res[[2]][match(gsub(" ", "_", stats::na.omit(not_found_fishtree)), 
+  list_res[[2]][match(gsub(" ", "_", na.omit(not_found_fishtree)), 
+                      list_res[[1]]$user_spp), "s"] <- na.omit(not_found_fishtree)
+  list_res[[2]][match(gsub(" ", "_", na.omit(not_found_fishtree)), 
                       list_res[[1]]$user_spp), c("f", "o")] <- paste("not_find")
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   if (length(not_found_fishtree) >= 1) {
