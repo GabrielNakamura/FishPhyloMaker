@@ -35,7 +35,7 @@ data("fish_SAmerica")
 We need to format this data using function `FishTaxaMaker`
 
 ```{r formatData, echo=TRUE, eval=FALSE}
-taxon_data <- FishTaxaMaker(data = fish_SAmerica)
+taxon_data <- FishTaxaMaker(data = fish_SAmerica, allow.manual.insert = TRUE)
 Loricariidae
 Siluriformes
 Anostomidae 
@@ -57,7 +57,10 @@ Siluriformes
 With taxon_data we can run `FishPhyloMaker` to obtain the phylogeny and the data frame with all the insertions made by each species
 
 ```{r makingPhylo, echo=TRUE, eval=FALSE}
-phylo_fish_SAmerica <- FishPhyloMaker(data = taxon_data, return.insertions = T)
+phylo_fish_SAmerica <- FishPhyloMaker(data = taxon_data, 
+                                     return.insertions = TRUE,
+                                     insert.base.node = FALSE, 
+                                     progress.bar = TRUE)
 Serrasalmidae
 Acanthicus
 Schizodon

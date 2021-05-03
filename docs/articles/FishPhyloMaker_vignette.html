@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -78,12 +78,12 @@
 
       
 
-      </header><script src="FishPhyloMaker_vignette_files/header-attrs-2.3/header-attrs.js"></script><script src="FishPhyloMaker_vignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="FishPhyloMaker_vignette_files/header-attrs-2.7/header-attrs.js"></script><script src="FishPhyloMaker_vignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using FishPhyloMaker to build phylogenies for bony fishes</h1>
             
-            <h4 class="date">2021-04-26</h4>
+            <h4 class="date">2021-05-03</h4>
       
       
       <div class="hidden name"><code>FishPhyloMaker_vignette.Rmd</code></div>
@@ -102,7 +102,7 @@
 <span class="va">data_comm</span> <span class="op">&lt;-</span> <span class="va">neotropical_comm</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># removing Latitude and Longitude</span></code></pre></div>
 <p><code>neotropical_comm</code> correspond to a data frame containing the abundance of 59 fish species collected in 20 headwater streams, being 10 in Paraná and 10 in Paraguay Basin. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in <code>FishPhyloMaker</code> function, that correspond to a data frame with three column containing the taxonomic information of each one of the 59 species. To prepare this data we will use the function <code>FishTaxaMaker</code> that finds for each species name present in the data_comm and checks if these names are found in <a href="%22https://www.fishbase.se/search.php%22">Fishbase</a>. Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_comm</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data_comm</span>, allow.manual.insert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">Loricariidae</span>
 <span class="va">Siluriformes</span></code></pre></div>
 <p>This function will return a data frame with three columns and the same number of species present in data_comm, and now taxon_data can be used in <code>FishPhyloMaker</code> function to generate the phylogenetic tree for these species. In this example we will set the argument return.insertions = TRUE, since we want to know at which level of hierarchical taxonomy each species was inserted in the process, the levels are explained in the <a href="https://gabrielnakamura.github.io/FishPhyloMaker/index.html">introductory article</a>. Like <code>FishTaxaMaker</code> function, <code>FishPhyloMaker</code> also have a interactive process of insertion in which the user must inform at which position species must be inserted in the mega-tree. There are three options:</p>
@@ -114,7 +114,10 @@
 <p>For each species a list of names containing Genus names or Family names will appear at command prompt, and the user must decide among one of the previous option.</p>
 <p><em>NOTE</em> - The function can take several minutes to run depending on the number of species that must be inserted.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">phylo_fish_streams</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishPhyloMaker.html">FishPhyloMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span>, return.insertions <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">phylo_fish_streams</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishPhyloMaker.html">FishPhyloMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span>, 
+                                     return.insertions <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     insert.base.node <span class="op">=</span> <span class="cn">FALSE</span>, 
+                                     progress.bar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">Hisonotus</span> 
 <span class="va">Synbranchidae</span> </code></pre></div>
 <p>In this example I choose to insert the species <em>Curculionichthys insperatus</em> near to Genus <em>Hisonotus</em>, and species <em>Synbranchus marmoratus</em> at the base of its family, that is Synbranchidae.</p>
