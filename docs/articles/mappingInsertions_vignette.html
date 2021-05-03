@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -78,7 +78,7 @@
 
       
 
-      </header><script src="mappingInsertions_vignette_files/header-attrs-2.3/header-attrs.js"></script><script src="mappingInsertions_vignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="mappingInsertions_vignette_files/header-attrs-2.7/header-attrs.js"></script><script src="mappingInsertions_vignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>How to map species insertions in phylogenetic tree?</h1>
@@ -113,7 +113,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"fish_SAmerica"</span><span class="op">)</span></code></pre></div>
 <p>We need to format this data using function <code>FishTaxaMaker</code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">fish_SAmerica</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">fish_SAmerica</span>, allow.manual.insert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">Loricariidae</span>
 <span class="va">Siluriformes</span>
 <span class="va">Anostomidae</span> 
@@ -131,55 +131,58 @@
 <span class="va">Auchenipteridae</span>
 <span class="va">Siluriformes</span></code></pre></div>
 <p>With taxon_data we can run <code>FishPhyloMaker</code> to obtain the phylogeny and the data frame with all the insertions made by each species</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>phylo_fish_SAmerica &lt;-<span class="st"> </span><span class="kw">FishPhyloMaker</span>(<span class="dt">data =</span> taxon_data, <span class="dt">return.insertions =</span> T)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>Serrasalmidae</span>
-<span id="cb3-3"><a href="#cb3-3"></a>Acanthicus</span>
-<span id="cb3-4"><a href="#cb3-4"></a>Schizodon</span>
-<span id="cb3-5"><a href="#cb3-5"></a>Liosomadoras</span>
-<span id="cb3-6"><a href="#cb3-6"></a>Hemiancistrus</span>
-<span id="cb3-7"><a href="#cb3-7"></a>Ctenolucius</span>
-<span id="cb3-8"><a href="#cb3-8"></a>Roeboexodon Exodon</span>
-<span id="cb3-9"><a href="#cb3-9"></a>Leporinus</span>
-<span id="cb3-10"><a href="#cb3-10"></a>Gymnotus</span>
-<span id="cb3-11"><a href="#cb3-11"></a>Loricariichthys</span>
-<span id="cb3-12"><a href="#cb3-12"></a>Anostomus</span>
-<span id="cb3-13"><a href="#cb3-13"></a>Furcodontichthys</span>
-<span id="cb3-14"><a href="#cb3-14"></a>Lasiancistrus</span>
-<span id="cb3-15"><a href="#cb3-15"></a>Leporinus</span>
-<span id="cb3-16"><a href="#cb3-16"></a>Schizodon Hypomasticus</span>
-<span id="cb3-17"><a href="#cb3-17"></a>Batrochoglanis</span>
-<span id="cb3-18"><a href="#cb3-18"></a>Pseudolithoxus</span>
-<span id="cb3-19"><a href="#cb3-19"></a>Leporinus</span>
-<span id="cb3-20"><a href="#cb3-20"></a>Anodus</span>
-<span id="cb3-21"><a href="#cb3-21"></a>Paralonchurus</span>
-<span id="cb3-22"><a href="#cb3-22"></a>Pachypops</span>
-<span id="cb3-23"><a href="#cb3-23"></a>Vandellia Paravandellia</span>
-<span id="cb3-24"><a href="#cb3-24"></a>Pachyurus</span>
-<span id="cb3-25"><a href="#cb3-25"></a>Anostomus</span>
-<span id="cb3-26"><a href="#cb3-26"></a>Sternarchorhamphus</span>
-<span id="cb3-27"><a href="#cb3-27"></a>Vandellia</span>
-<span id="cb3-28"><a href="#cb3-28"></a>Odontognathus</span>
-<span id="cb3-29"><a href="#cb3-29"></a>Exallodontus</span>
-<span id="cb3-30"><a href="#cb3-30"></a>Myleus</span>
-<span id="cb3-31"><a href="#cb3-31"></a>Gnathodolus</span>
-<span id="cb3-32"><a href="#cb3-32"></a>Trachelyopterus</span>
-<span id="cb3-33"><a href="#cb3-33"></a>Hemiodontichthys</span>
-<span id="cb3-34"><a href="#cb3-34"></a>Rhinelepis</span>
-<span id="cb3-35"><a href="#cb3-35"></a>Pseudohemiodon</span>
-<span id="cb3-36"><a href="#cb3-36"></a>Schizodon</span>
-<span id="cb3-37"><a href="#cb3-37"></a>Gnathodolus</span>
-<span id="cb3-38"><a href="#cb3-38"></a>Panaque Panaqolus</span>
-<span id="cb3-39"><a href="#cb3-39"></a>Pseudacanthicus Leporacanthicus</span>
-<span id="cb3-40"><a href="#cb3-40"></a>Hypopomidae</span>
-<span id="cb3-41"><a href="#cb3-41"></a>Sternarchogiton</span>
-<span id="cb3-42"><a href="#cb3-42"></a>Platyurosternarchus</span>
-<span id="cb3-43"><a href="#cb3-43"></a>Gymnocorymbus</span>
-<span id="cb3-44"><a href="#cb3-44"></a>Schizodon</span>
-<span id="cb3-45"><a href="#cb3-45"></a>Synbranchidae</span>
-<span id="cb3-46"><a href="#cb3-46"></a>Ageneiosus</span>
-<span id="cb3-47"><a href="#cb3-47"></a>Asterophysus</span>
-<span id="cb3-48"><a href="#cb3-48"></a>Trachelyopterus</span>
-<span id="cb3-49"><a href="#cb3-49"></a>Ageneiosus</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>phylo_fish_SAmerica &lt;-<span class="st"> </span><span class="kw">FishPhyloMaker</span>(<span class="dt">data =</span> taxon_data, </span>
+<span id="cb3-2"><a href="#cb3-2"></a>                                     <span class="dt">return.insertions =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                                     <span class="dt">insert.base.node =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb3-4"><a href="#cb3-4"></a>                                     <span class="dt">progress.bar =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>Serrasalmidae</span>
+<span id="cb3-6"><a href="#cb3-6"></a>Acanthicus</span>
+<span id="cb3-7"><a href="#cb3-7"></a>Schizodon</span>
+<span id="cb3-8"><a href="#cb3-8"></a>Liosomadoras</span>
+<span id="cb3-9"><a href="#cb3-9"></a>Hemiancistrus</span>
+<span id="cb3-10"><a href="#cb3-10"></a>Ctenolucius</span>
+<span id="cb3-11"><a href="#cb3-11"></a>Roeboexodon Exodon</span>
+<span id="cb3-12"><a href="#cb3-12"></a>Leporinus</span>
+<span id="cb3-13"><a href="#cb3-13"></a>Gymnotus</span>
+<span id="cb3-14"><a href="#cb3-14"></a>Loricariichthys</span>
+<span id="cb3-15"><a href="#cb3-15"></a>Anostomus</span>
+<span id="cb3-16"><a href="#cb3-16"></a>Furcodontichthys</span>
+<span id="cb3-17"><a href="#cb3-17"></a>Lasiancistrus</span>
+<span id="cb3-18"><a href="#cb3-18"></a>Leporinus</span>
+<span id="cb3-19"><a href="#cb3-19"></a>Schizodon Hypomasticus</span>
+<span id="cb3-20"><a href="#cb3-20"></a>Batrochoglanis</span>
+<span id="cb3-21"><a href="#cb3-21"></a>Pseudolithoxus</span>
+<span id="cb3-22"><a href="#cb3-22"></a>Leporinus</span>
+<span id="cb3-23"><a href="#cb3-23"></a>Anodus</span>
+<span id="cb3-24"><a href="#cb3-24"></a>Paralonchurus</span>
+<span id="cb3-25"><a href="#cb3-25"></a>Pachypops</span>
+<span id="cb3-26"><a href="#cb3-26"></a>Vandellia Paravandellia</span>
+<span id="cb3-27"><a href="#cb3-27"></a>Pachyurus</span>
+<span id="cb3-28"><a href="#cb3-28"></a>Anostomus</span>
+<span id="cb3-29"><a href="#cb3-29"></a>Sternarchorhamphus</span>
+<span id="cb3-30"><a href="#cb3-30"></a>Vandellia</span>
+<span id="cb3-31"><a href="#cb3-31"></a>Odontognathus</span>
+<span id="cb3-32"><a href="#cb3-32"></a>Exallodontus</span>
+<span id="cb3-33"><a href="#cb3-33"></a>Myleus</span>
+<span id="cb3-34"><a href="#cb3-34"></a>Gnathodolus</span>
+<span id="cb3-35"><a href="#cb3-35"></a>Trachelyopterus</span>
+<span id="cb3-36"><a href="#cb3-36"></a>Hemiodontichthys</span>
+<span id="cb3-37"><a href="#cb3-37"></a>Rhinelepis</span>
+<span id="cb3-38"><a href="#cb3-38"></a>Pseudohemiodon</span>
+<span id="cb3-39"><a href="#cb3-39"></a>Schizodon</span>
+<span id="cb3-40"><a href="#cb3-40"></a>Gnathodolus</span>
+<span id="cb3-41"><a href="#cb3-41"></a>Panaque Panaqolus</span>
+<span id="cb3-42"><a href="#cb3-42"></a>Pseudacanthicus Leporacanthicus</span>
+<span id="cb3-43"><a href="#cb3-43"></a>Hypopomidae</span>
+<span id="cb3-44"><a href="#cb3-44"></a>Sternarchogiton</span>
+<span id="cb3-45"><a href="#cb3-45"></a>Platyurosternarchus</span>
+<span id="cb3-46"><a href="#cb3-46"></a>Gymnocorymbus</span>
+<span id="cb3-47"><a href="#cb3-47"></a>Schizodon</span>
+<span id="cb3-48"><a href="#cb3-48"></a>Synbranchidae</span>
+<span id="cb3-49"><a href="#cb3-49"></a>Ageneiosus</span>
+<span id="cb3-50"><a href="#cb3-50"></a>Asterophysus</span>
+<span id="cb3-51"><a href="#cb3-51"></a>Trachelyopterus</span>
+<span id="cb3-52"><a href="#cb3-52"></a>Ageneiosus</span></code></pre></div>
 <p>The data frame can be extracted and the categories of insertion can be plotted in the phylogenetic tree by using the information on <code>phylo_fish_SAmerica$Insertions</code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/liamrevell/phytools">phytools</a></span><span class="op">)</span>
