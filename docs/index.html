@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">FishPhyloMaker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -87,6 +87,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#fishphylomaker" class="anchor"></a>FishPhyloMaker</h1></div>
 <p><a href="https://cran.r-project.org/package=FishPhyloMaker"><img src="https://www.r-pkg.org/badges/version/FishPhyloMaker" alt="CRAN_Status_Badge"></a></p>
+<p><a href="https://zenodo.org/badge/latestdoi/336899540"><img src="https://zenodo.org/badge/336899540.svg" alt="DOI"></a></p>
 <p><a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"></a></p>
 <p><strong>Making phylogenies for a local pool of fish species</strong></p>
 <p><code>{FishPhyloMaker}</code> is an R package that has two main functions, <code>FishTaxaMaker</code> and <code>FishPhyloMaker</code>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information presented in <a href="http://www.fishbase.org/search.php">Fishbase database</a> through the package <a href="https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf">rfishbase</a> . Species that were not found in Fishbase are printed in the command line, and the user must inform manually the Family and the Order of these species. The output of <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> function is a list containing the following objects:</p>
