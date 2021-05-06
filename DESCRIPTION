@@ -29,3 +29,7 @@ Imports:
     progress,
     rfishbase,
     utils
+Sugests: 
+    knitr
+Depends: 
+    R (>= 2.10)
