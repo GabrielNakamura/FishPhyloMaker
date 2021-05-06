@@ -78,9 +78,40 @@ Parana and Paraguai river Basins, in Brazil. The coordinates of these streams ar
 First the user must obtain the data necessary to enter in `FishPhyloMaker`  using `FishTaxaMaker`
 
 ```{.r}
-taxon_data <- FishTaxaMaker(data_comm)
+
+taxon_data <- FishTaxaMaker(data_comm, allow.manual.insert = TRUE)
+Characidae
+Characiformes
+Characidae
+Characiformes
+Characidae
+Characiformes
 Loricariidae
 Siluriformes
+Characidae
+Characiformes
+Cichlidae
+Cichliformes
+Crenuchidae
+Characiformes
+Gymnotidae
+Gymnotiformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Heptapteridae
+Siluriformes
+Characidae
+Characiformes
+Loricariidae
+Siluriformes
+Characidae
+Characiformes
 ```
 
 `FishTaxaMaker` finds in [Fishbase](http://www.fishbase.org/search.php) for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species *Curculionichthys inseperatus* was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.
@@ -89,9 +120,10 @@ Siluriformes
 Finally run `FishPhyloMaker`
 
 ```{.r}
-res_phylo <- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
-Hisonotus 
-Synbranchidae 
+res_phylo <- FishPhyloMaker(data = taxon_data,
+                            insert.base.node = TRUE, 
+                            return.insertions = TRUE, 
+                            progress.bar = TRUE)
 ```
 
 The species are inserted in a sequential procedure. Those species with any congeneric representatives will be printed in the console jointly with a list of Genus in which the user must choose. The user have three options: 

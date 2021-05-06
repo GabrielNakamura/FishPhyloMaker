@@ -154,21 +154,53 @@
 </table>
 <p>This table can be done manually or by passing to <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> a list of species or a community data matrix with species names in columns following the format <em>Genus_species</em>.</p>
 <p>To install the package the user must type:</p>
-<pre class="{.r}"><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")</a></code></pre>
+<pre class="{.r}"><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main", build_vignettes = TRUE)</a></code></pre>
 <p>To run an example the user can load a data set contained in the package:</p>
 <pre class="{.r}"><code><a href="https://rdrr.io/r/base/library.html">library(FishPhyloMaker)
 data(neotropical_comm)
 data_comm &lt;- neotropical_comm[, -c(1, 2)] # removing latitude and longitude</a></code></pre>
 <p>This data set comprises the occurrence of 59 fish species that occur in headwater streams of Parana and Paraguai river Basins, in Brazil. The coordinates of these streams are presented in the two first columns of this data set.</p>
 <p>First the user must obtain the data necessary to enter in <code>FishPhyloMaker</code> using <code>FishTaxaMaker</code></p>
-<pre class="{.r}"><code>taxon_data &lt;- FishTaxaMaker(data_comm)
+<pre class="{.r}"><code>
+taxon_data &lt;- FishTaxaMaker(data_comm, allow.manual.insert = TRUE)
+Characidae
+Characiformes
+Characidae
+Characiformes
+Characidae
+Characiformes
 Loricariidae
-Siluriformes</code></pre>
+Siluriformes
+Characidae
+Characiformes
+Cichlidae
+Cichliformes
+Crenuchidae
+Characiformes
+Gymnotidae
+Gymnotiformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Heptapteridae
+Siluriformes
+Characidae
+Characiformes
+Loricariidae
+Siluriformes
+Characidae
+Characiformes</code></pre>
 <p><code>FishTaxaMaker</code> finds in <a href="http://www.fishbase.org/search.php">Fishbase</a> for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species <em>Curculionichthys inseperatus</em> was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.</p>
 <p>Finally run <code>FishPhyloMaker</code></p>
-<pre class="{.r}"><code>res_phylo &lt;- FishPhyloMaker(data = taxon_data, return.insertions = TRUE)
-Hisonotus 
-Synbranchidae </code></pre>
+<pre class="{.r}"><code>res_phylo &lt;- FishPhyloMaker(data = taxon_data,
+                            insert.base.node = TRUE, 
+                            return.insertions = TRUE, 
+                            progress.bar = TRUE)</code></pre>
 <p>The species are inserted in a sequential procedure. Those species with any congeneric representatives will be printed in the console jointly with a list of Genus in which the user must choose. The user have three options:</p>
 <ol>
 <li>Insert <strong>near to a specific Genus</strong>, then the user must type the name of this Genus;</li>
