@@ -14,4 +14,7 @@ neotropical_comm
 A dataset containing the abundance of stream fish species distributed in streams of
 Parana and Paraguay river Basins
 }
+\references{
+\url{https://www.scielo.br/scielo.php?script=sci_arttext&pid=S1679-62252021000100211}
+}
 \keyword{datasets}

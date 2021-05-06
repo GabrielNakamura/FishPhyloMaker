@@ -4,14 +4,16 @@
 #' Parana and Paraguay river Basins
 #'
 #' @format A data frame with 20 rows and 61 variables:
+#' @references \url{https://www.scielo.br/scielo.php?script=sci_arttext&pid=S1679-62252021000100211}
 #
 "neotropical_comm"
 
-#' Occurrence of fish species in South America
+#' List of fish species with occurrence in Afrotropical ecoregion
 #'
-#' A dataset containing the occurrence of  fish species distributed all basins of
-#' South America continent
+#' A list of species that occur in basins of
+#' Afrotropical ecoregion
 #'
-#' @format A data frame with 37 rows and 679 variables:
-#
-"fish_SAmerica"
+#' @format A character vector with 767 species names:
+#' @references \url{https://www.nature.com/articles/sdata2017141}
+# 
+"spp_afrotropic"
