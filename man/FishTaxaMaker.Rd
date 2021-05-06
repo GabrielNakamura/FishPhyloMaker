@@ -30,13 +30,43 @@ present in species pool
 }
 \examples{
  \dontrun{
-    data(neotropical_comm)
-    data_comm <- neotropical_comm[, -c(1, 2)]
-    taxon_data <- FishTaxaMaker(data_comm) # formating data
-    Loricariidae # informing Family of Curculionichthys insperatus
-    Siluriformes # informing Order of Curculionichthys insperatus
+ data(neotropical_comm)
+ data_comm <- neotropical_comm[, -c(1, 2)]
+ taxon_data <- FishTaxaMaker(data_comm, allow.manual.insert = TRUE)
+ Characidae
+ Characiformes
+ Characidae
+ Characiformes
+ Characidae
+ Characiformes
+ Loricariidae
+ Siluriformes
+ Characidae
+ Characiformes
+ Cichlidae
+ Cichliformes
+ Crenuchidae
+ Characiformes
+ Gymnotidae
+ Gymnotiformes
+ Loricariidae
+ Siluriformes
+ Loricariidae
+ Siluriformes
+ Loricariidae
+ Siluriformes
+ Loricariidae
+ Siluriformes
+ Heptapteridae
+ Siluriformes
+ Characidae
+ Characiformes
+ Loricariidae
+ Siluriformes
+ Characidae
+ Characiformes
+ 
 }
-
 
 
 }
