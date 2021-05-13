@@ -120,7 +120,7 @@ Characiformes
 Finally run `FishPhyloMaker`
 
 ```{.r}
-res_phylo <- FishPhyloMaker(data = taxon_data,
+res_phylo <- FishPhyloMaker(data = taxon_data$Taxon_data_FishPhyloMaker,
                             insert.base.node = TRUE, 
                             return.insertions = TRUE, 
                             progress.bar = TRUE)
