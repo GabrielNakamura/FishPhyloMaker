@@ -141,6 +141,7 @@ FishTaxaMaker <- function (data, allow.manual.insert = TRUE)
         list_res[[2]][which(list_res[[2]]$s == not_found_fishtree[i]), 
                       "o"] <- spp_order
       }
+      list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
     }
   }
   return(list_res)
