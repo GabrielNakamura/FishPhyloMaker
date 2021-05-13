@@ -174,13 +174,43 @@ indicating at which level each species was inserted in the tree.</p>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
     <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>neotropical_comm</span><span class='op'>)</span>
     <span class='va'>data_comm</span> <span class='op'>&lt;-</span> <span class='va'>neotropical_comm</span><span class='op'>[</span>, <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>
-    <span class='va'>taxon_data</span> <span class='op'>&lt;-</span> <span class='fu'>tab_function</span><span class='op'>(</span><span class='va'>data_comm</span><span class='op'>)</span> <span class='co'># formating data</span>
-    <span class='va'>Loricariidae</span> <span class='co'># informing Family of Curculionichthys insperatus</span>
-    <span class='va'>Siluriformes</span> <span class='co'># informing Order of Curculionichthys insperatus</span>
-    <span class='va'>res_test</span> <span class='op'>&lt;-</span> <span class='fu'>FishPhyloMaker</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>taxon_data</span>,
-                               insert.base.node <span class='op'>=</span> <span class='cn'>FALSE</span>, 
-                               return.insertions <span class='op'>=</span> <span class='cn'>FALSE</span>, 
-                               progress.bar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <span class='va'>taxon_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='FishTaxaMaker.html'>FishTaxaMaker</a></span><span class='op'>(</span><span class='va'>data_comm</span>, allow.manual.insert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <span class='va'>Characidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>Characidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>Characidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>Loricariidae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Characidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>Cichlidae</span>
+    <span class='va'>Cichliformes</span>
+    <span class='va'>Crenuchidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>Gymnotidae</span>
+    <span class='va'>Gymnotiformes</span>
+    <span class='va'>Loricariidae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Loricariidae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Loricariidae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Loricariidae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Heptapteridae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Characidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>Loricariidae</span>
+    <span class='va'>Siluriformes</span>
+    <span class='va'>Characidae</span>
+    <span class='va'>Characiformes</span>
+    <span class='va'>res_phylo</span> <span class='op'>&lt;-</span> <span class='fu'>FishPhyloMaker</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>taxon_data</span><span class='op'>$</span><span class='va'>Taxon_data_FishPhyloMaker</span>,
+    insert.base.node <span class='op'>=</span> <span class='cn'>TRUE</span>, 
+    return.insertions <span class='op'>=</span> <span class='cn'>TRUE</span>, 
+    progress.bar <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 

@@ -35,13 +35,43 @@ Obtaining fish phylogeny according to a local pool of species
 \dontrun{
     data(neotropical_comm)
     data_comm <- neotropical_comm[, -c(1, 2)]
-    taxon_data <- tab_function(data_comm) # formating data
-    Loricariidae # informing Family of Curculionichthys insperatus
-    Siluriformes # informing Order of Curculionichthys insperatus
-    res_test <- FishPhyloMaker(data = taxon_data,
-                               insert.base.node = FALSE, 
-                               return.insertions = FALSE, 
-                               progress.bar = TRUE)
+    taxon_data <- FishTaxaMaker(data_comm, allow.manual.insert = TRUE)
+    Characidae
+    Characiformes
+    Characidae
+    Characiformes
+    Characidae
+    Characiformes
+    Loricariidae
+    Siluriformes
+    Characidae
+    Characiformes
+    Cichlidae
+    Cichliformes
+    Crenuchidae
+    Characiformes
+    Gymnotidae
+    Gymnotiformes
+    Loricariidae
+    Siluriformes
+    Loricariidae
+    Siluriformes
+    Loricariidae
+    Siluriformes
+    Loricariidae
+    Siluriformes
+    Heptapteridae
+    Siluriformes
+    Characidae
+    Characiformes
+    Loricariidae
+    Siluriformes
+    Characidae
+    Characiformes
+    res_phylo <- FishPhyloMaker(data = taxon_data$Taxon_data_FishPhyloMaker,
+    insert.base.node = TRUE, 
+    return.insertions = TRUE, 
+    progress.bar = TRUE)
 }
 
 

@@ -197,7 +197,7 @@ Characidae
 Characiformes</code></pre>
 <p><code>FishTaxaMaker</code> finds in <a href="http://www.fishbase.org/search.php">Fishbase</a> for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species <em>Curculionichthys inseperatus</em> was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.</p>
 <p>Finally run <code>FishPhyloMaker</code></p>
-<pre class="{.r}"><code>res_phylo &lt;- FishPhyloMaker(data = taxon_data,
+<pre class="{.r}"><code>res_phylo &lt;- FishPhyloMaker(data = taxon_data$Taxon_data_FishPhyloMaker,
                             insert.base.node = TRUE, 
                             return.insertions = TRUE, 
                             progress.bar = TRUE)</code></pre>

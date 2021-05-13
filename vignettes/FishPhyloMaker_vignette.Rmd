@@ -34,9 +34,39 @@ data_comm <- neotropical_comm[, -c(1, 2)] # removing Latitude and Longitude
 Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.
 
 ```{r taxon_data, echo=TRUE, eval=FALSE}
-taxon_data <- FishTaxaMaker(data = data_comm, allow.manual.insert = TRUE)
+taxon_data <- FishTaxaMaker(data_comm, allow.manual.insert = TRUE)
+Characidae
+Characiformes
+Characidae
+Characiformes
+Characidae
+Characiformes
 Loricariidae
 Siluriformes
+Characidae
+Characiformes
+Cichlidae
+Cichliformes
+Crenuchidae
+Characiformes
+Gymnotidae
+Gymnotiformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Loricariidae
+Siluriformes
+Heptapteridae
+Siluriformes
+Characidae
+Characiformes
+Loricariidae
+Siluriformes
+Characidae
+Characiformes
 ```
 
 This function will return a data frame with three columns and the same number of species present in data_comm, and now taxon_data can be used in `FishPhyloMaker` function to generate the phylogenetic tree for these species. In this example we will set the argument return.insertions = TRUE, since we want to know at which level of hierarchical taxonomy each species was inserted in the process, the levels are explained in the [introductory article](https://gabrielnakamura.github.io/FishPhyloMaker/index.html). Like `FishTaxaMaker` function, `FishPhyloMaker` also have a interactive process of insertion in which the user must inform at which position species must be inserted in the mega-tree. There are three options: 
@@ -58,14 +88,12 @@ For each species a list of names containing Genus names or Family names will app
 ```{r phylo_make, eval=FALSE, echo=TRUE}
 phylo_fish_streams <- FishPhyloMaker(data = taxon_data, 
                                      return.insertions = TRUE,
-                                     insert.base.node = FALSE, 
+                                     insert.base.node = TRUE, 
                                      progress.bar = TRUE)
-Hisonotus 
-Synbranchidae 
 ```
 
-In this example I choose to insert the species *Curculionichthys insperatus* near to Genus *Hisonotus*, and species *Synbranchus marmoratus* at the 
-    base of its family, that is Synbranchidae.
+In this example I choose to insert all the species that did not presented congeneric relatives in the 
+    base of its family.
     
 The result of `FishPhyloMaker` is a list containing two objects, a phylogenetic tree and a data frame indicating at which level each species was inserted in the phylogeny.
 We can use the result contained in phylo_fish_streams to plot the tree. We can use the following code to highlight the families in the tree.
