@@ -61,7 +61,7 @@ This table can be done manually or by passing to `FishTaxaMaker()` a list of spe
 To install the package the user must type:
 
 ```{.r}
-devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main", build_vignettes = TRUE)
+devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 ```
 
 To run an example the user can load a data set contained in the package:
