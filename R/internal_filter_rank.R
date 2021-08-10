@@ -4,6 +4,7 @@
 #'
 #' @return phylogeny
 #'
+#' @keywords internal
 #' 
 filter_rank<- function(order){
   if(length(which(sub("_.*", "", unlist(order)) == "not.found")) >= 1){

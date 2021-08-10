@@ -6,7 +6,8 @@
 #' @param warnings Logical
 #'
 #' @return character vector
-#'
+#' @keywords internal
+#' 
 treedata_modif<- function (phy, data, sort = FALSE, warnings = TRUE) 
 {
   dm = length(dim(data))

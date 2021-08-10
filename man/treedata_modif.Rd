@@ -21,3 +21,4 @@ character vector
 \description{
 Internal function to show the number of species from species pool that lacks in phylogeny
 }
+\keyword{internal}

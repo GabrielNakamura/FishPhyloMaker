@@ -19,3 +19,4 @@ interactive action in console
 \description{
 Internal function - auxiliar to interactive procedure
 }
+\keyword{internal}

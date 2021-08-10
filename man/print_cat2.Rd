@@ -15,3 +15,4 @@ interactive action in console
 \description{
 Internal function
 }
+\keyword{internal}

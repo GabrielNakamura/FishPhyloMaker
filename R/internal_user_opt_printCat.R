@@ -5,7 +5,8 @@
 #' @param family Character
 #'
 #' @return interactive action in console
-#'
+#' @keywords internal
+#' 
 print_cat <- function(print_cat, spp, family){
   cat("in which/between Genus species", spp, "must be inserted")
   cat("\n")

@@ -14,8 +14,9 @@ print_cat_family(print_cat, spp, order)
 \item{order}{Character}
 }
 \value{
-interactive action in consele
+interactive action in console
 }
 \description{
 Internal function to help in interactive process
 }
+\keyword{internal}

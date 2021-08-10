@@ -4,7 +4,8 @@
 #' @param spp Character
 #' @param order Character
 #'
-#' @return interactive action in consele
+#' @return interactive action in console
+#' @keywords internal
 #'
 print_cat_family <- function(print_cat, spp, order){
   cat("in which/between Family species", spp, "must be inserted")
