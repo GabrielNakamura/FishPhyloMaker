@@ -1,5 +1,5 @@
 Package: FishPhyloMaker
-Title: An R Package to Generate Phylogeny for a Local List of Fish Species
+Title: An R Package to Generate Phylogeny for a List of Finned-ray Fish Species
 Version: 0.2.0
 Authors@R: 
     c(person(given = "Gabriel",
