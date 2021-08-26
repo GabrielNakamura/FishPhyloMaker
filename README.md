@@ -88,8 +88,6 @@ Characidae
 Characiformes
 Loricariidae
 Siluriformes
-Characidae
-Characiformes
 Cichlidae
 Cichliformes
 Crenuchidae
