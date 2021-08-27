@@ -5,3 +5,5 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^README\.Rmd$
+^cran-comments\.md$
