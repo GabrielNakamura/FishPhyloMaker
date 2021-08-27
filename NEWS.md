@@ -1,7 +1,12 @@
+# FishPhyloMaker 0.2.0
+
+* bug fixed in `FishPhyloMaker` function in family insertion
+procedure.
+
+* new argument in `FishPhyloMaker` function that allows to insert all species at node base of the family.
+
 # FishPhyloMaker 0.1.2
 
-* This is the first release of FishPhyloMaker 
-
-* Second release of FishPhyloMaker - errors in insertions fixed (v0.1.2)
+* Second release of FishPhyloMaker - errors in insertions fixed
 
 * A new function `whichFishAdd` was released
