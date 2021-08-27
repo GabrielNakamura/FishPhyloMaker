@@ -3,7 +3,7 @@
 \name{FishTaxaMaker}
 \alias{FishTaxaMaker}
 \title{Generate a list of species
-Auxiliar function to obtain taxonomic classification and check the names of species
+Auxiliary function to obtain taxonomic classification and check the names of species
 present in species pool}
 \usage{
 FishTaxaMaker(data, allow.manual.insert = TRUE)
@@ -25,7 +25,7 @@ List with three elements.\preformatted{- A data frame containing the taxonomic c
 }
 \description{
 Generate a list of species
-Auxiliar function to obtain taxonomic classification and check the names of species
+Auxiliary function to obtain taxonomic classification and check the names of species
 present in species pool
 }
 \examples{

@@ -1,4 +1,4 @@
-#' Internal function - auxiliar to interactive procedure
+#' Internal function - auxiliary to interactive procedure
 #'
 #' @param print_cat Character
 #' @param spp Character

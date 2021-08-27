@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this article we will show how we can map the insertions made in phylogenetic tree through the procedure realized in `FishPhyloMaker` function. Mapping the insertions is of special importance since allow to understand how the gaps in phylogenetic knowledge is distributed in the phylogetic tree. For example, we can understand if the Characidae family present more phylogenetic gaps than Loricariidae family.
+In this article we will show how we can map the insertions made in phylogenetic tree through the procedure realized in `FishPhyloMaker` function. Mapping the insertions is of special importance since allow to understand how the gaps in phylogenetic knowledge is distributed in the phylogenetic tree. For example, we can understand if the Characidae family present more phylogenetic gaps than Loricariidae family.
 
 This can be done by using the information contained in the output of `FishPhyloMaker` function when we set the argument `return.insertions = TRUE`. This returns a data frame containing the categories of insertion for each species, these categories are:
 

@@ -1,5 +1,5 @@
 #' Generate a list of species 
-#' Auxiliar function to obtain taxonomic classification and check the names of species
+#' Auxiliary function to obtain taxonomic classification and check the names of species
 #'   present in species pool
 #' 
 #' @param data A character vector with species names or a community matrix with species names in columns

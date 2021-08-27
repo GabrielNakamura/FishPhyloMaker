@@ -25,7 +25,7 @@ and a dataframe with a column indicating at which level each species was inserte
 }
 \value{
 A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
-will be a list of length two containg the newick phylogeny and a data frame equal that provided in data plus a column
+will be a list of length two containing the newick phylogeny and a data frame equal that provided in data plus a column
 indicating at which level each species was inserted in the tree.
 }
 \description{

@@ -22,7 +22,7 @@ In this article we will show how to obtain a phylogeny for a pool of species usi
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 ```
 
-We will use a data base that contain stream fish species from Paraná and Paraguai basins. These comprises two of the main basins in Neotropical region. This data are embbeded in the package and can be easily accessed by typing:
+We will use a data base that contain stream fish species from Paraná and Paraguai basins. These comprises two of the main basins in Neotropical region. This data are embedded in the package and can be easily accessed by typing:
 
 ```{r read_data, eval=FALSE, echo=TRUE} 
 library(FishPhyloMaker)
@@ -134,5 +134,5 @@ PR.PG <- plot1 + geom_hilight(data = df.phylo, aes(node = node.number, fill = Fa
 
 With this code we will obtain a phylogenetic tree like that in Figure 1. The species that are not shaded with colors corresponds to monotipic families.
 
-![Fig. 1 - Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brasil).](../vignettes/Phylo_Parana-Paraguai.png)
+![Fig. 1 - Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brazil).](../vignettes/Phylo_Parana-Paraguai.png)
 

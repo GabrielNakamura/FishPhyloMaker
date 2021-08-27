@@ -2,7 +2,7 @@
 % Please edit documentation in R/internal_user_opt_printCat.R
 \name{print_cat}
 \alias{print_cat}
-\title{Internal function - auxiliar to interactive procedure}
+\title{Internal function - auxiliary to interactive procedure}
 \usage{
 print_cat(print_cat, spp, family)
 }
@@ -17,6 +17,6 @@ print_cat(print_cat, spp, family)
 interactive action in console
 }
 \description{
-Internal function - auxiliar to interactive procedure
+Internal function - auxiliary to interactive procedure
 }
 \keyword{internal}
