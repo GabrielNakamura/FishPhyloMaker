@@ -15,7 +15,7 @@ Authors@R:
            family = "Soares",
            role = "aut",
            ))
-Description: FishPhyloMaker provides an alternative to facilitate the construction of a phylogeny for fish species from a list of species
+Description: Provides an alternative to facilitate the construction of a phylogeny for fish species from a list of species
    or a community matrix using as a backbone the phylogenetic tree proposed by Rabosky (2018).
 License: MIT + file LICENSE
 Encoding: UTF-8
