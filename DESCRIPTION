@@ -37,4 +37,5 @@ VignetteBuilder:
     rmarkdown
 Depends: 
     R (>= 2.10)
-Suggests: markdown
+Suggests: markdown,
+          gh
