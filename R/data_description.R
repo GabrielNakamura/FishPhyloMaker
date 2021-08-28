@@ -4,7 +4,7 @@
 #' Parana and Paraguay river Basins
 #'
 #' @format A data frame with 20 rows and 61 variables:
-#' @references \url{https://www.scielo.br/scielo.php?script=sci_arttext&pid=S1679-62252021000100211}
+#' @references \url{https://doi.org/10.1590/1982-0224-2020-0126}
 #
 "neotropical_comm"
 
