@@ -51,6 +51,8 @@ tree.
 You can install the development version from
 [GitHub](https://github.com/) with:
 
+** Need R Version 4
+
 ``` r
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main", build_vignettes = TRUE)
 ```
