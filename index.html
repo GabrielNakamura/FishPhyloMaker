@@ -89,7 +89,7 @@
 <p><a href="https://cran.r-project.org/package=FishPhyloMaker"><img src="https://www.r-pkg.org/badges/version/FishPhyloMaker" alt="CRAN_Status_Badge"></a></p>
 <p><a href="https://zenodo.org/badge/latestdoi/336899540"><img src="https://zenodo.org/badge/336899540.svg" alt="DOI"></a></p>
 <p><a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"></a></p>
-<p><code>{FishPhyloMaker}</code> is an R package that allows to construct synthesis phylogenies for finned-ray fishes. The package has two main functions, <code>FishTaxaMaker</code> and <code>FishPhyloMaker</code>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information contained in <a href="http://www.fishbase.org/search.php">Fishbase database</a> through the package <a href="https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf">rfishbase</a>. The output of <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> function is a list containing the following objects:</p>
+<p><code>{FishPhyloMaker}</code> is an R package that allows to construct synthesis phylogenies for finned-ray fishes. The package has two main functions, <code>FishTaxaMaker</code> and <code>FishPhyloMaker</code>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information contained in <a href="http://www.fishbase.org">Fishbase database</a> through the package <a href="https://CRAN.R-project.org/package=rfishbase">rfishbase</a>. The output of <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> function is a list containing the following objects:</p>
 <ul>
 <li><p><strong>All_info_fishbase</strong>: A data frame containing the taxonomic classification of valid species accordingly to Fishbase;</p></li>
 <li>
@@ -103,7 +103,6 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<p>** Need R Version 4</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GabrielNakamura/FishPhyloMaker"</span>, ref <span class="op">=</span> <span class="st">"main"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
