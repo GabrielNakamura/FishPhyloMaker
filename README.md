@@ -16,11 +16,9 @@ phylogenies for finned-ray fishes. The package has two main functions,
 `FishTaxaMaker` and `FishPhyloMaker`. The first generate a data frame
 from fish species names provided by the user, checking the validity of
 these names and possible synonyms by using the information contained in
-[Fishbase database](http://www.fishbase.org/search.php) through the
-package
-[rfishbase](https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf).
-The output of `FishTaxaMaker()` function is a list containing the
-following objects:
+[Fishbase database](http://www.fishbase.org) through the package
+[rfishbase](https://CRAN.R-project.org/package=rfishbase). The output of
+`FishTaxaMaker()` function is a list containing the following objects:
 
   - **All\_info\_fishbase**: A data frame containing the taxonomic
     classification of valid species accordingly to Fishbase;
@@ -50,8 +48,6 @@ tree.
 
 You can install the development version from
 [GitHub](https://github.com/) with:
-
-** Need R Version 4
 
 ``` r
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main", build_vignettes = TRUE)
