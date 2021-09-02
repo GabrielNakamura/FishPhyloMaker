@@ -27,5 +27,26 @@ From: man/neotropical_comm.Rd
 
 The URL is valid
     
+* Found the following (possibly) invalid URLs:
+   URL: %22https://www.fishbase.se/search.php%22
+     From: inst/doc/FishPhyloMaker_vignette.html
+     Message: Invalid URI scheme
+     
+I changed the URL to http://www.fishbase.org
 
+* URL: https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf
+     From: README.md
+     Status: 200
+     Message: OK
+     CRAN URL not in canonical form
+   The canonical URL of the CRAN page for a package is
+     https://CRAN.R-project.org/package=pkgname
+     
+I changed the URL to the canonical URL of the CRAN page https://CRAN.R-project.org/package=rfishbase
+
+*  Found the following URLs which should use \doi (with the DOI name only):
+   File 'neotropical_comm.Rd':
+     https://doi.org/10.1590/1982-0224-2020-0126
+    
+I changed the URL to \doi{10.1590/1982-0224-2020-0126}
 
