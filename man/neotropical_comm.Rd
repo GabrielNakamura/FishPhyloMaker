@@ -7,14 +7,14 @@
 \format{
 A data frame with 20 rows and 61 variables:
 }
+\source{
+Article published in Neotropical Ichthyology  \doi{10.1590/1982-0224-2020-0126 }
+}
 \usage{
 neotropical_comm
 }
 \description{
 A dataset containing the abundance of stream fish species distributed in streams of
 Parana and Paraguay river Basins
-}
-\references{
-\url{https://www.scielo.br/j/ni/a/jWsfj3ZDr6qBbMyg5kfczrB/?lang=en#}
 }
 \keyword{datasets}
