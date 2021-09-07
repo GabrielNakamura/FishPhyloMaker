@@ -30,7 +30,7 @@ data(neotropical_comm)
 data_comm <- neotropical_comm[, -c(1, 2)] # removing Latitude and Longitude
 ```
 
-`neotropical_comm` correspond to a data frame containing the abundance of 59 fish species collected in 20 headwater streams, being 10 in Paraná and 10 in Paraguay Basin. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in `FishPhyloMaker` function, that correspond to a data frame with three column containing the taxonomic information of each one of the 59 species. To prepare this data we will use the function `FishTaxaMaker` that finds for each species name present in the data_comm and checks if these names are found in [Fishbase]("http://www.fishbase.org"). 
+`neotropical_comm` correspond to a data frame containing the abundance of 59 fish species collected in 20 headwater streams, being 10 in Paraná and 10 in Paraguay Basin. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in `FishPhyloMaker` function, that correspond to a data frame with three column containing the taxonomic information of each one of the 59 species. To prepare this data we will use the function `FishTaxaMaker` that finds for each species name present in the data_comm and checks if these names are found in [Fishbase]("https://www.fishbase.org"). 
 Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.
 
 ```{r taxon_data, echo=TRUE, eval=FALSE}
