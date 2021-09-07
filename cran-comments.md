@@ -32,7 +32,7 @@ The URL is valid
      From: inst/doc/FishPhyloMaker_vignette.html
      Message: Invalid URI scheme
      
-I changed the URL to http://www.fishbase.org
+I changed the URL to https://www.fishbase.org
 
 * URL: https://cran.r-project.org/web/packages/rfishbase/rfishbase.pdf
      From: README.md
