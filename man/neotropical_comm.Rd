@@ -15,6 +15,6 @@ A dataset containing the abundance of stream fish species distributed in streams
 Parana and Paraguay river Basins
 }
 \references{
-\doi{10.1590/1982-0224-2020-0126}
+\url{https://www.scielo.br/j/ni/a/jWsfj3ZDr6qBbMyg5kfczrB/?lang=en#}
 }
 \keyword{datasets}
