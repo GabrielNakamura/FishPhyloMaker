@@ -28,3 +28,9 @@ The spelling is correct
     
 I changed the URL to \doi{10.1590/1982-0224-2020-0126} and the link is correct
 
+* Found the following (possibly) invalid URLs:
+   URL: %22http://www.fishbase.org%22
+     From: inst/doc/FishPhyloMaker_vignette.html
+     Message: Invalid URI scheme
+     
+I changed the URL to [Fishbase database](https://www.fishbase.se) 
