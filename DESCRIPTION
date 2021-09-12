@@ -1,6 +1,6 @@
 Package: FishPhyloMaker
 Type: Package
-Title: An R Package to Generate Phylogeny for a List of Finned-Ray Fish Species
+Title: Phylogenies for a List of Finned-Ray Fishes
 Version: 0.2.0
 Authors@R: 
     c(person(given = "Gabriel",
@@ -16,7 +16,7 @@ Authors@R:
            role = "aut",
            ))
 Description: Provides an alternative to facilitate the construction of a phylogeny for fish species from a list of species
-   or a community matrix using as a backbone the phylogenetic tree proposed by Rabosky (2018).
+   or a community matrix using as a backbone the phylogenetic tree proposed by Rabosky et al. (2018) <doi:10.1038/s41586-018-0273-1>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

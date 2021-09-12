@@ -21,13 +21,9 @@ This function can be used  in order to known which species that must be added in
 made by \code{\link{FishPhyloMaker}}.
 }
 \examples{
-\dontrun{
-    data(neotropical_comm)
-    data_comm <- neotropical_comm[, -c(1, 2)]
-    taxon_data <- tab_function(data_comm) # formating data
-    Loricariidae # informing Family of Curculionichthys insperatus
-    Siluriformes # informing Order of Curculionichthys insperatus
-    res_test <- whichFishAdd(data = taxon_data)
+\donttest{
+    data("taxon_data_PhyloMaker")
+    res_test <- whichFishAdd(data = taxon_data_PhyloMaker)
 }
 
 

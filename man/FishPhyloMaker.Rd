@@ -32,47 +32,13 @@ indicating at which level each species was inserted in the tree.
 Obtaining fish phylogeny according to a local pool of species
 }
 \examples{
-\dontrun{
-    data(neotropical_comm)
-    data_comm <- neotropical_comm[, -c(1, 2)]
-    taxon_data <- FishTaxaMaker(data_comm, allow.manual.insert = TRUE)
-    Characidae
-    Characiformes
-    Characidae
-    Characiformes
-    Characidae
-    Characiformes
-    Loricariidae
-    Siluriformes
-    Characidae
-    Characiformes
-    Cichlidae
-    Cichliformes
-    Crenuchidae
-    Characiformes
-    Gymnotidae
-    Gymnotiformes
-    Loricariidae
-    Siluriformes
-    Loricariidae
-    Siluriformes
-    Loricariidae
-    Siluriformes
-    Loricariidae
-    Siluriformes
-    Heptapteridae
-    Siluriformes
-    Characidae
-    Characiformes
-    Loricariidae
-    Siluriformes
-    Characidae
-    Characiformes
-    res_phylo <- FishPhyloMaker(data = taxon_data$Taxon_data_FishPhyloMaker,
+\donttest{
+    data("taxon_data_PhyloMaker")
+    res_phylo <- FishPhyloMaker(data = taxon_data_PhyloMaker,
     insert.base.node = TRUE, 
     return.insertions = TRUE, 
     progress.bar = TRUE)
 }
-
+    
 
 }

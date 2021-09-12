@@ -8,7 +8,7 @@
 A data frame with 20 rows and 61 variables:
 }
 \source{
-Article published in Neotropical Ichthyology  \doi{10.1590/1982-0224-2020-0126 }
+Article published in Neotropical Ichthyology  \doi{10.1590/1982-0224-2020-0126}
 }
 \usage{
 neotropical_comm
