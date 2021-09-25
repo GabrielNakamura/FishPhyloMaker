@@ -68,9 +68,19 @@ To obtain a phylogeny of fish species, the user must provide to `FishPhyloMaker(
 
 This table can be done manually or by passing to `FishTaxaMaker()` a list of species or a community data matrix with species names in columns following the format *Genus_species*.
 
-To install the package the user must type:
+# Download 
+
+A stable version of FishPhyloMaker can be installed from CRAN
 
 ```{.r}
+install.packages("FishPhyloMaker")
+```
+
+
+To install the development version of this package the user must type:
+
+```{.r}
+# install.packages("devtools")
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 ```
 

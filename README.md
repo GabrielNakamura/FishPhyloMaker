@@ -1,11 +1,19 @@
+---
+title: "FishPhyloMaker: An R package to generate phylogenies for bony fish"
+author: "Gabriel Nakamura"
+date: "4/4/2021"
+output: 
+  html_document:
+    keep_md: yes
+---
+
+
 
 <img src="man/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="200px" align="right"/>
 
 # FishPhyloMaker
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/FishPhyloMaker)](https://cran.r-project.org/package=FishPhyloMaker)
-
-[![DOI](https://zenodo.org/badge/336899540.svg)](https://zenodo.org/badge/latestdoi/336899540)
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 
@@ -58,9 +66,19 @@ To obtain a phylogeny of fish species, the user must provide to `FishPhyloMaker(
 
 This table can be done manually or by passing to `FishTaxaMaker()` a list of species or a community data matrix with species names in columns following the format *Genus_species*.
 
-To install the package the user must type:
+# Download 
+
+A stable version of FishPhyloMaker can be installed from CRAN
 
 ```{.r}
+install.packages("FishPhyloMaker")
+```
+
+
+To install the development version of this package the user must type:
+
+```{.r}
+# install.packages("devtools")
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 ```
 
