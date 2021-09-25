@@ -82,12 +82,13 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
+<hr>
+<p>title: “FishPhyloMaker: An R package to generate phylogenies for bony fish” author: “Gabriel Nakamura” date: “4/4/2021” output: html_document: keep_md: yes —</p>
 <p><img src="reference/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="200px" align="right"></p>
 <div id="fishphylomaker" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#fishphylomaker" class="anchor"></a>FishPhyloMaker</h1></div>
 <p><a href="https://cran.r-project.org/package=FishPhyloMaker"><img src="https://www.r-pkg.org/badges/version/FishPhyloMaker" alt="CRAN_Status_Badge"></a></p>
-<p><a href="https://zenodo.org/badge/latestdoi/336899540"><img src="https://zenodo.org/badge/336899540.svg" alt="DOI"></a></p>
 <p><a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"></a></p>
 <p><code>{FishPhyloMaker}</code> is an R package that allows to construct synthesis phylogenies for finned-ray fishes. The package has two main functions, <code>FishTaxaMaker</code> and <code>FishPhyloMaker</code>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information contained in <a href="http://www.fishbase.org">Fishbase database</a> through the package <a href="https://CRAN.R-project.org/package=rfishbase">rfishbase</a>. The output of <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> function is a list containing the following objects:</p>
 <ul>
@@ -98,6 +99,7 @@
 </li>
 <li><p><strong>Species_not_in_Fishbase</strong>: A character vector containing the names of species that was not found in Fishbase with a valid name data frame object containing three columns with the name of species (s), the Family (f) and the Order (o) of all species provided by the user.</p></li>
 </ul>
+<<<<<<< HEAD
 <p>Besides to help checking the validity of the names of species, its synonyms and duplicated species, the data frame returned by <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> in <strong>Taxon_data_FishPhyoMaker</strong> are formatted so that it can be directly used in the core function <code><a href="reference/FishPhyloMaker.html">FishPhyloMaker()</a></code>. This function will use the information of the taxonomic hierarchy contained in the data frame returned from <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code>, joint with the information present in the the <a href="https://fishtreeoflife.org/">fishtree of life project</a> to construct the phylogenetic tree.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -149,6 +151,53 @@
 <span class="va">Characidae</span>
 <span class="va">Characiformes</span></code></pre></div>
 <p><code>FishTaxaMaker</code> finds in <a href="http://www.fishbase.org/search.php">Fishbase</a> for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. This function can also be useful to check possible misspelling errors in the name of species.</p>
+=======
+<p>To obtain a phylogeny of fish species, the user must provide to <code><a href="reference/FishPhyloMaker.html">FishPhyloMaker()</a></code> function a data frame that present the following format:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">s</th>
+<th align="center">f</th>
+<th align="center">o</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">G_sp1</td>
+<td align="center">Family1</td>
+<td align="center">Order1</td>
+</tr>
+<tr class="even">
+<td align="center">G_sp2</td>
+<td align="center">Family2</td>
+<td align="center">Order2</td>
+</tr>
+<tr class="odd">
+<td align="center">G_sp3</td>
+<td align="center">Family3</td>
+<td align="center">Order3</td>
+</tr>
+</tbody>
+</table>
+<p>This table can be done manually or by passing to <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> a list of species or a community data matrix with species names in columns following the format <em>Genus_species</em>.</p>
+</div>
+<div id="download" class="section level1">
+<h1 class="hasAnchor">
+<a href="#download" class="anchor"></a>Download</h1>
+<p>A stable version of FishPhyloMaker can be installed from CRAN</p>
+<pre class="{.r}"><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("FishPhyloMaker")</a></code></pre>
+<p>To install the development version of this package the user must type:</p>
+<pre class="{.r}"><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html"># install.packages("devtools")
+devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")</a></code></pre>
+<p>To run an example the user can load a data set contained in the package:</p>
+<pre class="{.r}"><code><a href="https://rdrr.io/r/base/library.html">library(FishPhyloMaker)
+data(neotropical_comm)
+data_comm &lt;- neotropical_comm[, -c(1, 2)] # removing latitude and longitude</a></code></pre>
+<p>This data set comprises the occurrence of 59 fish species that occur in headwater streams of Parana and Paraguai river Basins, in Brazil. The coordinates of these streams are presented in the two first columns of this data set.</p>
+<p>First the user must obtain the data necessary to enter in <code>FishPhyloMaker</code> using <code>FishTaxaMaker</code></p>
+<pre class="{.r}"><code>taxon_data &lt;- FishTaxaMaker(data_comm)
+Loricariidae
+Siluriformes</code></pre>
+<p><code>FishTaxaMaker</code> finds in <a href="http://www.fishbase.org/search.php">Fishbase</a> for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. In the case of this data set, species <em>Curculionichthys inseperatus</em> was not found in Fishbase, so we inform manually the family (Loricariidae) and order (Siluriformes) of this species. This function can also be usefull to check possible mispelling errors in the name of species.</p>
+>>>>>>> update_dev_pkg
 <p>Finally run <code>FishPhyloMaker</code></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res_phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FishPhyloMaker.html">FishPhyloMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span><span class="op">$</span><span class="va">Taxon_data_FishPhyloMaker</span>,
@@ -174,7 +223,14 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=FishPhyloMaker">https://​cloud.r-project.org/​package=FishPhyloMaker</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
