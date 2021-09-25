@@ -2,6 +2,6 @@
 
 export(FishPhyloMaker)
 export(FishTaxaMaker)
-export(PD_defict)
+export(PD_deficit)
 export(whichFishAdd)
 importFrom(stats,na.omit)
