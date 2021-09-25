@@ -9,15 +9,15 @@
 #'     default is "Congeneric_insertion".
 #'
 #' @return A vector containing four values: 
-#'     - Phylogenetic information present in the tree (PDintree)
-#'     - Phylogenetic information inserted in the tree (PDdeficit)
+#'     - Amount phylogenetic information present in the tree before insertions (PDintree)
+#'     - Amount of phylogenetic information inserted in the tree (PDdeficit)
 #'     - Total Phylogenetic information of the tree (PDtotal)
 #'     - A ratio calculated as PDdeficit/PDtotal (Darwinian_deficit)
 #' @export
 #'
 #' @seealso \code{\link{FishPhyloMaker}} for phylogeny and data frame containing the classification of insertions
 #' 
-function(phylo, data, level = "Congeneric_insertion"){
+PD_deficit <- function(phylo, data, level = "Congeneric_insertion"){
   if(is.null(phylo) == TRUE){
     stop("/n A phylogenetic tree must be provided")
   }
@@ -27,14 +27,17 @@ function(phylo, data, level = "Congeneric_insertion"){
   names_exclude <- phylo$tip.label[na.omit(match(data[which(data$insertions == "Present_in_Tree"), "s"], 
                                                  phylo$tip.label))]
   
-  if(all(!is.na(match( phylo$tip.label, names_exclude))) == TRUE){
+  if(all(!is.na(match(phylo$tip.label, names_exclude))) == TRUE){
     PD_present <- sum(phylo$edge.length)
-    Darwinian_defict <- 0
     comm_total <- matrix(data = rep(1, length(phylo$tip.label)),
                          ncol = length(phylo$tip.label),
                          nrow = 1, dimnames = list("comm1", phylo$tip.label))
     PD_total <- picante::pd(samp = comm_total, tree = phylo)$PD
     PD_level <- 0
+    Darwinian_deficit <- PD_level/PD_total
+    res <- c(PD_present, PD_level, PD_total, Darwinian_deficit)
+    names(res) <- c("PDintree", "PDdeficit", "PDtotal", "Darwinian_deficit")
+    return(res)
     
   } else{
     exclude <- ape::drop.tip(phylo, tip = names_exclude)$tip.label
