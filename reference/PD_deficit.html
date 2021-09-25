@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • FishPhyloMaker</title>
+<title>Title Calculate the amount of phylogenetic deficit in assemblages — PD_deficit • FishPhyloMaker</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Title Calculate the amount of phylogenetic deficit in assemblages — PD_deficit" />
+<meta property="og:description" content="Title Calculate the amount of phylogenetic deficit in assemblages" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -123,38 +124,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      
+    <h1>Title Calculate the amount of phylogenetic deficit in assemblages</h1>
+    
+    <div class="hidden name"><code>PD_deficit.Rd</code></div>
     </div>
 
-    <div id="fishphylomaker-020" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0">
-<a href="#fishphylomaker-020" class="anchor"></a>FishPhyloMaker 0.2.0<small> 2021-09-15 </small>
-</h1>
-<ul>
-<li><p>bug fixed in <code>FishPhyloMaker</code> function in family insertion procedure.</p></li>
-<li><p>new argument in <code>FishPhyloMaker</code> function that allows to insert all species at node base of the family.</p></li>
-</ul>
-</div>
-    <div id="fishphylomaker-012" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.2">
-<a href="#fishphylomaker-012" class="anchor"></a>FishPhyloMaker 0.1.2<small> Unreleased </small>
-</h1>
-<ul>
-<li><p>Second release of FishPhyloMaker - errors in insertions fixed</p></li>
-<li><p>A new function <code>whichFishAdd</code> was released</p></li>
-<li><p>A stable version of FishPhyloMaker is now on CRAN</p></li>
-<li><p>Function PD_deficit now outputs total and inserted phylogenetic information</p></li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>Title Calculate the amount of phylogenetic deficit in assemblages</p>
+    </div>
 
+    <pre class="usage"><span class='fu'>PD_deficit</span><span class='op'>(</span><span class='va'>phylo</span>, <span class='va'>data</span>, level <span class='op'>=</span> <span class='st'>"Congeneric_insertion"</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>phylo</th>
+      <td><p>Phylogenetic tree in newick format, can be an object from <code><a href='FishPhyloMaker.html'>FishPhyloMaker</a></code> function</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>A data frame containing the classification  informing the level of insertions. This can be obtained
+from <code><a href='FishPhyloMaker.html'>FishPhyloMaker</a></code> function</p></td>
+    </tr>
+    <tr>
+      <th>level</th>
+      <td><p>Character indicating which level must be considered in the calculation of PD deficit.
+Can be a vector with the levels ("Congeneric_insertion", "Congeneric_Family_level", "Family_insertion", "Order_insertion")
+which will be considered in the calculation of phylogenetic deficit.
+default is "Congeneric_insertion".</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A vector containing four values:
+- Amount phylogenetic information present in the tree before insertions (PDintree)
+- Amount of phylogenetic information inserted in the tree (PDdeficit)
+- Total Phylogenetic information of the tree (PDtotal)
+- A ratio calculated as PDdeficit/PDtotal (Darwinian_deficit)</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='FishPhyloMaker.html'>FishPhyloMaker</a></code> for phylogeny and data frame containing the classification of insertions</p></div>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 
