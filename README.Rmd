@@ -35,15 +35,6 @@ data frame object containing three columns with the name of species (s), the Fam
 
 Besides to help checking the validity of the names of species, its synonyms and duplicated species, the data frame returned by `FishTaxaMaker()` in **Taxon_data_FishPhyoMaker** are formatted so that it can be directly used in the core function `FishPhyloMaker()`. This function will use the information of the taxonomic hierarchy contained in the data frame returned from `FishTaxaMaker()`, joint with the information present in the the [fishtree of life project](https://fishtreeoflife.org/) to construct the phylogenetic tree.
 
-## Installation
-
-<<<<<<< HEAD
-You can install the development version from [GitHub](https://github.com/) with:
-
-```{.r}
-devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main", build_vignettes = TRUE)
-=======
-This table can be done manually or by passing to `FishTaxaMaker()` a list of species or a community data matrix with species names in columns following the format *Genus_species*.
 
 # Download 
 
@@ -53,16 +44,14 @@ A stable version of FishPhyloMaker can be installed from CRAN
 install.packages("FishPhyloMaker")
 ```
 
-
 To install the development version of this package the user must type:
 
 ```{.r}
 # install.packages("devtools")
 devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
->>>>>>> update_dev_pkg
 ```
 
-## Example
+# Example
 
 To run an example the user can load a data set present in the package:
 
