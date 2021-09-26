@@ -82,16 +82,14 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<hr>
-<p>title: “FishPhyloMaker: An R package to generate phylogenies for bony fish” author: “Gabriel Nakamura” date: “4/4/2021” output: html_document: keep_md: yes —</p>
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><img src="reference/figures/Logo_FishPhyloMaker.png" alt="fish logo" width="200px" align="right"></p>
 <div id="fishphylomaker" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#fishphylomaker" class="anchor"></a>FishPhyloMaker</h1></div>
 <p><a href="https://cran.r-project.org/package=FishPhyloMaker"><img src="https://www.r-pkg.org/badges/version/FishPhyloMaker" alt="CRAN_Status_Badge"></a></p>
+<p><a href="https://zenodo.org/badge/latestdoi/336899540"><img src="https://zenodo.org/badge/336899540.svg" alt="DOI"></a></p>
 <p><a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"></a></p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD <code>{FishPhyloMaker}</code> is an R package that allows to construct synthesis phylogenies for finned-ray fishes. The package has two main functions, <code>FishTaxaMaker</code> and <code>FishPhyloMaker</code>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information contained in <a href="http://www.fishbase.org">Fishbase database</a> through the package <a href="https://CRAN.R-project.org/package=rfishbase">rfishbase</a>. The output of <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> function is a list containing the following objects:</p>
+<p><code>{FishPhyloMaker}</code> is an R package that allows to construct synthesis phylogenies for finned-ray fishes. The package has two main functions, <code>FishTaxaMaker</code> and <code>FishPhyloMaker</code>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information contained in <a href="http://www.fishbase.org">Fishbase database</a> through the package <a href="https://CRAN.R-project.org/package=rfishbase">rfishbase</a>. The output of <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> function is a list containing the following objects:</p>
 <ul>
 <li><p><strong>All_info_fishbase</strong>: A data frame containing the taxonomic classification of valid species accordingly to Fishbase;</p></li>
 <li>
@@ -101,75 +99,21 @@
 <li><p><strong>Species_not_in_Fishbase</strong>: A character vector containing the names of species that was not found in Fishbase with a valid name data frame object containing three columns with the name of species (s), the Family (f) and the Order (o) of all species provided by the user.</p></li>
 </ul>
 <p>Besides to help checking the validity of the names of species, its synonyms and duplicated species, the data frame returned by <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> in <strong>Taxon_data_FishPhyoMaker</strong> are formatted so that it can be directly used in the core function <code><a href="reference/FishPhyloMaker.html">FishPhyloMaker()</a></code>. This function will use the information of the taxonomic hierarchy contained in the data frame returned from <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code>, joint with the information present in the the <a href="https://fishtreeoflife.org/">fishtree of life project</a> to construct the phylogenetic tree.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"GabrielNakamura/FishPhyloMaker"</span>, <span class="dt">ref =</span> <span class="st">"main"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="op">==</span><span class="er">=====</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="er">**</span>Making phylogenies <span class="cf">for</span> a local pool of fish species<span class="op">**</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="st">`</span><span class="dt">{FishPhyloMaker}</span><span class="st">`</span> is an R package that has two main functions, <span class="st">`</span><span class="dt">FishTaxaMaker</span><span class="st">`</span> and <span class="st">`</span><span class="dt">FishPhyloMaker</span><span class="st">`</span>. The first generate a data frame from fish species names provided by the user, checking the validity of these names and possible synonyms by using the information presented <span class="cf">in</span> [Fishbase database](http<span class="op">:</span><span class="er">//</span>www.fishbase.org<span class="op">/</span>search.php) through the package [rfishbase](https<span class="op">:</span><span class="er">//</span>cran.r<span class="op">-</span>project.org<span class="op">/</span>web<span class="op">/</span>packages<span class="op">/</span>rfishbase<span class="op">/</span>rfishbase.pdf) . Species that were not found <span class="cf">in</span> Fishbase are printed <span class="cf">in</span> the command line, and the user must inform manually the Family and the Order of these species. The output of <span class="st">`</span><span class="dt">FishTaxaMaker()</span><span class="st">`</span> <span class="cf">function</span> is a list containing the following objects<span class="op">:</span><span class="st"> </span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="op">-</span><span class="st"> </span><span class="er">**</span>All_info_fishbase<span class="op">**</span><span class="er">:</span><span class="st"> </span>A data frame containing the taxonomic classification of valid species accordingy to Fishbase;</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="op">-</span><span class="st"> </span><span class="er">**</span>Taxon_data_FishPhyloMaker<span class="op">**</span><span class="er">:</span><span class="st"> </span>A data frame with three colum containing the valid name of species</span>
-<span id="cb1-8"><a href="#cb1-8"></a>    (s), its <span class="kw">family</span> (f) and <span class="kw">order</span> (o). This data frame can be used <span class="cf">in</span> <span class="st">`</span><span class="dt">FishPhyloMaker()</span><span class="st">`</span> to generate the phylogeny;</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="op">-</span><span class="st"> </span><span class="er">**</span>Duplicated_species<span class="op">**</span><span class="er">:</span><span class="st"> </span>A data frame showing the names of species that the user provided and the        names of species valid accordingly fishbase. This data frame contains only those species that         represents duplicated species</span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="op">-</span><span class="st"> </span><span class="er">**</span>Species_not_in_Fishbase<span class="op">**</span><span class="er">:</span><span class="st"> </span>A character vectorn containing the names of species that was not find      <span class="cf">in</span> Fishbase with a valid name</span>
-<span id="cb1-11"><a href="#cb1-11"></a>data frame object containing three columns with the name of <span class="kw">species</span> (s), the <span class="kw">Family</span> (f) and the <span class="kw">Order</span> (o) of all species provided by the user. </span>
-<span id="cb1-12"><a href="#cb1-12"></a></span>
-<span id="cb1-13"><a href="#cb1-13"></a>Besides to help checking the validity of the names of species, its synonyms and duplicated species, the data frame returned by <span class="st">`</span><span class="dt">FishTaxaMaker()</span><span class="st">`</span> <span class="cf">in</span> <span class="op">**</span>Taxon_data_FishPhyoMaker<span class="op">**</span><span class="st"> </span>are formatted to be directly used <span class="cf">in</span> the core <span class="cf">function</span> <span class="st">`</span><span class="dt">FishPhyloMaker()</span><span class="st">`</span>. This <span class="cf">function</span> will use the information of the taxonomic hierarchy contained <span class="cf">in</span> the data frame returned from <span class="st">`</span><span class="dt">FishTaxaMaker()</span><span class="st">`</span>, joint with the information present <span class="cf">in</span> the the [fishtree of life project](https<span class="op">:</span><span class="er">//</span>fishtreeoflife.org<span class="op">/</span>) to assemble the phylogenetic tree with the species informed by the user.</span>
-<span id="cb1-14"><a href="#cb1-14"></a></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="st">`</span><span class="dt">FishPhyloMaker()</span><span class="st">`</span> works <span class="cf">in</span> a sequential way, with <span class="dv">4</span> levels of insertions. First the <span class="cf">function</span> finds <span class="cf">for</span> all species of local data that are already presented <span class="cf">in</span> the mega<span class="op">-</span>tree. If any species remains <span class="cf">for</span> insertion, then the <span class="cf">function</span> finds <span class="cf">for</span> congeneric species that are already present <span class="cf">in</span> tree. If any, the congeneric species are added to the tree as a sister species of the respective genus by dividing the branch of congeneric species by two and inserting the new species. If there are more than one congeneric species <span class="cf">in</span> the tree the species will be added as a polytomy at the node that corresponds to the most recent <span class="kw">ancestral</span> (MRCA) that links all congeneric species. This round of insertion is what we call <span class="op">**</span>Congeneric insertion<span class="op">**</span>.</span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a>After congeneric species insertions, <span class="cf">if</span> there are species that already must be inserted <span class="cf">in</span> the tree, <span class="st">`</span><span class="dt">FishPhyloMaker()</span><span class="st">`</span> finds <span class="cf">for</span> the all the genus <span class="cf">in</span> the tree that are of the same family of the species that must be inserted. This comprises the <span class="op">**</span>Family level<span class="op">**</span><span class="st"> </span>round of insertions. In this round, the user has three different insertion options<span class="op">:</span><span class="st"> </span></span>
-<span id="cb1-18"><a href="#cb1-18"></a></span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="fl">1.</span> <span class="op">**</span>Insert the species near to a specific genus<span class="op">/</span>family<span class="op">**</span><span class="er">:</span><span class="st"> </span>To insert the species near to a specific genus<span class="op">/</span>family,</span>
-<span id="cb1-20"><a href="#cb1-20"></a>    the user must type the name of the <span class="kw">genus</span> (or family) at which the species must be inserted;</span>
-<span id="cb1-21"><a href="#cb1-21"></a></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="fl">2.</span> <span class="op">**</span>Insert the species between two genus<span class="op">/</span>families<span class="op">**</span><span class="er">:</span><span class="st"> </span>To insert the species between two different genus<span class="op">/</span>families, the user </span>
-<span id="cb1-23"><a href="#cb1-23"></a>    must type the names of the two genus<span class="op">/</span>families separated by a blank space;</span>
-<span id="cb1-24"><a href="#cb1-24"></a></span>
-<span id="cb1-25"><a href="#cb1-25"></a><span class="fl">3.</span> <span class="op">**</span>Insert at the root of the family<span class="op">/</span>order<span class="op">**</span><span class="er">:</span><span class="st"> </span>To insert the species at the node that corresponds to the <span class="kw">family</span> (or order), the user must type the name of the family.</span>
-<span id="cb1-26"><a href="#cb1-26"></a></span>
-<span id="cb1-27"><a href="#cb1-27"></a>The user chooses one of these three options through an interactive procedure, <span class="cf">in</span> which all the genus of the same family of the species that must be inserted, and are already present <span class="cf">in</span> tree, are printed <span class="cf">in</span> the console. The user must type the name of a given genus <span class="cf">for</span> the first option, the name of two genus separated by a blank space <span class="cf">for</span> the second option and the name of the family <span class="cf">for</span> the third option.</span>
-<span id="cb1-28"><a href="#cb1-28"></a></span>
-<span id="cb1-29"><a href="#cb1-29"></a>After all species with representative Genus of their families be inserted, <span class="cf">if</span> any species remains to be inserted <span class="cf">in</span> the tree, the <span class="cf">function</span> found <span class="cf">for</span> all families present <span class="cf">in</span> the tree that are of the same Order of the species that must be inserted, and an interactive procedure similar of that described previously <span class="cf">for</span> the family level is performed, but, instead to choose among Genus, one of the three options must be chosen by typing the families inside a given <span class="kw">Order</span> (or the name of the Order <span class="cf">in</span> the case to insert at the node that unites all families inside a given Order). This level of insertion is called <span class="op">**</span>Order insertion<span class="op">**</span><span class="st"> </span>level. If any species remains to be inserted after these three levels, the <span class="cf">function</span> will inform the user that the species was not inserted <span class="cf">in</span> the tree. We adopt this decision since the insertions beyond Order will carry a lot of uncertainty regarding the phylogenetic position of this species.</span>
-<span id="cb1-30"><a href="#cb1-30"></a></span>
-<span id="cb1-31"><a href="#cb1-31"></a>Another point that is important to mention is that at each level of insertion a check procedure is performed to check <span class="cf">if</span> any genus of the species that must be inserted was included <span class="cf">in</span> the tree. If this occur the species will be automatically inserted following the same procedure described <span class="cf">in</span> the Congeneric level of insertions, and the species added <span class="cf">in</span> this level we call <span class="op">**</span>Congeneric family level<span class="op">**</span></span>
-<span id="cb1-32"><a href="#cb1-32"></a></span>
-<span id="cb1-33"><a href="#cb1-33"></a>The last step consists <span class="cf">in</span> <span class="op">**</span>subset the tree<span class="op">**</span><span class="st"> </span>to maintain only those species of interesting of the user. This is done by dropping all species that are not present at the names informed by the user. This returns a dated phylogenetic tree, and, optionally, a data frame with the same format of that the user obtained with <span class="st">`</span><span class="dt">FishTaxaMaker()</span><span class="st">`</span>, but with a new column indicating at which level the species was added <span class="cf">in</span> the procedure with the following code. </span>
-<span id="cb1-34"><a href="#cb1-34"></a></span>
-<span id="cb1-35"><a href="#cb1-35"></a><span class="op">-</span><span class="st">   </span><span class="er">**</span>Present_in_tree<span class="op">**</span><span class="st"> </span>the species was already present <span class="cf">in</span> the original tree;</span>
-<span id="cb1-36"><a href="#cb1-36"></a><span class="op">-</span><span class="st">   </span><span class="er">**</span>Congeneric_insertion<span class="op">**</span><span class="st"> </span>species inserted as a sister species of the same genus presented <span class="cf">in</span> the tree;</span>
-<span id="cb1-37"><a href="#cb1-37"></a><span class="op">-</span><span class="st">   </span><span class="er">**</span>Congeneric_insertion_roundFamily<span class="op">**</span><span class="st"> </span>species inserted as a sister species of the same genus presented <span class="cf">in</span> the tree, but that were added after a species of local pool of the same genus be inserted <span class="cf">in</span> the tree;</span>
-<span id="cb1-38"><a href="#cb1-38"></a><span class="op">-</span><span class="st">   </span><span class="er">**</span>Family_insertion<span class="op">**</span><span class="st"> </span><span class="cf">if</span> not found any congeneric species, the species will be inserted near to, or between genus of the same family presented <span class="cf">in</span> the tree. The user can also insert the species <span class="cf">in</span> the base of the family;</span>
-<span id="cb1-39"><a href="#cb1-39"></a><span class="op">-</span><span class="st">   </span><span class="er">**</span>Order_insertion<span class="op">**</span><span class="st"> </span><span class="cf">if</span> not found any genus of the same family of the species that must be inserted, the species will be inserted near to a given family, between two families or at the node that corresponds to the Order of this species;</span>
-<span id="cb1-40"><a href="#cb1-40"></a><span class="op">-</span><span class="st">   </span><span class="er">**</span>Not_inserted<span class="op">**</span><span class="st"> </span><span class="cf">if</span> species was not inserted <span class="cf">in</span> any of the previous steps, it will not be inserted <span class="cf">in</span> the final tree;</span>
-<span id="cb1-41"><a href="#cb1-41"></a></span>
-<span id="cb1-42"><a href="#cb1-42"></a>To obtain a phylogeny of fish species, the user must provide to <span class="st">`</span><span class="dt">FishPhyloMaker()</span><span class="st">`</span> <span class="cf">function</span> a data frame that present the following format<span class="op">:</span></span>
-<span id="cb1-43"><a href="#cb1-43"></a></span>
-<span id="cb1-44"><a href="#cb1-44"></a><span class="er">|</span><span class="st">    </span>s  <span class="op">|</span><span class="st">    </span>f    <span class="op">|</span><span class="st">    </span>o   <span class="op">|</span></span>
-<span id="cb1-45"><a href="#cb1-45"></a><span class="er">|:</span><span class="op">-----</span><span class="er">:|:</span><span class="op">-------</span><span class="er">:|:</span><span class="op">------</span><span class="er">:|</span></span>
-<span id="cb1-46"><a href="#cb1-46"></a><span class="er">|</span><span class="st"> </span>G_sp1 <span class="op">|</span><span class="st"> </span>Family1 <span class="op">|</span><span class="st"> </span>Order1 <span class="op">|</span></span>
-<span id="cb1-47"><a href="#cb1-47"></a><span class="er">|</span><span class="st"> </span>G_sp2 <span class="op">|</span><span class="st"> </span>Family2 <span class="op">|</span><span class="st"> </span>Order2 <span class="op">|</span></span>
-<span id="cb1-48"><a href="#cb1-48"></a><span class="er">|</span><span class="st"> </span>G_sp3 <span class="op">|</span><span class="st"> </span>Family3 <span class="op">|</span><span class="st"> </span>Order3 <span class="op">|</span></span>
-<span id="cb1-49"><a href="#cb1-49"></a></span>
-<span id="cb1-50"><a href="#cb1-50"></a>This table can be done manually or by passing to <span class="st">`</span><span class="dt">FishTaxaMaker()</span><span class="st">`</span> a list of species or a community data matrix with species names <span class="cf">in</span> columns following the format <span class="op">*</span>Genus_species<span class="op">*</span>.</span>
-<span id="cb1-51"><a href="#cb1-51"></a></span>
-<span id="cb1-52"><a href="#cb1-52"></a><span class="co"># Download </span></span>
-<span id="cb1-53"><a href="#cb1-53"></a></span>
-<span id="cb1-54"><a href="#cb1-54"></a>A stable version of FishPhyloMaker can be installed from CRAN</span>
-<span id="cb1-55"><a href="#cb1-55"></a></span>
-<span id="cb1-56"><a href="#cb1-56"></a><span class="st">```</span><span class="dt">{.r}</span></span>
-<span id="cb1-57"><a href="#cb1-57"></a><span class="dt">install.packages("FishPhyloMaker")</span></span></code></pre></div>
-<p>To install the development version of this package the user must type:</p>
-<pre class="{.r}"><code># install.packages("devtools")
-devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; update_dev_pkg</code></pre>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div id="download" class="section level1">
+<h1 class="hasAnchor">
+<a href="#download" class="anchor"></a>Download</h1>
+<p>A stable version of FishPhyloMaker can be installed from CRAN</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"FishPhyloMaker"</span><span class="op">)</span></code></pre></div>
+<p>To install the development version of this package the user must type:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GabrielNakamura/FishPhyloMaker"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="example" class="section level1">
+<h1 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h1>
 <p>To run an example the user can load a data set present in the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span>
@@ -229,7 +173,6 @@ devtools::install_github("GabrielNakamura/FishPhyloMaker", ref = "main")
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res_phylo</span><span class="op">$</span><span class="va">Insertions_data</span></code></pre></div>
 <p>For more details and updates see <a href="https://gabrielnakamura.github.io/FishPhyloMaker/">FishPhyloMaker web page</a></p>
-</div>
 </div>
 
   </div>
