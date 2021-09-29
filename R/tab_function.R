@@ -133,10 +133,15 @@ FishTaxaMaker <- function (data, allow.manual.insert = TRUE)
       }
       for (i in 1:length(not_found_fishtree)) {
         spp_family <- readline(prompt = print_cat_Family(not_found_fishtree = not_found_fishtree[i]))
-        spp_order <- readline(prompt = print_cat_Order(not_found_fishtree = not_found_fishtree[i]))
         list_res[[2]][which(list_res[[1]]$user_spp == 
                               gsub(" ", "_", not_found_fishtree[i])), c("s", 
                                                                         "f")] <- c(not_found_fishtree[i], spp_family)
+        
+        spp_order <- unique(fishbasedata[which(fishbasedata$Family == spp_family), "Order"])
+        if(length(spp_order) == 0){
+          warning("\n Please, check if the family name typed is valid \n")
+          spp_order <- readline(prompt = print_cat_Order(not_found_fishtree = not_found_fishtree[i]))
+        }
         list_res[[2]][which(list_res[[2]]$s == not_found_fishtree[i]), 
                       "o"] <- spp_order
       }
