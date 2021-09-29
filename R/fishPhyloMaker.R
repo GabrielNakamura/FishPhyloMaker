@@ -689,7 +689,7 @@ FishPhyloMaker <- function (data,
               data_insertions[match(insert_spp2, data_insertions$s), "insertions"] <- "Family_insertion"
             } else {
               Family_insertion <- insert_spp2[-match(c(Congeneric_round_family, 
-                                                       not_inserted), insert_spp2)]
+                                                       not_inserted), insert_spp2, nomatch = 0)]
               data_insertions[match(Family_insertion, data_insertions$s), 
                               "insertions"] <- "Family_insertion"
             }
