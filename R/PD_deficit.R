@@ -34,7 +34,7 @@ PD_deficit <- function(phylo, data, level = "Congeneric_insertion"){
   if(all(!is.na(match(phylo$tip.label, names_exclude))) == TRUE){
     PD_present <- sum(phylo$edge.length)
     PD_level <- 0
-    PD_total <- sum(PD_present, PD_level)
+    PD_total <- sum(phylo$edge.length)
     Darwinian_deficit <- PD_level/PD_total
     res <- c(PD_present, PD_level, PD_total, Darwinian_deficit)
     names(res) <- c("PDintree", "PDdeficit", "PDtotal", "Darwinian_deficit")
@@ -52,7 +52,7 @@ PD_deficit <- function(phylo, data, level = "Congeneric_insertion"){
     }
     phylo_level <- ape::drop.tip(phylo, level_exclude)
     PD_level <- sum(phylo_level$edge.length)
-    PD_total <- sum(PD_present, PD_level)
+    PD_total <- sum(phylo$edge.length)
     Darwinian_deficit <- PD_level/PD_total
     res <- c(PD_present, PD_level, PD_total, Darwinian_deficit)
     names(res) <- c("PDintree", "PDdeficit", "PDtotal", "Darwinian_deficit")
