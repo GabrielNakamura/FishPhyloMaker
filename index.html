@@ -99,6 +99,7 @@
 <li><p><strong>Species_not_in_Fishbase</strong>: A character vector containing the names of species that was not found in Fishbase with a valid name data frame object containing three columns with the name of species (s), the Family (f) and the Order (o) of all species provided by the user.</p></li>
 </ul>
 <p>Besides to help checking the validity of the names of species, its synonyms and duplicated species, the data frame returned by <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code> in <strong>Taxon_data_FishPhyoMaker</strong> are formatted so that it can be directly used in the core function <code><a href="reference/FishPhyloMaker.html">FishPhyloMaker()</a></code>. This function will use the information of the taxonomic hierarchy contained in the data frame returned from <code><a href="reference/FishTaxaMaker.html">FishTaxaMaker()</a></code>, joint with the information present in the the <a href="https://fishtreeoflife.org/">fishtree of life project</a> to construct the phylogenetic tree.</p>
+<p>The paper describing the functionalities of FishPhyloMaker is now published in Ecological Informatics and can be assessed <a href="https://www.sciencedirect.com/science/article/pii/S1574954121002727">here</a>.</p>
 </div>
 <div id="download" class="section level1">
 <h1 class="hasAnchor">
@@ -173,6 +174,24 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res_phylo</span><span class="op">$</span><span class="va">Insertions_data</span></code></pre></div>
 <p>For more details and updates see <a href="https://gabrielnakamura.github.io/FishPhyloMaker/">FishPhyloMaker web page</a></p>
+</div>
+<div id="next-steps" class="section level1">
+<h1 class="hasAnchor">
+<a href="#next-steps" class="anchor"></a>Next steps</h1>
+<ul>
+<li>
+<input type="checkbox" disabled checked>
+CRAN release</li>
+<li>
+<input type="checkbox" disabled>
+Implement user option to insert a taxonomic table and backbone phylogeny</li>
+<li>
+<input type="checkbox" disabled>
+Incorporate butterfly phylogeny</li>
+<li>
+<input type="checkbox" disabled>
+Automatic phylogeny plot</li>
+</ul>
 </div>
 
   </div>

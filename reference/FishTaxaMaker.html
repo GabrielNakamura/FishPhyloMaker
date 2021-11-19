@@ -171,46 +171,46 @@ not found in Fishbase</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
- <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>neotropical_comm</span><span class='op'>)</span>
- <span class='va'>data_comm</span> <span class='op'>&lt;-</span> <span class='va'>neotropical_comm</span><span class='op'>[</span>, <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span>
- <span class='va'>taxon_data</span> <span class='op'>&lt;-</span> <span class='fu'>FishTaxaMaker</span><span class='op'>(</span><span class='va'>data_comm</span>, allow.manual.insert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
- <span class='va'>Characidae</span>
- <span class='va'>Characiformes</span>
- <span class='va'>Characidae</span>
- <span class='va'>Characiformes</span>
- <span class='va'>Characidae</span>
- <span class='va'>Characiformes</span>
- <span class='va'>Loricariidae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Characidae</span>
- <span class='va'>Characiformes</span>
- <span class='va'>Cichlidae</span>
- <span class='va'>Cichliformes</span>
- <span class='va'>Crenuchidae</span>
- <span class='va'>Characiformes</span>
- <span class='va'>Gymnotidae</span>
- <span class='va'>Gymnotiformes</span>
- <span class='va'>Loricariidae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Loricariidae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Loricariidae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Loricariidae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Heptapteridae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Characidae</span>
- <span class='va'>Characiformes</span>
- <span class='va'>Loricariidae</span>
- <span class='va'>Siluriformes</span>
- <span class='va'>Characidae</span>
- <span class='va'>Characiformes</span>
-<span class='op'>}</span>
-
-
-</div></pre>
+    <pre class="examples"><span class='r-in'> <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>neotropical_comm</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='va'>data_comm</span> <span class='op'>&lt;-</span> <span class='va'>neotropical_comm</span><span class='op'>[</span>, <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'> <span class='va'>taxon_data</span> <span class='op'>&lt;-</span> <span class='fu'>FishTaxaMaker</span><span class='op'>(</span><span class='va'>data_comm</span>, allow.manual.insert <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'> <span class='va'>Characidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'> <span class='va'>Characidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'> <span class='va'>Characidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'> <span class='va'>Loricariidae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Characidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'> <span class='va'>Cichlidae</span></span>
+<span class='r-in'> <span class='va'>Cichliformes</span></span>
+<span class='r-in'> <span class='va'>Crenuchidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'> <span class='va'>Gymnotidae</span></span>
+<span class='r-in'> <span class='va'>Gymnotiformes</span></span>
+<span class='r-in'> <span class='va'>Loricariidae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Loricariidae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Loricariidae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Loricariidae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Heptapteridae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Characidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'> <span class='va'>Loricariidae</span></span>
+<span class='r-in'> <span class='va'>Siluriformes</span></span>
+<span class='r-in'> <span class='va'>Characidae</span></span>
+<span class='r-in'> <span class='va'>Characiformes</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
