@@ -44,6 +44,10 @@ the information present in the the [fishtree of life
 project](https://fishtreeoflife.org/) to construct the phylogenetic
 tree.
 
+The paper describing the functionalities of FishPhyloMaker is now
+published in Ecological Informatics and can be assessed
+[here](https://www.sciencedirect.com/science/article/pii/S1574954121002727).
+
 # Download
 
 A stable version of FishPhyloMaker can be installed from CRAN
@@ -154,3 +158,11 @@ res_phylo$Insertions_data
 
 For more details and updates see [FishPhyloMaker web
 page](https://gabrielnakamura.github.io/FishPhyloMaker/)
+
+# Next steps
+
+  - [x] CRAN release
+  - [ ] Implement user option to insert a taxonomic table and backbone
+    phylogeny
+  - [ ] Incorporate butterfly phylogeny
+  - [ ] Automatic phylogeny plot

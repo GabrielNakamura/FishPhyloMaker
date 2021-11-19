@@ -14,3 +14,5 @@ procedure.
 * A stable version of FishPhyloMaker is now on CRAN
 
 * Function PD_deficit now outputs total and inserted phylogenetic information 
+
+* Paper describing FishPhyloMaker published in [Ecological Informatics](https://www.sciencedirect.com/science/article/pii/S1574954121002727) 
