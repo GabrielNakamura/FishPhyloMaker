@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">FishPhyloMaker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,7 +79,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using FishPhyloMaker to build phylogenies for finned-ray fishes</h1>
             
-            <h4 class="date">2021-11-19</h4>
+            <h4 data-toc-skip class="date">2022-05-06</h4>
       
       
       <div class="hidden name"><code>FishPhyloMaker_vignette.Rmd</code></div>
@@ -97,10 +93,10 @@
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GabrielNakamura/FishPhyloMaker"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></code></pre></div>
 <p>We will use a data base that contain stream fish species from Paraná and Paraguai basins. These comprises two of the main basins in Neotropical region. This data are embedded in the package and can be easily accessed by typing:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">neotropical_comm</span><span class="op">)</span>
-<span class="va">data_comm</span> <span class="op">&lt;-</span> <span class="va">neotropical_comm</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># removing Latitude and Longitude</span></code></pre></div>
-<p><code>neotropical_comm</code> correspond to a data frame containing the abundance of 59 fish species collected in 20 headwater streams, being 10 in Paraná and 10 in Paraguay Basin. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in <code>FishPhyloMaker</code> function, that correspond to a data frame with three column containing the taxonomic information of each one of the 59 species. To prepare this data we will use the function <code>FishTaxaMaker</code> that finds for each species name present in the data_comm and checks if these names are found in <a href="https://www.fishbase.se/">Fishbase database</a>. Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">neotropical_comm</span><span class="op">)</span>
+<span class="va">data_comm</span> <span class="op">&lt;-</span> <span class="va">neotropical_comm</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># removing Latitude and Longitude</span></code></pre></div>
+<p><code>neotropical_comm</code> correspond to a data frame containing the abundance of 59 fish species collected in 20 headwater streams, being 10 in Paraná and 10 in Paraguay Basin. To obtain a phylogenetic tree for these species we first need to format these data accordingly to enter in <code>FishPhyloMaker</code> function, that correspond to a data frame with three column containing the taxonomic information of each one of the 59 species. To prepare this data we will use the function <code>FishTaxaMaker</code> that finds for each species name present in the data_comm and checks if these names are found in <a href="https://www.fishbase.se/" class="external-link">Fishbase database</a>. Note that not all species was found in Fishbase data, so, the user must type manually, through an interactive process, the name of the Family and the Order of these species that was not found. A message will appear in the command prompt indicating when to type the names. The names must be typed sequentially, as in the following code.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span><span class="va">data_comm</span>, allow.manual.insert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">Characidae</span>
@@ -135,7 +131,7 @@
 <span class="va">Siluriformes</span>
 <span class="va">Characidae</span>
 <span class="va">Characiformes</span></code></pre></div>
-<p>This function will return a data frame with three columns and the same number of species present in data_comm, and now taxon_data can be used in <code>FishPhyloMaker</code> function to generate the phylogenetic tree for these species. In this example we will set the argument return.insertions = TRUE, since we want to know at which level of hierarchical taxonomy each species was inserted in the process, the levels are explained in the <a href="https://gabrielnakamura.github.io/FishPhyloMaker/index.html">introductory article</a>. Like <code>FishTaxaMaker</code> function, <code>FishPhyloMaker</code> also have a interactive process of insertion in which the user must inform at which position species must be inserted in the mega-tree. There are three options:</p>
+<p>This function will return a data frame with three columns and the same number of species present in data_comm, and now taxon_data can be used in <code>FishPhyloMaker</code> function to generate the phylogenetic tree for these species. In this example we will set the argument return.insertions = TRUE, since we want to know at which level of hierarchical taxonomy each species was inserted in the process, the levels are explained in the <a href="https://gabrielnakamura.github.io/FishPhyloMaker/index.html" class="external-link">introductory article</a>. Like <code>FishTaxaMaker</code> function, <code>FishPhyloMaker</code> also have a interactive process of insertion in which the user must inform at which position species must be inserted in the mega-tree. There are three options:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Insert the species near to a specific genus/family</strong>: To insert the species near to a specific genus/family, the user must type the name of the genus (or family) at which the species must be inserted;</p></li>
 <li><p><strong>Insert the species between two genus/families</strong>: To insert the species between two different genus/families, the user must type the names of the two genus/families separated by a blank space;</p></li>
@@ -151,28 +147,28 @@
 <p>In this example I choose to insert all the species that did not presented congeneric relatives in the base of its family.</p>
 <p>The result of <code>FishPhyloMaker</code> is a list containing two objects, a phylogenetic tree and a data frame indicating at which level each species was inserted in the phylogeny. We can use the result contained in phylo_fish_streams to plot the tree. We can use the following code to highlight the families in the tree.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggtree</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ggtree</span><span class="op">)</span>
 <span class="va">tree.PR</span><span class="op">&lt;-</span> <span class="va">phylo_fish_streams</span><span class="op">$</span><span class="va">Phylogeny</span>
 
-<span class="va">tree.PR</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/makeNodeLabel.html">makeNodeLabel</a></span><span class="op">(</span><span class="va">tree.PR</span><span class="op">)</span>
+<span class="va">tree.PR</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/makeNodeLabel.html" class="external-link">makeNodeLabel</a></span><span class="op">(</span><span class="va">tree.PR</span><span class="op">)</span>
 <span class="va">phylo</span> <span class="op">&lt;-</span> <span class="va">tree.PR</span>
 
-<span class="va">rm.famNames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">taxon_dataPR</span><span class="op">$</span><span class="va">f</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># monotipic families</span>
-<span class="va">names.fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">taxon_dataPR</span><span class="op">$</span><span class="va">f</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">rm.famNames</span><span class="op">)</span><span class="op">)</span> <span class="co"># removing monotipic families from the names </span>
+<span class="va">rm.famNames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">taxon_dataPR</span><span class="op">$</span><span class="va">f</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># monotipic families</span>
+<span class="va">names.fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">taxon_dataPR</span><span class="op">$</span><span class="va">f</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">rm.famNames</span><span class="op">)</span><span class="op">)</span> <span class="co"># removing monotipic families from the names </span>
 
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">names.fam</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">taxon_dataPR</span>, <span class="va">f</span> <span class="op">==</span> <span class="va">names.fam</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
-  <span class="va">phylo</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/makeNodeLabel.html">makeNodeLabel</a></span><span class="op">(</span><span class="va">phylo</span>, <span class="st">"u"</span>, nodeList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Fam_name <span class="op">=</span> <span class="va">set</span><span class="op">$</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">names.fam</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">taxon_dataPR</span>, <span class="va">f</span> <span class="op">==</span> <span class="va">names.fam</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
+  <span class="va">phylo</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/makeNodeLabel.html" class="external-link">makeNodeLabel</a></span><span class="op">(</span><span class="va">phylo</span>, <span class="st">"u"</span>, nodeList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Fam_name <span class="op">=</span> <span class="va">set</span><span class="op">$</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>
   
-  <span class="va">phylo</span><span class="op">$</span><span class="va">node.label</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">$</span><span class="va">node.label</span> <span class="op">==</span> 
-                           <span class="st">"Fam_name"</span><span class="op">)</span> <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">set</span><span class="op">$</span><span class="va">f</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+  <span class="va">phylo</span><span class="op">$</span><span class="va">node.label</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">$</span><span class="va">node.label</span> <span class="op">==</span> 
+                           <span class="st">"Fam_name"</span><span class="op">)</span> <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">set</span><span class="op">$</span><span class="va">f</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="va">pos.node</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">names.fam</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">$</span><span class="va">node.label</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">$</span><span class="va">tip.label</span><span class="op">)</span>
+<span class="va">pos.node</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">names.fam</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">$</span><span class="va">node.label</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">phylo</span><span class="op">$</span><span class="va">tip.label</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">df.phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Fam.names <span class="op">=</span> <span class="va">names.fam</span>,
+<span class="va">df.phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Fam.names <span class="op">=</span> <span class="va">names.fam</span>,
                        node.number <span class="op">=</span> <span class="va">pos.node</span><span class="op">)</span>
 
 <span class="va">plot.base</span> <span class="op">&lt;-</span> <span class="fu">ggtree</span><span class="op">(</span><span class="va">phylo</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_tree2</span><span class="op">(</span><span class="op">)</span>
@@ -184,7 +180,7 @@
   <span class="fu">scale_fill_viridis</span><span class="op">(</span>discrete <span class="op">=</span> <span class="cn">T</span>, name <span class="op">=</span> <span class="st">"Family names"</span><span class="op">)</span></code></pre></div>
 <p>With this code we will obtain a phylogenetic tree like that in Figure 1. The species that are not shaded with colors corresponds to monotipic families.</p>
 <div class="figure">
-<img src="../vignettes/Phylo_Parana-Paraguai.png" alt=""><p class="caption">Fig. 1 - Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brazil).</p>
+<img src="../articles/Phylo_Parana-Paraguai.png" alt=""><p class="caption">Fig. 1 - Phylogenetic tree containing 59 species of stream fishes in the Paraná and Paraguay Basins (Brazil).</p>
 </div>
   </div>
 
@@ -197,11 +193,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Gabriel Nakamura, Aline Richter, Bruno Soares.</p>
+  <p></p>
+<p>Developed by Gabriel Nakamura, Aline Richter, Bruno Soares.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -209,6 +207,8 @@
 
   
 
+
+  
 
   </body>
 </html>
