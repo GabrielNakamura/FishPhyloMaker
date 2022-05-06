@@ -159,10 +159,20 @@ res_phylo$Insertions_data
 For more details and updates see [FishPhyloMaker web
 page](https://gabrielnakamura.github.io/FishPhyloMaker/)
 
-# Next steps
+# Next steps - To do list
 
-  - [x] CRAN release
   - [ ] Implement user option to insert a taxonomic table and backbone
     phylogeny
+      - [ ] Create two arguments to receive user phylogeny and user
+        taxonomic database
+      - [ ] Create a function to produce the taxonomic database?
+      - [ ] Checking procedures for phylogeny and taxonomic database
+        (number of species, size of the list etc.)
   - [ ] Incorporate butterfly phylogeny
-  - [ ] Automatic phylogeny plot
+      - [ ] How to download the phylogeny and taxonomic list?
+      - [ ] New argument to select which taxa are being used (fish,
+        butterfly)
+      - [ ] Other groups??
+  - [ ] Deploy website
+      - [ ] Check deploy error
+      - [ ] New vignette for the new functionality
