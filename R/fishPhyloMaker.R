@@ -27,7 +27,9 @@
 FishPhyloMaker <- function (data, 
                             insert.base.node = FALSE, 
                             return.insertions = TRUE, 
-                            progress.bar = TRUE) 
+                            progress.bar = TRUE, 
+                            user_backbone = NULL,
+                            user_taxon_data = NULL) 
 {
   if (dim(data)[2] != 3) {
     stop("/n data must be a dataframe with three columns (s, f, o)")
@@ -38,10 +40,31 @@ FishPhyloMaker <- function (data,
   if (is.data.frame(data) == FALSE) {
     stop("/n data must be a data frame object")
   }
-  fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
-  tree_complete <- fishtree::fishtree_phylogeny()
+  
+
+  # getting data ------------------------------------------------------------
+
+  if(is.null(user_backbone) == FALSE){
+    tree_complete <- user_backbone
+    fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
+  }
+  if(is.null(user_taxon_data) == FALSE){
+    tree_complete <- fishtree::fishtree_phylogeny()
+    fishbasedata <- user_taxon_data
+  }
+  if(is.null(user_backbone) && is.null(user_taxon_data) == TRUE){
+    fishbasedata <- as.data.frame(data.frame(rfishbase::load_taxa()))
+    tree_complete <- fishtree::fishtree_phylogeny()
+  }
+
+  # start insertion procedure -----------------------------------------------
+
+   
   round_1_check <- match(data$s, tree_complete$tip.label)
   round_1_check <- round_1_check[!is.na(round_1_check)]
+  
+  # get tree
+  
   if (length(round_1_check) == length(data$s)) {
     data_final <- 1:length(as.character(data$s))
     names(data_final) <- as.character(data$s)

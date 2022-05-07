@@ -26,7 +26,7 @@ treedata_modif<- function (phy, data, sort = FALSE, warnings = TRUE)
   else {
     data.names <- rownames(data)
   }
-  nc <- geiger::name.check(phy, data)
+  nc <- geiger::name.check(phy, data) # change for a match base function
   if (is.na(nc[[1]][1]) | nc[[1]][1] != "OK") {
     if (length(nc[[1]] != 0)) {
       phy = ape::drop.tip(phy, as.character(nc[[1]]))

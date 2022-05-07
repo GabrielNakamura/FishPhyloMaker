@@ -59,7 +59,9 @@
 #' }
 #' 
 #'
-FishTaxaMaker <- function (data, allow.manual.insert = TRUE) 
+FishTaxaMaker <- function (data, 
+                           allow.manual.insert = TRUE, 
+                           user_taxon_data = NULL) # look for checking databases for taxonomic names 
 {
   if (is.data.frame(data) == TRUE) {
     names_data <- colnames(data)
