@@ -36,9 +36,10 @@ get_phylo_order <- function(data){
   list_order <- fishtree::fishtree_taxonomy(ranks = all_orders_include)
   list_order <- lapply(list_order, function(x) x$sampled_species)
   list_order <- lapply(list_order, function(x) gsub(" ", "_", x))
-  list_res <- vector(mode = "list", length = 2)
+  list_res <- vector(mode = "list", length = 3)
   list_res$family <- list_family
   list_res$order <- list_order
+  list_res$families_order_and_data <- families_order_and_data
   return(list_res)
 }
 

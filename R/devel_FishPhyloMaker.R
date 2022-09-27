@@ -1,6 +1,6 @@
 library(ape)
-library(devtools)
-load_all()
+# library(devtools)
+# load_all()
 data(taxon_data_PhyloMaker)
 data <- taxon_data_PhyloMaker
 insert.base.node = TRUE
@@ -44,7 +44,6 @@ FishPhyloMaker <- function (data,
   
   # start insertion procedure -----------------------------------------------
   
-  
   round_1_check <- match(data$s, tree_complete$tip.label)
   round_1_check <- round_1_check[!is.na(round_1_check)]
   
@@ -71,13 +70,17 @@ FishPhyloMaker <- function (data,
     }
   }
   if (length(round_1_check) != length(data$s)) { # species must be inserted 
+    spp <- as.character(data$s)
     data_order_family <- get_phylo_order(data) # get family and order data in the tree
-    list_family <- data_order_family$family
-    list_order <- data_order_family$order
+    list_family <- data_order_family$family # sampled species in each family
+    families_order_and_data <- data_order_family$families_order_and_data
+    monotipic_family <- names(unlist(lapply(list_family, 
+                                            function(x) which(length(x) == 1))))
+    list_order <- data_order_family$order # sampled species in each order
     phylo_order <- filter_rank(order = list_order)
     phylo_order <- ape::makeNodeLabel(phy = phylo_order)
     order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) == 
-                                                                         1))))
+                                                                         1)))) # order with only one family to be removed
     list_order <- list_order[-match(order_rm_list, names(list_order))]
     list_non_monotipic <- list_family[setdiff(names(list_family), 
                                               monotipic_family)]
@@ -87,7 +90,9 @@ FishPhyloMaker <- function (data,
                                                     width = 60, current = "<", incomplete = ">", 
                                                     complete = ">")
     }
+
     for (i in 1:length(list_non_monotipic)) {
+      # i = 1
       phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
                                         nodeList = list(Fam_name = list_non_monotipic[[i]]))
       phylo_order$node.label[which(phylo_order$node.label == 
@@ -157,28 +162,19 @@ FishPhyloMaker <- function (data,
     names(spp_data) <- spp
     insert_spp <- treedata_modif(phy = phylo_order, data = spp_data, 
                                  warnings = F)$nc$data_not_tree
-    if (length(insert_spp) >= 1) {
-      genus_in_tree <- sub("_.*", "", phylo_order$tip.label)[match(sub("_.*", 
-                                                                       "", insert_spp), sub("_.*", "", phylo_order$tip.label))][!is.na(sub("_.*", 
-                                                                                                                                           "", phylo_order$tip.label)[match(sub("_.*", "", 
-                                                                                                                                                                                insert_spp), sub("_.*", "", phylo_order$tip.label))])]
-      species_to_genus1 <- insert_spp[which(is.na(insert_spp[match(sub("_.*", 
-                                                                       "", insert_spp), genus_in_tree)]) == FALSE)]
-      if (length(species_to_genus1) >= 1) {
-        if (progress.bar == TRUE) {
-          pb_congeneric <- progress::progress_bar$new(format = "Adding congeneric species [:bar] :percent", 
-                                                      total = length(species_to_genus1), clear = FALSE, 
-                                                      width = 60, current = "<", incomplete = ">", 
-                                                      complete = ">")
-        }
-        for (i in 1:length(species_to_genus1)) {
-          phylo_order <- phytools::add.species.to.genus(tree = phylo_order, 
-                                                        species = species_to_genus1[i])
-          if (progress.bar == TRUE) {
-            pb_congeneric$tick()
-          }
-        }
+    
+    if (length(insert_spp) >= 1) { # initiating insertion from genus level
+      genus_data <- sub("_.*", "", insert_spp)
+      genus_tree <- sub("_.*", "", phylo_order$tip.label)
+      genus_in_tree <- genus_data[genus_data %in% genus_tree]
+      species_to_genus1 <- insert_spp[genus_data %in% genus_tree]
+      
+      # genus insertion
+      if (length(species_to_genus1) >= 1) { 
+        phylo_order <- genus_insertion(insert_spp = species_to_genus1, phy = phylo_order)
       }
+      
+      # species that must be inserted in levels higher than genus
       insert_spp2 <- treedata_modif(phy = phylo_order, 
                                     data = spp_data, warnings = F)$nc$data_not_tree
       if (length(insert_spp2) == 0) {
