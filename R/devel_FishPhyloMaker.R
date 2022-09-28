@@ -42,7 +42,7 @@ FishPhyloMaker <- function (data,
     tree_complete <- fishtree::fishtree_phylogeny()
   }
   
-  # start insertion procedure -----------------------------------------------
+  # checking insertions -----------------------------------------------
   
   round_1_check <- match(data$s, tree_complete$tip.label)
   round_1_check <- round_1_check[!is.na(round_1_check)]
@@ -71,11 +71,10 @@ FishPhyloMaker <- function (data,
   }
   if (length(round_1_check) != length(data$s)) { # species must be inserted 
     spp <- as.character(data$s)
-    data_order_family <- get_phylo_order(data) # get family and order data in the tree
+    data_order_family <- get_phylo_order(data) # get species from all family and order  in the tree
     list_family <- data_order_family$family # sampled species in each family
     families_order_and_data <- data_order_family$families_order_and_data
-    monotipic_family <- names(unlist(lapply(list_family, 
-                                            function(x) which(length(x) == 1))))
+    monotipic_family <- data_order_family$monotipic_families
     list_order <- data_order_family$order # sampled species in each order
     phylo_order <- filter_rank(order = list_order)
     phylo_order <- ape::makeNodeLabel(phy = phylo_order)
@@ -84,62 +83,43 @@ FishPhyloMaker <- function (data,
     list_order <- list_order[-match(order_rm_list, names(list_order))]
     list_non_monotipic <- list_family[setdiff(names(list_family), 
                                               monotipic_family)]
-    if (progress.bar == TRUE) {
-      pb_names_family <- progress::progress_bar$new(format = "  Naming family nodes [:bar] :percent", 
-                                                    total = length(list_non_monotipic), clear = FALSE, 
-                                                    width = 60, current = "<", incomplete = ">", 
-                                                    complete = ">")
-    }
-
-    for (i in 1:length(list_non_monotipic)) {
-      # i = 1
-      phylo_order <- ape::makeNodeLabel(phylo_order, "u", 
-                                        nodeList = list(Fam_name = list_non_monotipic[[i]]))
-      phylo_order$node.label[which(phylo_order$node.label == 
-                                     "Fam_name")] <- paste(names(list_non_monotipic)[i])
-      if (progress.bar == TRUE) {
-        pb_names_family$tick()
-      }
+    
+    for (i in 1:length(list_non_monotipic)) { # naming families with more than one species in tree
+      node_anc <- ape::getMRCA(phy = phylo_order, tip = list_non_monotipic[[i]])
+      phylo_order$node.label[node_anc - ape::Ntip(phylo_order)] <- names(list_non_monotipic)[i]
     }
     families_in_tree <- families_order_and_data[which(!is.na(match(families_order_and_data, 
                                                                    phylo_order$node.label)) == T)]
     families_monotipic_notfound <- setdiff(monotipic_family, 
                                            families_in_tree)
-    for (i in 1:length(families_monotipic_notfound)) {
+    tmp_monotipic <- vector(mode = "list", length = length(families_monotipic_notfound))
+    for (i in 1:length(families_monotipic_notfound)) { # downloading species from monotipic families
+      # i = 13
       spp_tmp <- tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species, 
                           error = function(e) paste("not.found", "_", families_monotipic_notfound[i], 
                                                     sep = ""))
-      spp_tmp <- gsub("\\ ", "_", spp_tmp)
-      list_family[which(families_monotipic_notfound[i] == 
-                          names(list_family))] <- list(spp_tmp)
+      tmp_monotipic[[i]] <- gsub("\\ ", "_", spp_tmp)
     }
+    names(tmp_monotipic) <- families_monotipic_notfound
+    list_family <- c(list_family, tmp_monotipic)
     phylo_order <- suppressWarnings(filter_rank(order = list_family))
     phylo_order <- ape::makeNodeLabel(phy = phylo_order)
     phylo_order <- phytools::force.ultrametric(phylo_order)
-    families_not_found_fishtree <- names(unlist(lapply(lapply(list_family, 
-                                                              function(x) {
-                                                                sub("_.*", "", x)
-                                                              }), function(y) which(length(y) == 1) & which(y == 
-                                                                                                              "not.found"))))
-    list_family_tobeaddnames <- list_family[-match(families_not_found_fishtree, 
-                                                   names(list_family))]
-    family_no_spp_in_tree <- names(unlist(lapply(lapply(list_family_tobeaddnames, 
-                                                        function(x) {
-                                                          sum(!is.na(match(x, phylo_order$tip.label)))
-                                                        }), function(y) which(y == 0))))
+    list_family_tobeaddnames <- list_family[-match(data_order_family$not_found_families, 
+                                                   names(list_family))] # only families with at least one representative
+    family_no_spp_tree <- lapply(list_family_tobeaddnames, 
+           function(x) {
+             sum(!is.na(match(x, phylo_order$tip.label)))
+           })
+    family_no_spp_in_tree <- names(unlist(lapply(family_no_spp_tree, function(y) which(y == 0))))
     list_family_tobeaddnames <- list_family_tobeaddnames[-match(family_no_spp_in_tree, 
                                                                 names(list_family_tobeaddnames))]
-    if (length(list_family_tobeaddnames) > 0) {
-      if (progress.bar == TRUE) {
-        pb_names_family_toadd <- progress::progress_bar$new(format = "  Naming monotipic family nodes [:bar] :percent", 
-                                                            total = length(list_family_tobeaddnames), clear = FALSE, 
-                                                            width = 60, current = "<", incomplete = ">", 
-                                                            complete = ">")
-      }
+    if (length(list_family_tobeaddnames) > 0) { # families to be added including monotipic families
+
       for (i in 1:length(list_family_tobeaddnames)) {
         na_check <- sum(!is.na(match(list_family_tobeaddnames[[i]], 
                                      phylo_order$tip.label)))
-        if (na_check == 1) {
+        if (na_check == 1) { # monotipic families
           spp_singleton <- unlist(list(list_family_tobeaddnames[[i]][!is.na(match(list_family_tobeaddnames[[i]], 
                                                                                   phylo_order$tip.label))]))
           spp_singleton_add <- paste(sub("_.*", "", spp_singleton), 
@@ -149,13 +129,9 @@ FishPhyloMaker <- function (data,
           list_family_tobeaddnames[i] <- list(c(spp_singleton, 
                                                 spp_singleton_add))
         }
-        phylo_order <- ape::makeNodeLabel(phylo_order, 
-                                          "u", nodeList = list(Fam_name = list_family_tobeaddnames[[i]]))
-        phylo_order$node.label[which(phylo_order$node.label == 
-                                       "Fam_name")] <- paste(names(list_family_tobeaddnames)[i])
-        if (progress.bar == TRUE) {
-          pb_names_family_toadd$tick()
-        }
+        tip_spp <- list_family_tobeaddnames[[i]][!is.na(match(list_family_tobeaddnames[[i]], phylo_order$tip.label))]
+        node_anc <- ape::getMRCA(phy = phylo_order, tip = tip_spp)
+        phylo_order$node.label[node_anc - ape::Ntip(phylo_order)] <- names(list_family_tobeaddnames)[i]
       }
     }
     spp_data <- 1:length(spp)
@@ -202,31 +178,32 @@ FishPhyloMaker <- function (data,
           return(tree_res)
         }
       }
+      # family or higher insertions
       if (length(insert_spp2) >= 1) {
-        data_exRound2 <- data[match(insert_spp2, as.character(data$s)), 
-        ]
+        data_round2 <- data[match(insert_spp2, as.character(data$s)), ] # data to be inserted 
         rank_family2 <- unique(as.character(data[match(insert_spp2, 
-                                                       as.character(data$s)), 2]))
+                                                       as.character(data$s)), 2])) # families of species to be inserted 
         list_spp_step2 <- vector(mode = "list", length = length(rank_family2))
         for (i in 1:length(rank_family2)) {
+          # i = 1
           list_spp_step2[[i]] <- tryCatch(paste(ape::extract.clade(phy = phylo_order, 
                                                                    node = as.character(rank_family2[i]))$tip.label), 
                                           error = function(e) paste("noFamily", as.character(data[which(rank_family2[i] == 
                                                                                                           data$f), 1]), sep = "_"))
         }
         names(list_spp_step2) <- rank_family2
-        data_exRound3 <- data_exRound2[!is.na(match(data_exRound2$f, 
+        data_exRound3 <- data_round2[!is.na(match(data_round2$f, 
                                                     names(which(unlist(lapply(lapply(list_spp_step2, 
                                                                                      function(x) which(sub("_.*", "", x) == "noFamily")), 
                                                                               function(y) length(y))) > 0)))), ]
-        spp_family <- 1:nrow(data_exRound2)
-        names(spp_family) <- data_exRound2$s
+        spp_family <- 1:nrow(data_round2)
+        names(spp_family) <- data_round2$s
         spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
                                                             function(x) which(sub("_.*", "", x) != "noFamily")), 
                                                      function(y) which(length(y) != 0))) > 0))
         spp_family_inTree <- list_spp_step2[match(spp_with_family, 
                                                   names(list_spp_step2))]
-        spp_to_add_round2 <- setdiff(data_exRound2$s, 
+        spp_to_add_round2 <- setdiff(data_round2$s, 
                                      data_exRound3$s)
         if (insert.base.node == TRUE) {
           pb_length <- unique(sub("_.*", "", as.character(spp_to_add_round2)))
@@ -379,8 +356,8 @@ FishPhyloMaker <- function (data,
                 }
               }
             }
-            spp_data <- 1:nrow(data_exRound2)
-            names(spp_data) <- data_exRound2$s
+            spp_data <- 1:nrow(data_round2)
+            names(spp_data) <- data_round2$s
             insert_spp <- treedata_modif(phy = phylo_order, 
                                          data = spp_data, warnings = F)$nc$data_not_tree
             genus_in_tree <- sub("_.*", "", phylo_order$tip.label)[match(sub("_.*", 
@@ -421,8 +398,8 @@ FishPhyloMaker <- function (data,
                                                                                                     data$f), 1]), sep = "_"))
               }
               names(list_spp_step2) <- rank_family2
-              spp_family <- 1:nrow(data_exRound2)
-              names(spp_family) <- data_exRound2$s
+              spp_family <- 1:nrow(data_round2)
+              names(spp_family) <- data_round2$s
               spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
                                                                   function(x) which(sub("_.*", "", x) != 
                                                                                       "noFamily")), function(y) which(length(y) != 
