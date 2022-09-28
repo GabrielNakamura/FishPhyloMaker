@@ -1,12 +1,9 @@
-
-name_tree_nodes <- 
-function(data){
+name_tree <- function(data){
   spp <- as.character(data$s)
   data_order_family <- get_phylo_order(data) # get species from all family and order  in the tree
   list_family <- data_order_family$family # sampled species in each family
   families_order_and_data <- data_order_family$families_order_and_data
-  monotipic_family <- names(unlist(lapply(list_family, 
-                                          function(x) which(length(x) == 1))))
+  monotipic_family <- data_order_family$monotipic_families
   list_order <- data_order_family$order # sampled species in each order
   phylo_order <- filter_rank(order = list_order)
   phylo_order <- ape::makeNodeLabel(phy = phylo_order)
@@ -24,26 +21,20 @@ function(data){
                                                                  phylo_order$node.label)) == T)]
   families_monotipic_notfound <- setdiff(monotipic_family, 
                                          families_in_tree)
+  tmp_monotipic <- vector(mode = "list", length = length(families_monotipic_notfound))
   for (i in 1:length(families_monotipic_notfound)) { # downloading species from monotipic families
-    # i = 6
+    # i = 13
     spp_tmp <- tryCatch(fishtree::fishtree_taxonomy(rank = families_monotipic_notfound[i])[[1]]$species, 
                         error = function(e) paste("not.found", "_", families_monotipic_notfound[i], 
                                                   sep = ""))
-    spp_tmp <- gsub("\\ ", "_", spp_tmp)
-    list_family[which(families_monotipic_notfound[i] == 
-                        names(list_family))] <- list(spp_tmp)
+    tmp_monotipic[[i]] <- gsub("\\ ", "_", spp_tmp)
   }
+  names(tmp_monotipic) <- families_monotipic_notfound
+  list_family <- c(list_family, tmp_monotipic)
   phylo_order <- suppressWarnings(filter_rank(order = list_family))
   phylo_order <- ape::makeNodeLabel(phy = phylo_order)
   phylo_order <- phytools::force.ultrametric(phylo_order)
-  genus_monotip <- 
-    lapply(list_family, function(x){
-      sub("_.*", "", x)
-    }
-    )
-  genus_not_found <- lapply(genus_monotip, function(y) which(length(y) == 1) & which(y == "not.found"))
-  families_not_found_fishtree <- names(unlist(genus_not_found)) # names not in fishtree 
-  list_family_tobeaddnames <- list_family[-match(families_not_found_fishtree, 
+  list_family_tobeaddnames <- list_family[-match(data_order_family$not_found_families, 
                                                  names(list_family))] # only families with at least one representative
   family_no_spp_tree <- lapply(list_family_tobeaddnames, 
                                function(x) {
@@ -72,5 +63,5 @@ function(data){
       phylo_order$node.label[node_anc - ape::Ntip(phylo_order)] <- names(list_family_tobeaddnames)[i]
     }
   }
+  return(phylo_order)
 }
-
