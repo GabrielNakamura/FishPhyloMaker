@@ -71,9 +71,9 @@ FishPhyloMaker <- function (data,
   }
   if (length(round_1_check) != length(data$s)) { # species must be inserted 
     
-    name_tree(data = data) # naming and downloading tree
-    spp_data <- 1:length(spp)
-    names(spp_data) <- spp
+    phylo_order <- name_tree(data = data) # naming and downloading tree
+    spp_data <- 1:length(data$s)
+    names(spp_data) <- data$s
     insert_spp <- treedata_modif(phy = phylo_order, data = spp_data, 
                                  warnings = F)$nc$data_not_tree
     
@@ -116,9 +116,10 @@ FishPhyloMaker <- function (data,
           return(tree_res)
         }
       }
+      
       # family or higher insertions
       if (length(insert_spp2) >= 1) {
-        data_round2 <- data[match(insert_spp2, as.character(data$s)), ] # data to be inserted 
+        data_round2 <- data[match(insert_spp2, as.character(data$s)), ] # data to be inserted in family and/or order level
         rank_family2 <- unique(as.character(data[match(insert_spp2, 
                                                        as.character(data$s)), 2])) # families of species to be inserted 
         list_spp_step2 <- vector(mode = "list", length = length(rank_family2))
@@ -130,15 +131,13 @@ FishPhyloMaker <- function (data,
                                                                                                           data$f), 1]), sep = "_"))
         }
         names(list_spp_step2) <- rank_family2
-        data_exRound3 <- data_round2[!is.na(match(data_round2$f, 
-                                                    names(which(unlist(lapply(lapply(list_spp_step2, 
-                                                                                     function(x) which(sub("_.*", "", x) == "noFamily")), 
-                                                                              function(y) length(y))) > 0)))), ]
+        no_family <- lapply(list_spp_step2, function(x) which(sub("_.*", "", x) == "noFamily"))
+        names_no_family <- names(which(unlist(lapply(no_family, function(y) length(y))) > 0)) # names of family without species in the tree
+        data_exRound3 <- data_round2[!is.na(match(data_round2$f, names_no_family)), ] # if 0 dim data frame no species to be inserted at order level
         spp_family <- 1:nrow(data_round2)
         names(spp_family) <- data_round2$s
-        spp_with_family <- names(which(unlist(lapply(lapply(list_spp_step2, 
-                                                            function(x) which(sub("_.*", "", x) != "noFamily")), 
-                                                     function(y) which(length(y) != 0))) > 0))
+        family_in_tree <- lapply(list_spp_step2, function(x) which(sub("_.*", "", x) != "noFamily")) # species with family in tree
+        spp_with_family <- names(which(unlist(lapply(family_in_tree, function(y) which(length(y) != 0))) > 0))
         spp_family_inTree <- list_spp_step2[match(spp_with_family, 
                                                   names(list_spp_step2))]
         spp_to_add_round2 <- setdiff(data_round2$s, 
@@ -397,8 +396,14 @@ FishPhyloMaker <- function (data,
           }
         }
         else {
+          
+          data_order_family <- get_phylo_order(data) # get species from all family and order  in the tree
+          list_family <- data_order_family$family # sampled species in each family
+          list_order <- data_order_family$order 
+          order_rm_list <- names(unlist(lapply(list_order, function(x) which(length(x) ==  1))))
           data_exRound3 <- data_exRound3[is.na(match(data_exRound3$o, 
                                                      order_rm_list)), ]
+          rank_order <- as.character(unique(data$o))
           rank_order_Round3 <- rank_order[match(data_exRound3$o, 
                                                 rank_order)]
           families_round3 <- lapply(lapply(rank_order_Round3, 
@@ -409,6 +414,9 @@ FishPhyloMaker <- function (data,
           names(families_round3) <- rank_order_Round3
           orders_round_3 <- unique(rank_order_Round3)
           families_round3_check <- unique(as.character(unlist(families_round3)))
+          families_order_and_data <- data_order_family$families_order_and_data
+          families_in_tree <- families_order_and_data[which(!is.na(match(families_order_and_data, 
+                                                                         phylo_order$node.label)) == T)]
           check_round3_insertion <- match(families_round3_check, 
                                           families_in_tree)
           check_allNA_round3 <- unique(check_round3_insertion)
