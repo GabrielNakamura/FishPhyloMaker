@@ -1,0 +1,180 @@
+# Data
+
+ library(ape)
+ library(devtools)
+ library(phytools)
+ load_all()
+ data <- spp_df <- read.table('/Users/gabriel.nakamuradesouza/Library/CloudStorage/OneDrive-Personal/Manuscritos/Darwinian_shortfalls/data/taxa_table.txt', header = TRUE)
+
+
+
+# download whole phylogeny 
+
+tree <- fishtree::fishtree_phylogeny()
+tree <- ape::makeNodeLabel(phy = tree)
+tax <- fishtree::fishtree_taxonomy()
+families <- tax[which(tax$rank == "family"), ]
+orders <-  tax[which(tax$rank == "order"), ]
+spp <- lapply(families$name, function(x) fishtree::fishtree_taxonomy(ranks = x)[[1]]$sampled_species)
+names(spp) <- families$name
+spp <- lapply(spp, function(x) gsub(" ", "_", x))
+
+
+# naming families with more than one species phylogeny
+not_samp_families <- names(unlist(lapply(spp, function(x) which(length(x) == 0)))) # fdmilies not sampled in phylogeny
+monotip_families <-  names(unlist(lapply(spp, function(x) which(length(x) == 1)))) # monotipic families in the tree
+one_spp <- c(not_samp_families, monotip_families)
+family_names_tree <- spp[-match(one_spp, names(spp))]
+position_family <- 
+  lapply(family_names_tree, function(x){
+    node_anc <- ape::getMRCA(phy = tree, tip = x)
+  })
+for(i in 1:length(position_family)){ # naming tree nodes
+  tree$node.label[position_family[[i]] - ape::Ntip(tree)] <- names(position_family)[i]
+}
+
+# adding fake species to name monotipic families in backbone tree
+tree <- phytools::force.ultrametric(tree)
+tree_update <- tree
+monotipic_list <- spp[match(monotip_families, names(spp))]
+
+for(i in 1:length(monotip_families)){ 
+  # i = 1
+  spp_monotipic <- spp[match(monotip_families[i], names(spp))][[1]]
+  
+  spp_singleton <- tree$tip.label[match(spp_monotipic, 
+                                        tree$tip.label)]
+  spp_singleton_add <- paste(sub("_.*", "", spp_singleton), 
+                             "_", "singleton", sep = "")
+  tree_update <- phytools::add.species.to.genus(tree = tree_update, 
+                                            species = spp_singleton_add)
+  monotipic_list[[i]] <- c(spp_singleton, spp_singleton_add)
+}
+
+# naming monotipic families
+
+position_monotipic <- 
+  lapply(monotipic_list, function(x){
+    node_anc <- ape::getMRCA(phy = tree_update, tip = x)
+  })
+for(i in 1:length(position_monotipic)){ # naming tree nodes
+  tree_update$node.label[position_monotipic[[i]] - ape::Ntip(tree_update)] <- names(position_monotipic)[i]
+}
+
+
+# adding congeneric species
+
+data <- spp_df <- read.table('/Users/gabriel.nakamuradesouza/Library/CloudStorage/OneDrive-Personal/Manuscritos/Darwinian_shortfalls/data/taxa_table.txt', header = TRUE)
+tree_update_genus <- tree_update
+pb_congeneric <- progress::progress_bar$new(format = "Adding congeneric species [:bar] :percent", 
+                                            total = length(data$s), clear = FALSE, 
+                                            width = 60, current = "<", incomplete = ">", 
+                                            complete = ">")
+for(i in 1:length(data$s)){
+  tree_update_genus <- phytools::add.species.to.genus(tree = tree_update_genus, 
+                                                      species = data$s[i])
+  pb_congeneric$tick()
+}
+
+length(tree_update_genus$tip.label)
+data_round_2 <- data[which(is.na(match(data$s, tree_update_genus$tip.label)) == TRUE), ]
+families_2 <- unique(data_round_2$f)
+families_tree <- families_2[!is.na(match(families_2, tree_update_genus$node.label))]
+families_not_tree <- families_2[is.na(match(families_2, tree_update_genus$node.label))]
+data_round_2 <- data_round_2[data_round_2$f %in% families_tree, ] # only species with data in tree
+
+# family insertions - all in family nodes
+
+tree_update_family <- tree_update_genus
+is.ultrametric(tree_update_family) # check here if tree is ultrametric
+# phytools::force.ultrametric(tree = tree_update_family, method = "extend")
+
+node_number_family <- lapply(data_round_2$f, function(x) which(c(tree_update_family$tip.label, 
+                                          tree_update_family$node.label) == x)) # finding the names of families in tree
+
+pb_family <- progress::progress_bar$new(format = "Adding species to family nodes [:bar] :percent", 
+                                            total = length(node_number_family), clear = FALSE, 
+                                            width = 60, current = "<", incomplete = ">", 
+                                            complete = ">")
+
+node_number_family <- unlist(node_number_family)
+
+for(i in 1:length(node_number_family)){
+  tree_update_family <- phytools::bind.tip(tree = tree_update_family, 
+                                    tip.label = data_round_2$s[i], where = node_number_family[i], 
+                                    position = 0) # position can be a value provided by the user
+  # identify if there is any species from the same genus
+  pb_family$tick()
+}
+
+
+
+# using while to insert since the vector will change the size in non-regular way at each step
+
+spp_to_add_round2 <- data_round_2$s
+pb_family <- progress::progress_bar$new(format = "Adding species to family nodes [:bar] :percent", 
+                                        total = length(spp_to_add_round2), clear = FALSE, 
+                                        width = 60, current = "<", incomplete = ">", 
+                                        complete = ">")
+
+count <- 0
+species_to_genus2 <- vector(mode = "list")
+while (length(spp_to_add_round2) >= 1) {
+  count <- count + 1
+  
+  # family name in which species will be grafted
+  family_name <- data_round_2[match(spp_to_add_round2[1], 
+                              data_round_2$s), "f"]
+  # node family in which species will be grafted
+  node_family <- which(c(tree_update_family$tip.label, 
+                         tree_update_family$node.label) == family_name)
+  
+  tree_update_family <- phytools::bind.tip(tree = tree_update_family, 
+                                           tip.label = spp_to_add_round2[1],
+                                           where = node_family, 
+                                           position = 0)
+  spp_data <- 1:length(spp_to_add_round2)
+  names(spp_data) <- spp_to_add_round2
+  insert_spp <- treedata_modif(phy = tree_update_family, 
+                               data = spp_data, warnings = F)$nc$data_not_tree # refreshing species to be grafted
+  
+  genus_data <- sub("_.*", "", insert_spp)
+  genus_tree <- sub("_.*", "", tree_update_family$tip.label)
+  genus_in_tree <- data_round_2[genus_data %in% genus_tree, "s"]
+  
+  if(is.ultrametric(tree_update_family) != TRUE){
+    tree_update_family <- phytools::force.ultrametric(tree = tree_update_family, method = "extend")
+  }
+  
+  if (length(genus_in_tree) >= 1) {
+    species_to_genus <- genus_in_tree
+    species_to_genus2[[count]] <- species_to_genus
+    for (i in 1:length(species_to_genus)) {
+      tree_update_family <- phytools::add.species.to.genus(tree = tree_update_family, 
+                                                    species = species_to_genus[i])
+    }
+    insert_spp <- treedata_modif(phy = tree_update_family, 
+                                 data = spp_data, warnings = F)$nc$data_not_tree
+  }
+  spp_to_add_round2 <- insert_spp
+  if(is.ultrametric(tree_update_family) != TRUE){
+    tree_update_family <- phytools::force.ultrametric(tree = tree_update_family, method = "extend")
+  }
+  
+  pb_family$tick()
+  
+}
+
+
+
+# insertion orders --------------------------------------------------------
+
+tree_update_order <- tree_update_family
+
+data_round_3 <- data[which(is.na(match(data$s, tree_update_family$tip.label)) == TRUE), ]
+orders_3 <- unique(data_round_2$o)
+families_tree <- families_2[!is.na(match(families_2, tree_update_genus$node.label))]
+families_not_tree <- families_2[is.na(match(families_2, tree_update_genus$node.label))]
+data_round_2 <- data_round_2[data_round_2$f %in% families_tree, ] # only species with data in tree
+
+

@@ -14,6 +14,7 @@ name_tree <- function(data){
                                             monotipic_family)]
   
   for (i in 1:length(list_non_monotipic)) { # naming families with more than one species in tree
+    # i = 13
     node_anc <- ape::getMRCA(phy = phylo_order, tip = list_non_monotipic[[i]])
     phylo_order$node.label[node_anc - ape::Ntip(phylo_order)] <- names(list_non_monotipic)[i]
   }

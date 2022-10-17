@@ -26,8 +26,12 @@ get_phylo_order <- function(data){
                             orders_to_add)
   }
   all_orders_include <- unique(c(rank_order, unique(orders_to_add)))
-  list_order <- fishtree::fishtree_taxonomy(ranks = all_orders_include)
-  list_order <- lapply(list_order, function(x) x$sampled_species)
+  list_order <- lapply(all_orders_include, function(x){
+    tryCatch(fishtree::fishtree_taxonomy(ranks = x)[[1]]$sampled_species, 
+             error = function(e) paste("not.found", "_", x, 
+                                       sep = ""))
+  })
+  names(list_order) <- all_orders_include
   list_order <- lapply(list_order, function(x) gsub(" ", "_", x))
   list_res <- vector(mode = "list", length = 5)
   list_res$family <- list_family

@@ -1,14 +1,16 @@
-library(ape)
-# library(devtools)
-# load_all()
-data(taxon_data_PhyloMaker)
-data <- taxon_data_PhyloMaker
-insert.base.node = TRUE
-return.insertions = TRUE 
-progress.bar = TRUE 
-user_backbone = NULL
-user_taxon_data = NULL
+# library(ape)
+# # library(devtools)
+# # load_all()
+# data(taxon_data_PhyloMaker)
+# data <- taxon_data_PhyloMaker
+# insert.base.node = TRUE
+# return.insertions = TRUE 
+# progress.bar = TRUE 
+# user_backbone = NULL
+# user_taxon_data = NULL
+# data <- spp_df <- read.table('/Users/gabriel.nakamuradesouza/Library/CloudStorage/OneDrive-Personal/Manuscritos/Darwinian_shortfalls/data/taxa_table.txt', header = TRUE)
 
+ 
 FishPhyloMaker <- function (data, 
                             insert.base.node = FALSE, 
                             return.insertions = TRUE, 
