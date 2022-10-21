@@ -1,11 +1,12 @@
 # Data and packages
 
- library(ape)
- library(devtools)
- library(phytools)
- load_all()
- data <- spp_df <- read.table('/Users/gabriel.nakamuradesouza/Library/CloudStorage/OneDrive-Personal/Manuscritos/Darwinian_shortfalls/data/taxa_table.txt', header = TRUE)
-
+library(ape)
+library(devtools)
+library(phytools)
+load_all()
+data <- spp_df <- read.table('/Users/gabriel.nakamuradesouza/Library/CloudStorage/OneDrive-Personal/Manuscritos/Darwinian_shortfalls/data/taxa_table.txt', header = TRUE)
+data_insertion <- data
+data_insertion$insertion <- NA
 
 
 # download whole phylogeny 
@@ -61,27 +62,39 @@ for(i in 1:length(position_monotipic)){ # naming tree nodes
   tree_update$node.label[position_monotipic[[i]] - ape::Ntip(tree_update)] <- names(position_monotipic)[i]
 }
 
-# congeneric insertion ----------------------------------------------------
+# species already in tree
+spp_in_tree <- data[data$s %in% tree_update$tip.label, "s"]
 
-data <- spp_df <- read.table('/Users/gabriel.nakamuradesouza/Library/CloudStorage/OneDrive-Personal/Manuscritos/Darwinian_shortfalls/data/taxa_table.txt', header = TRUE)
+data_insertion[match(spp_in_tree, data_insertion$s), "insertion"] <- "present in tree"
+
+
+# congeneric grafting ----------------------------------------------------
+
 tree_update_genus <- tree_update
 pb_congeneric <- progress::progress_bar$new(format = "Adding congeneric species [:bar] :percent", 
-                                            total = length(data$s), clear = FALSE, 
+                                            total = length(insert_genus), clear = FALSE, 
                                             width = 60, current = "<", incomplete = ">", 
                                             complete = ">")
 
-genus_data <- sub("_.*", "", data$s)
+data_genus <- data[-which(data$s %in% spp_in_tree == TRUE), ]
+genus_data <- sub("_.*", "", data_genus$s)
 genus_tree <- sub("_.*", "", tree_update_genus$tip.label)
 genus_in_tree <- genus_data[genus_data %in% genus_tree]
-insert_genus <- data[genus_data %in% genus_tree, "s"]
+insert_genus <- data_genus[genus_data %in% genus_tree, "s"]
+pb_congeneric <- progress::progress_bar$new(format = "Adding congeneric species [:bar] :percent", 
+                                            total = length(insert_genus), clear = FALSE, 
+                                            width = 60, current = "<", incomplete = ">", 
+                                            complete = ">")
 for(i in 1:length(insert_genus)){
   tree_update_genus <- phytools::add.species.to.genus(tree = tree_update_genus, 
                                                       species = insert_genus[i])
   pb_congeneric$tick()
 }
 
-length(tree_update_genus$tip.label)
-data_round_2 <- data[which(is.na(match(data$s, tree_update_genus$tip.label)) == TRUE), ]
+# insert in the table
+data_insertion[match(insert_genus, data_insertion$s), "insertion"] <- "genus_insertion"
+
+data_round_2 <- data_genus[-which(is.na(match(data_genus$s, tree_update_genus$tip.label)) != TRUE), ]
 families_2 <- unique(data_round_2$f)
 families_tree <- families_2[!is.na(match(families_2, tree_update_genus$node.label))]
 families_not_tree <- families_2[is.na(match(families_2, tree_update_genus$node.label))]
@@ -111,71 +124,71 @@ for(i in 1:length(node_number_family)){
   pb_family$tick()
 }
 
+# species inserted in family level
+data_insertion[match(data_round_2$s, data_insertion$s), "insertion"] <- "family_insertion"
 
 
-# using while to insert since the vector will change the size in non-regular way at each step
-
-spp_to_add_round2 <- data_round_2$s
-pb_family <- progress::progress_bar$new(format = "Adding species to family nodes [:bar] :percent", 
-                                        total = length(spp_to_add_round2), clear = FALSE, 
-                                        width = 60, current = "<", incomplete = ">", 
-                                        complete = ">")
-
-count <- 0
-species_to_genus2 <- vector(mode = "list")
-while (length(spp_to_add_round2) >= 1) {
-  count <- count + 1
-  
-  # family name in which species will be grafted
-  family_name <- data_round_2[match(spp_to_add_round2[1], 
-                              data_round_2$s), "f"]
-  # node family in which species will be grafted
-  node_family <- which(c(tree_update_family$tip.label, 
-                         tree_update_family$node.label) == family_name)
-  
-  tree_update_family <- phytools::bind.tip(tree = tree_update_family, 
-                                           tip.label = spp_to_add_round2[1],
-                                           where = node_family, 
-                                           position = 0)
-  spp_data <- 1:length(spp_to_add_round2)
-  names(spp_data) <- spp_to_add_round2
-  insert_spp <- treedata_modif(phy = tree_update_family, 
-                               data = spp_data, warnings = F)$nc$data_not_tree # refreshing species to be grafted
-  
-  genus_data <- sub("_.*", "", insert_spp)
-  genus_tree <- sub("_.*", "", tree_update_family$tip.label)
-  genus_in_tree <- data_round_2[genus_data %in% genus_tree, "s"]
-  
-  if(is.ultrametric(tree_update_family) != TRUE){
-    tree_update_family <- phytools::force.ultrametric(tree = tree_update_family, method = "extend")
-  }
-  
-  if (length(genus_in_tree) >= 1) {
-    species_to_genus <- genus_in_tree
-    species_to_genus2[[count]] <- species_to_genus
-    for (i in 1:length(species_to_genus)) {
-      tree_update_family <- phytools::add.species.to.genus(tree = tree_update_family, 
-                                                    species = species_to_genus[i])
-    }
-    insert_spp <- treedata_modif(phy = tree_update_family, 
-                                 data = spp_data, warnings = F)$nc$data_not_tree
-  }
-  spp_to_add_round2 <- insert_spp
-  if(is.ultrametric(tree_update_family) != TRUE){
-    tree_update_family <- phytools::force.ultrametric(tree = tree_update_family, method = "extend")
-  }
-  
-  pb_family$tick()
-  
-}
-
-
+## using while to insert since the vector will change the size in non-regular way at each step
+#
+#spp_to_add_round2 <- data_round_2$s
+#pb_family <- progress::progress_bar$new(format = "Adding species to family nodes [:bar] :percent", 
+#                                        total = length(spp_to_add_round2), clear = FALSE, 
+#                                        width = 60, current = "<", incomplete = ">", 
+#                                        complete = ">")
+#
+#count <- 0
+#species_to_genus2 <- vector(mode = "list")
+#while (length(spp_to_add_round2) >= 1) {
+#  count <- count + 1
+#  
+#  # family name in which species will be grafted
+#  family_name <- data_round_2[match(spp_to_add_round2[1], 
+#                              data_round_2$s), "f"]
+#  # node family in which species will be grafted
+#  node_family <- which(c(tree_update_family$tip.label, 
+#                         tree_update_family$node.label) == family_name)
+#  
+#  tree_update_family <- phytools::bind.tip(tree = tree_update_family, 
+#                                           tip.label = spp_to_add_round2[1],
+#                                           where = node_family, 
+#                                           position = 0)
+#  spp_data <- 1:length(spp_to_add_round2)
+#  names(spp_data) <- spp_to_add_round2
+#  insert_spp <- treedata_modif(phy = tree_update_family, 
+#                               data = spp_data, warnings = F)$nc$data_not_tree # refreshing species to be grafted
+#  
+#  genus_data <- sub("_.*", "", insert_spp)
+#  genus_tree <- sub("_.*", "", tree_update_family$tip.label)
+#  genus_in_tree <- data_round_2[genus_data %in% genus_tree, "s"]
+#  
+#  if(is.ultrametric(tree_update_family) != TRUE){
+#    tree_update_family <- phytools::force.ultrametric(tree = tree_update_family, method = "extend")
+#  }
+#  
+#  if (length(genus_in_tree) >= 1) {
+#    species_to_genus <- genus_in_tree
+#    species_to_genus2[[count]] <- species_to_genus
+#    for (i in 1:length(species_to_genus)) {
+#      tree_update_family <- phytools::add.species.to.genus(tree = tree_update_family, 
+#                                                    species = species_to_genus[i])
+#    }
+#    insert_spp <- treedata_modif(phy = tree_update_family, 
+#                                 data = spp_data, warnings = F)$nc$data_not_tree
+#  }
+#  spp_to_add_round2 <- insert_spp
+#  if(is.ultrametric(tree_update_family) != TRUE){
+#    tree_update_family <- phytools::force.ultrametric(tree = tree_update_family, method = "extend")
+#  }
+#  
+#  pb_family$tick()
+#  
+#}
 
 # insertion orders --------------------------------------------------------
 
 tree_update_order <- tree_update_family
 
-data_round_3 <- data[which(is.na(match(data$s, tree_update_family$tip.label)) == TRUE), ]
+data_round_3 <- data[-which(data$s %in% tree_update_order$tip.label == TRUE), ]
 
 # order species
 orders <-  tax[which(tax$rank == "order"), ]
@@ -231,9 +244,6 @@ pos_no_order <- which(lapply(node_number_order, function(x) length(x) == 0) == T
 
 data_round_3_order <- data_round_3[-pos_no_order, ] # removing species with no order in the tree
 node_number_order_tree <- node_number_order[-pos_no_order] # removing orders with no species
-ord_insertion <- order(unlist(node_number_order_tree)) # setting the order of insertion of nodes to keep the shallow nodes first and the deeper nodes last
-node_number_order_tree <- node_number_order_tree[ord_insertion]
-data_round_3_order <- data_round_3_order[ord_insertion, ]
 pb_order <- progress::progress_bar$new(format = "Adding species to order nodes [:bar] :percent", 
                                        total = length(node_number_order_tree), clear = FALSE, 
                                        width = 60, current = "<", incomplete = ">", 
@@ -248,6 +258,21 @@ for(i in 1:length(node_number_order_tree)){
   # identify if there is any species from the same genus
   pb_order$tick()
 }
-data_final_inserted <- data$s[data$s %in% tree_update_order$tip.label]
+
+
+# final tree and insertion table ------------------------------------------
+
+# croping the tree
+data_final_inserted <- data$s[which(data$s %in% tree_update_order$tip.label == TRUE)]
 tree_final <- keep.tip(phy = tree_update_order, tip = data_final_inserted)
+
+# insertion table
+
+data_insertion[match(data_round_3_order$s, data_insertion$s), "insertion"] <- "order_insertion"
+data_insertion[which(is.na(data_insertion$insertion) == TRUE), "insertion"] <- "not_inserted"
+# saving the trees and table --------------------------------------------------------
+
+saveRDS(tree_update_order, here::here("tree_graft_final.rds"))
+saveRDS(data_insertion, here::here("data_insertion.rds"))
+tree_update_family
 length(tree_final$tip.label) - dim(data)[1]
