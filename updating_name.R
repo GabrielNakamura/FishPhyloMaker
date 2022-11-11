@@ -274,5 +274,5 @@ data_insertion[which(is.na(data_insertion$insertion) == TRUE), "insertion"] <- "
 
 saveRDS(tree_update_order, here::here("tree_graft_final.rds"))
 saveRDS(data_insertion, here::here("data_insertion.rds"))
-tree_update_family
-length(tree_final$tip.label) - dim(data)[1]
+
+(table(data_insertion$insertion))/(sum(table(data_insertion$insertion))) * 100
