@@ -1,10 +1,10 @@
 
 PD_defict_curves <- 
 function(phy, data, reps, samp){
-  rep_boot <- rep(samps, each = reps)
+  rep_boot <- rep(samp, each = reps)
   boot_1 <- 
     lapply(rep_boot, function(x){
-      sub_insert <- data[sample(1:nrow(data), x), ]
+      sub_insert <- data[sample(1:nrow(data), x, replace = TRUE), ]
       PD_deficit_2(phylo = phy,
                    data = sub_insert, 
                    level = c("genus_insertion",
