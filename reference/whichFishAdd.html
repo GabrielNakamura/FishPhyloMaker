@@ -63,7 +63,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">whichFishAdd</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">whichFishAdd</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -71,10 +71,13 @@
     <dl><dt>data</dt>
 <dd><p>A data frame with three column containing the name of species (s), the Family (f) and Order (o). This
 can be generated with function <code><a href="FishTaxaMaker.html">FishTaxaMaker</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame containing a column informing at which level the species in data must be added.</p>
+    
+
+<p>A data frame containing a column informing at which level the species in data must be added.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -84,13 +87,13 @@ made by <code><a href="FishPhyloMaker.html">FishPhyloMaker</a></code>.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"taxon_data_PhyloMaker"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">res_test</span> <span class="op">&lt;-</span> <span class="fu">whichFishAdd</span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data_PhyloMaker</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("Subfamily", "GenCode", "FamCode")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "FamCode"</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("Order", "Ordnum", "Class", "ClassNum")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("Class", "ClassNum")</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"taxon_data_PhyloMaker"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">res_test</span> <span class="op">&lt;-</span> <span class="fu">whichFishAdd</span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data_PhyloMaker</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Subfamily, GenCode, FamCode)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(FamCode)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Order, Ordnum, Class, ClassNum)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Class, ClassNum)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Parodontidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Loricariidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Callichthyidae because the family is monophyletic.</span>
@@ -108,8 +111,8 @@ made by <code><a href="FishPhyloMaker.html">FishPhyloMaker</a></code>.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Iguanodectidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Chilodontidae because the family is monophyletic.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Chilodontidae"</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Chalceidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Gasteropelecidae because the family is monophyletic.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Chalceidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Citharinidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Cynodontidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Erythrinidae because the family is monophyletic.</span>
@@ -159,10 +162,10 @@ made by <code><a href="FishPhyloMaker.html">FishPhyloMaker</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Rhamphichthyidae"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Procatopodidae"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Goodeidae because the family is monophyletic.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Rivulidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Anablepidae because the family is monophyletic.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Nothobranchiidae because the family is monophyletic.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Rivulidae because the family is monophyletic.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Aphaniidae"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Nothobranchiidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Aplocheilidae because the family is monophyletic.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Fluviphylacidae"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Fundulidae because the family is monophyletic.</span>
@@ -186,9 +189,9 @@ made by <code><a href="FishPhyloMaker.html">FishPhyloMaker</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *   a phylogeny that fails is.ultramtric due to rounding --   *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *    not as a substitute for formal rate-smoothing methods.   *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ***************************************************************</span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -203,7 +206,7 @@ made by <code><a href="FishPhyloMaker.html">FishPhyloMaker</a></code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

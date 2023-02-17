@@ -63,12 +63,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">FishPhyloMaker</span><span class="op">(</span>
-  <span class="va">data</span>,
-  insert.base.node <span class="op">=</span> <span class="cn">FALSE</span>,
-  return.insertions <span class="op">=</span> <span class="cn">TRUE</span>,
-  progress.bar <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">FishPhyloMaker</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  insert.base.node <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return.insertions <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  progress.bar <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -76,34 +76,43 @@
     <dl><dt>data</dt>
 <dd><p>A data frame with three columns containing the name of species (s), the Family (f) and the Order (o). This data frame can be generated
 with tab_function function.</p></dd>
+
+
 <dt>insert.base.node</dt>
 <dd><p>Logical argument indicating if the species must be added automatically
 in the family and order (when needed) nodes. Default is FALSE</p></dd>
+
+
 <dt>return.insertions</dt>
 <dd><p>Logical, if TRUE (default) the output is a list of length two containing the phylogeny
 and a dataframe with a column indicating at which level each species was inserted.</p></dd>
+
+
 <dt>progress.bar</dt>
 <dd><p>Logical argument. If TRUE (default) a progress bar will be shown in console.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
+    
+
+<p>A newick object containing the phylogeny with the species in data object. If return.insertions = TRUE the output
 will be a list of length two containing the newick phylogeny and a data frame equal that provided in data plus a column
 indicating at which level each species was inserted in the tree.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"taxon_data_PhyloMaker"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">res_phylo</span> <span class="op">&lt;-</span> <span class="fu">FishPhyloMaker</span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data_PhyloMaker</span>,</span>
-<span class="r-in">    insert.base.node <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span class="r-in">    return.insertions <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span class="r-in">    progress.bar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("Subfamily", "GenCode", "FamCode")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "FamCode"</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("Order", "Ordnum", "Class", "ClassNum")</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("Class", "ClassNum")</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"taxon_data_PhyloMaker"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">res_phylo</span> <span class="op">&lt;-</span> <span class="fu">FishPhyloMaker</span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data_PhyloMaker</span>,</span></span>
+<span class="r-in"><span>    insert.base.node <span class="op">=</span> <span class="cn">TRUE</span>, </span></span>
+<span class="r-in"><span>    return.insertions <span class="op">=</span> <span class="cn">TRUE</span>, </span></span>
+<span class="r-in"><span>    progress.bar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Subfamily, GenCode, FamCode)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(FamCode)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Order, Ordnum, Class, ClassNum)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Class, ClassNum)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Parodontidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Loricariidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Callichthyidae because the family is monophyletic.</span>
@@ -119,8 +128,8 @@ indicating at which level each species was inserted in the tree.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Bryconidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Iguanodectidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Chilodontidae because the family is monophyletic.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Chalceidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Gasteropelecidae because the family is monophyletic.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Chalceidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Citharinidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Cynodontidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Erythrinidae because the family is monophyletic.</span>
@@ -152,8 +161,8 @@ indicating at which level each species was inserted in the tree.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Pholidichthyidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Rhamphichthyidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Goodeidae because the family is monophyletic.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Rivulidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Anablepidae because the family is monophyletic.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Rivulidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Nothobranchiidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Aplocheilidae because the family is monophyletic.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Can't retrieve a `chronogram_mrca` for family Fundulidae because the family is monophyletic.</span>
@@ -209,9 +218,9 @@ indicating at which level each species was inserted in the tree.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   attaching to the most inclusive group containing members of this genus</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Rineloricaria may not be monophyletic</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   attaching to the most inclusive group containing members of this genus</span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in">    </span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span>    </span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -226,7 +235,7 @@ indicating at which level each species was inserted in the tree.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

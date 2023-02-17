@@ -79,7 +79,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>How to know which species must be added to phylogeny?</h1>
             
-            <h4 data-toc-skip class="date">2022-05-06</h4>
+            <h4 data-toc-skip class="date">2023-02-17</h4>
       
       
       <div class="hidden name"><code>whichFishAdd_vignette.Rmd</code></div>
@@ -101,30 +101,30 @@
 </ul>
 <p>First, lets read <code>{FishPhyloMaker}</code> package and the data containing more than 650 fish species with occurrence in the Neotropical region.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"fish_SAmerica"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"fish_SAmerica"</span><span class="op">)</span></span></code></pre></div>
 <p>Then, we will check for the names of the species in the data base through the function <code>FishTaxaMaker</code>, and inform manually the Family and the Order of the species that were not find in Fishbase. This procedure is better explained in other <a href="https://gabrielnakamura.github.io/FishPhyloMaker/articles/FishPhyloMaker_vignette.html" class="external-link">articles</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">fish_SAmerica</span><span class="op">)</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Anostomidae</span> 
-<span class="va">Characiformes</span>
-<span class="va">Anostomidae</span> 
-<span class="va">Characiformes</span>
-<span class="va">Anostomidae</span> 
-<span class="va">Characiformes</span>
-<span class="va">Serrasalmidae</span>
-<span class="va">Characiformes</span>
-<span class="va">Auchenipteridae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Auchenipteridae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Auchenipteridae</span>
-<span class="va">Siluriformes</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">fish_SAmerica</span><span class="op">)</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Anostomidae</span> </span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Anostomidae</span> </span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Anostomidae</span> </span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Serrasalmidae</span></span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Auchenipteridae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Auchenipteridae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Auchenipteridae</span></span>
+<span><span class="va">Siluriformes</span></span></code></pre></div>
 <p>taxon_data contain the taxonomic information for all species, and can be used in <code>whichFishAdd</code> function to perform the classification of each species.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">class_fish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/whichFishAdd.html">whichFishAdd</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="va">class_fish</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/whichFishAdd.html">whichFishAdd</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span><span class="op">)</span> </span></code></pre></div>
 <p>class_fish is a data frame that contain in insertion column an indication of which level each species must be inserted (or if the species are already on tree). This data can be used previous than <code>FishPhyloMaker</code> to find for phylogenetic position of the absent species.</p>
   </div>
 
@@ -143,7 +143,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

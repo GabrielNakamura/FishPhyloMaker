@@ -102,61 +102,61 @@
 </h1>
 <p>A stable version of FishPhyloMaker can be installed from CRAN</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"FishPhyloMaker"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"FishPhyloMaker"</span><span class="op">)</span></span></code></pre></div>
 <p>To install the development version of this package the user must type:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GabrielNakamura/FishPhyloMaker"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GabrielNakamura/FishPhyloMaker"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h1>
 <p>To run an example the user can load a data set present in the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">neotropical_comm</span><span class="op">)</span>
-<span class="va">data_comm</span> <span class="op">&lt;-</span> <span class="va">neotropical_comm</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># removing latitude and longitude</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FishPhyloMaker</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">neotropical_comm</span><span class="op">)</span></span>
+<span><span class="va">data_comm</span> <span class="op">&lt;-</span> <span class="va">neotropical_comm</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span> <span class="co"># removing latitude and longitude</span></span></code></pre></div>
 <p>This data set comprises a community matrix with the occurrences of 59 fish species in headwater streams of Parana and Paraguai River Basins, in Brazil. The coordinates of these streams are presented in the two first columns of this data set.</p>
 <p>First the user must obtain the data necessary to enter in <code>FishPhyloMaker</code> using <code>FishTaxaMaker</code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span><span class="va">data_comm</span>, allow.manual.insert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">Characidae</span>
-<span class="va">Characiformes</span>
-<span class="va">Characidae</span>
-<span class="va">Characiformes</span>
-<span class="va">Characidae</span>
-<span class="va">Characiformes</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Cichlidae</span>
-<span class="va">Cichliformes</span>
-<span class="va">Crenuchidae</span>
-<span class="va">Characiformes</span>
-<span class="va">Gymnotidae</span>
-<span class="va">Gymnotiformes</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Heptapteridae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Characidae</span>
-<span class="va">Characiformes</span>
-<span class="va">Loricariidae</span>
-<span class="va">Siluriformes</span>
-<span class="va">Characidae</span>
-<span class="va">Characiformes</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">taxon_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FishTaxaMaker.html">FishTaxaMaker</a></span><span class="op">(</span><span class="va">data_comm</span>, allow.manual.insert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">Characidae</span></span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Characidae</span></span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Characidae</span></span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Cichlidae</span></span>
+<span><span class="va">Cichliformes</span></span>
+<span><span class="va">Crenuchidae</span></span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Gymnotidae</span></span>
+<span><span class="va">Gymnotiformes</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Heptapteridae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Characidae</span></span>
+<span><span class="va">Characiformes</span></span>
+<span><span class="va">Loricariidae</span></span>
+<span><span class="va">Siluriformes</span></span>
+<span><span class="va">Characidae</span></span>
+<span><span class="va">Characiformes</span></span></code></pre></div>
 <p><code>FishTaxaMaker</code> finds in <a href="http://www.fishbase.org/search.php" class="external-link">Fishbase</a> for the family and the order of species provided in data argument. If any species was not find in Fishbase, the user will be asked to type the Family and the Order of this species manually. This function can also be useful to check possible misspelling errors in the name of species.</p>
 <p>Finally run <code>FishPhyloMaker</code></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res_phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FishPhyloMaker.html">FishPhyloMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span><span class="op">$</span><span class="va">Taxon_data_FishPhyloMaker</span>,
-                            insert.base.node <span class="op">=</span> <span class="cn">TRUE</span>, 
-                            return.insertions <span class="op">=</span> <span class="cn">TRUE</span>, 
-                            progress.bar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">res_phylo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/FishPhyloMaker.html">FishPhyloMaker</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">taxon_data</span><span class="op">$</span><span class="va">Taxon_data_FishPhyloMaker</span>,</span>
+<span>                            insert.base.node <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                            return.insertions <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                            progress.bar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The species are inserted in a sequential procedure. Species with any family representatives will be printed in the console jointly with a list of Genus contained of its family contained in the three, so that the user must choose. The user have three options:</p>
 <ol style="list-style-type: decimal">
 <li>Insert <strong>near to a specific Genus</strong>: the user must type the name of this Genus;</li>
@@ -165,10 +165,10 @@
 </ol>
 <p>The output has two objects, a phylogenetic tree that can be directly plot with the following code:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res_phylo</span><span class="op">$</span><span class="va">Phylogeny</span>, cex <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res_phylo</span><span class="op">$</span><span class="va">Phylogeny</span>, cex <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></code></pre></div>
 <p>And a data frame indicating at which level the species was inserted (one of the six categories detailed above).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res_phylo</span><span class="op">$</span><span class="va">Insertions_data</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">res_phylo</span><span class="op">$</span><span class="va">Insertions_data</span></span></code></pre></div>
 <p>For more details and updates see <a href="https://gabrielnakamura.github.io/FishPhyloMaker/" class="external-link">FishPhyloMaker web page</a></p>
 </div>
 <div class="section level1">
@@ -234,7 +234,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
