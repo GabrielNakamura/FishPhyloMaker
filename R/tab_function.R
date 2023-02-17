@@ -59,7 +59,7 @@
 #' }
 #' 
 #'
-FishTaxaMaker <- function (data, allow.manual.insert = TRUE) 
+function (data, allow.manual.insert = TRUE) 
 {
   if (is.data.frame(data) == TRUE) {
     names_data <- colnames(data)
@@ -105,13 +105,11 @@ FishTaxaMaker <- function (data, allow.manual.insert = TRUE)
   list_res[[2]] <- data_fishbase_complete[, c("valid_names", 
                                               "Family", "Order")]
   colnames(list_res[[2]]) <- c("s", "f", "o")
-  list_res[[2]] <- list_res[[2]][match(unique(list_res[[2]]$s), 
-                                       list_res[[2]]$s), ]
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   list_res[[2]][match(gsub(" ", "_", na.omit(not_found_fishtree)), 
                       list_res[[1]]$user_spp), "s"] <- na.omit(not_found_fishtree)
   list_res[[2]][match(gsub(" ", "_", na.omit(not_found_fishtree)), 
-                      list_res[[1]]$user_spp), c("f", "o")] <- paste("not_find")
+                      list_res[[1]]$user_spp), c("f", "o")] <- paste("not_found")
   list_res[[2]]$s <- gsub(" ", "_", list_res[[2]]$s)
   if (length(not_found_fishtree) >= 1) {
     list_res[[3]] <- not_found_fishtree
@@ -136,9 +134,9 @@ FishTaxaMaker <- function (data, allow.manual.insert = TRUE)
         list_res[[2]][which(list_res[[1]]$user_spp == 
                               gsub(" ", "_", not_found_fishtree[i])), c("s", 
                                                                         "f")] <- c(not_found_fishtree[i], spp_family)
-        
-        spp_order <- unique(fishbasedata[which(fishbasedata$Family == spp_family), "Order"])
-        if(length(spp_order) == 0){
+        spp_order <- unique(fishbasedata[which(fishbasedata$Family == 
+                                                 spp_family), "Order"])
+        if (length(spp_order) == 0) {
           warning("\n Please, check if the family name typed is valid \n")
           spp_order <- readline(prompt = print_cat_Order(not_found_fishtree = not_found_fishtree[i]))
         }
