@@ -19,10 +19,15 @@ default is "Congeneric_insertion".}
 }
 \value{
 A vector containing four values:
-- Amount phylogenetic information present in the tree before insertions (PDintree)
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{- Amount phylogenetic information present in the tree before insertions (PDintree)
+
 - Amount of phylogenetic information inserted in the tree (PDdeficit)
+
 - Total Phylogenetic information of the tree (PDtotal)
+
 - A ratio calculated as PDdeficit/PDtotal (Darwinian_deficit)
+}\if{html}{\out{</div>}}
 }
 \description{
 Title Calculate the amount of phylogenetic deficit in assemblages
