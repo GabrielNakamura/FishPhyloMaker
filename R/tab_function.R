@@ -59,8 +59,9 @@
 #' }
 #' 
 #'
-function (data, allow.manual.insert = TRUE) 
-{
+FishTaxaMaker <- 
+  function (data, allow.manual.insert = TRUE) 
+    {
   if (is.data.frame(data) == TRUE) {
     names_data <- colnames(data)
     names_data_rfishbase <- gsub("_", " ", names_data)
