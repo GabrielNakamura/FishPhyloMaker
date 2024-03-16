@@ -6,7 +6,7 @@
 Auxiliary function to obtain taxonomic classification and check the names of species
 present in species pool}
 \usage{
-FishTaxaMaker(data, allow.manual.insert = TRUE)
+FishTaxaMaker(data, allow.manual.insert = TRUE, user_taxon_data = NULL)
 }
 \arguments{
 \item{data}{A character vector with species names or a community matrix with species names in columns}
@@ -15,13 +15,15 @@ FishTaxaMaker(data, allow.manual.insert = TRUE)
 not found in Fishbase}
 }
 \value{
-List with three elements.\preformatted{- A data frame containing the taxonomic classification of valid species accordingy to Fishbase
+List with three elements.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{- A data frame containing the taxonomic classification of valid species accordingy to Fishbase
 
 - A data frame with three columns containing the name of species (s), the Family (f) and Order (o) that can be used in
    FishPhyloMaker function
    
 - A character vector containing all names of species that was not find in Fishbase
-}
+}\if{html}{\out{</div>}}
 }
 \description{
 Generate a list of species

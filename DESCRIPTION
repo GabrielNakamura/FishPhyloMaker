@@ -21,12 +21,13 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Imports:
     ape,
     fishtree,
     geiger,
     knitr,
+    magrittr,
     phytools,
     progress,
     rfishbase,
@@ -41,4 +42,3 @@ Suggests: markdown,
           gh
 Remotes: 
     Otoliths/rFishTaxa
-    

@@ -3,5 +3,7 @@
 export(FishPhyloMaker)
 export(FishTaxaMaker)
 export(PD_deficit)
+export(PD_deficit_2)
 export(whichFishAdd)
+importFrom(magrittr,"%>%")
 importFrom(stats,na.omit)

@@ -8,7 +8,9 @@ FishPhyloMaker(
   data,
   insert.base.node = FALSE,
   return.insertions = TRUE,
-  progress.bar = TRUE
+  progress.bar = TRUE,
+  user_backbone = NULL,
+  user_taxon_data = NULL
 )
 }
 \arguments{

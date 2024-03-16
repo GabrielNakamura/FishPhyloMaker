@@ -5,9 +5,18 @@
 #' @param data data frame with species and insertion levels. This is the output of FishPhyloMaker function
 #'
 #' @return a list with two tibbles. One with results of deficit for all species and another with summary results for each category of insertion
+#' @importFrom magrittr "%>%"
+#' @return a list containing two data frames. 
+#' 
+#'     - a long data frame (pd_deficit_long) containing all values of deficit and total phylogenetic diversity
+#'         accounted by each terminal branch of the tree.
+#'     
+#'     - a summary data frame with values of total PD in each category of insertion (including for those species present in tree)
+#'         and a proportion of each category for the total terminal PD.
 #' @export
 #'
 #' @examples
+#' 
 PD_deficit_2 <- 
   function(phylo, data){
     tree_tib <- tidytree::as_tibble(phylo) # change to a tibble object  
